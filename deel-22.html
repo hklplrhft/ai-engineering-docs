@@ -49,18 +49,6 @@
 <h2><span class="dn">DEEL 22</span>Starter Kit -- Direct Goed Beginnen</h2>
 <p>Je hoeft niet alles uit deze gids te onthouden. Met de juiste inrichting dwingt Claude Code de werkwijze grotendeels <em>automatisch</em> af. Volg de stappen hieronder om je eigen setup op te bouwen, en iedereen in je team werkt meteen volgens best practices.</p>
 
-<h3>Leerpad -- in welk tempo?</h3>
-<p>Je hoeft niet alles tegelijk op te zetten. Dit is een realistisch 10-weken schema om de 5 lagen stap voor stap te adopteren:</p>
-<div class="tl">
-<div class="ti"><div class="wk">WEEK 1–2 · FOUNDATION</div><h4>Installeer Claude Code + eerste CLAUDE.md</h4><p>Draai <code>/init</code>. Verfijn: overview, stack, 5-10 regels. Maak <code>~/.claude/CLAUDE.md</code>. Oefen met <code>/plan</code>, <code>/clear</code>, <code>/compact</code>.</p></div>
-<div class="ti"><div class="wk">WEEK 3–4 · LITTEKENS</div><h4>Verzamel je eerste regels</h4><p>Elke fout → regel. Maak <code>docs/refs/</code>. Commit na elke wijziging. Schrijf handoff files.</p></div>
-<div class="ti"><div class="wk">WEEK 5–6 · HOOKS</div><h4>Eerste harde garanties</h4><p>Pre-commit hook (lint/types). Post-write hook (tests). Configureer via <code>/hooks</code>.</p></div>
-<div class="ti"><div class="wk">WEEK 7–8 · SKILLS</div><h4>Eerste herbruikbare workflow</h4><p>Taak die je 3x handmatig deed → skill in <code>.claude/skills/</code>. Test op consistentie.</p></div>
-<div class="ti"><div class="wk">WEEK 9–10 · AGENTS</div><h4>Eerste gespecialiseerde agent</h4><p>Audit-agent voor één aspect: links, SEO, content freshness.</p></div>
-<div class="ti"><div class="wk">DOORLOPEND</div><h4>Feedback loop</h4><p>Fout → regel. Herhaalde taak → skill. Terugkerende controle → agent. Snoei CLAUDE.md. Experimenteer met modellen en parallel werk.</p></div>
-</div>
-<p>De stappen hieronder laten zien hoe je de eerste twee weken concreet inricht.</p>
-
 
 <div class="co ca"><span class="cl">Wat wordt afgedwongen vs. wat vereist discipline?</span>
 <p><strong>Automatisch (hooks):</strong> lint, typecheck, tests, secret detection -- Claude kan niet committen zonder.<br>
@@ -77,7 +65,7 @@ npm install -g @anthropic-ai/claude-code
 # Start Claude in je project
 cd mijn-project && claude</code></pre>
 
-<h3>Stap 2: Kopieer de globale CLAUDE.md</h3>
+<h3>Stap 2: Maak de globale CLAUDE.md</h3>
 <p>Maak <code>~/.claude/CLAUDE.md</code> aan. Dit geldt voor <strong>al je projecten</strong>.</p>
 <pre><code># ~/.claude/CLAUDE.md -- Persoonlijke regels
 
@@ -108,6 +96,7 @@ claude
 # - Verwijzingen naar docs/refs/ voor specifieke regels
 # - Test commando's (npm test, pytest, etc.)
 # - Kritieke project-regels</code></pre>
+<div class="co ci"><span class="cl">Tip</span><p>Oefen ook meteen met <code>/plan</code> (denken voor doen), <code>/clear</code> (context opschonen bij taakwissel) en <code>/compact</code> (lange sessies inkorten). Dit zijn de drie commando's die je het vaakst zult gebruiken.</p></div>
 
 <h3>Stap 4: Stel hooks in</h3>
 <p>Dit is het belangrijkste deel -- hooks zijn <strong>onmogelijk te omzeilen</strong>. Maak <code>.claude/settings.json</code> aan in je project:</p>
@@ -153,7 +142,8 @@ claude
 <strong>Notification:</strong> Desktop-melding als Claude klaar is of op je wacht.</p></div>
 
 <h3>Stap 5: Maak een start-feature skill</h3>
-<p>Maak <code>.claude/skills/start-feature/SKILL.md</code> aan. Dit dwingt het juiste proces af bij elke nieuwe feature:</p>
+<p>Maak <code>.claude/skills/start-feature/SKILL.md</code> aan. Dit dwingt het juiste proces af bij elke nieuwe feature.</p>
+<p><strong>Vuistregel:</strong> heb je een taak al 3x handmatig gedaan? Maak er een skill van.</p>
 <pre><code>---
 name: start-feature
 description: Start een nieuwe feature volgens de teamwerkwijze.
@@ -219,6 +209,13 @@ Fix de volgende bug: $ARGUMENTS
 .env.local
 .claude/worktrees/
 node_modules/</code></pre>
+
+<div class="co ca"><span class="cl">Verder groeien</span>
+<p>Na deze 8 stappen heb je een solide basis. De volgende niveaus:</p>
+<ul>
+<li><strong>Agents:</strong> Bouw een gespecialiseerde agent voor terugkerende controles -- denk aan link-checks, SEO-audits, of content freshness.</li>
+<li><strong>Feedback loop:</strong> Fout → regel in <code>docs/refs/</code>. Herhaalde taak → skill. Terugkerende controle → agent. Snoei je CLAUDE.md regelmatig en experimenteer met modellen en parallel werk.</li>
+</ul></div>
 
 <h3>De complete mapstructuur</h3>
 <pre><code>~/.claude/
