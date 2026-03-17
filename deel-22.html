@@ -258,13 +258,19 @@ Fix de volgende bug: $ARGUMENTS
 <p>Gebruik: <code>/fix-bug users krijgen een 500 error bij het inloggen na session timeout</code></p>
 
 <h3>Stap 7: Maak een docs/refs/ map</h3>
-<pre><code>mkdir -p docs/refs
-# Voeg hier regels toe na elke fout die Claude maakt:
+<pre><code>mkdir -p docs/refs</code></pre>
+<p>Begin met lege bestanden per categorie. Vul ze aan zodra Claude een fout maakt -- elke regel komt uit een echte les.</p>
 
-# Voorbeeld: docs/refs/database-regels.md
-# - Kolom is `is_answer_ready`, NIET `answer_ready`
-# - Gebruik altijd soft deletes
-# - Foreign keys MOETEN ON DELETE CASCADE hebben</code></pre>
+<table class="tc">
+<tr><th>Bestand</th><th>Wanneer aanmaken</th><th>Voorbeeldregel</th></tr>
+<tr><td><code>db-schema.md</code></td><td>Fout met kolomnamen, relaties, migraties</td><td><code>Kolom is is_answer_ready, NIET answer_ready</code></td></tr>
+<tr><td><code>api-contracts.md</code></td><td>Fout met request/response formaten of auth</td><td><code>POST /orders verwacht amount in centen, niet euro's</code></td></tr>
+<tr><td><code>build-deploy.md</code></td><td>Fout met build-stappen, env vars, gegenereerde bestanden</td><td><code>Verwijder NOOIT bestanden uit public/js/ -- gegenereerd door build</code></td></tr>
+<tr><td><code>third-party.md</code></td><td>Fout met externe API's, rate limits, SDK quirks</td><td><code>Stripe webhook retries tot 3 dagen -- maak handlers idempotent</code></td></tr>
+<tr><td><code>naming-conventions.md</code></td><td>Verwarring over naamgeving (routes, componenten)</td><td><code>Componenten: PascalCase. Bestanden: kebab-case.tsx</code></td></tr>
+</table>
+
+<div class="co ca"><span class="cl">Belangrijk</span><p>Kopieer deze voorbeelden niet klakkeloos. De kracht van <code>docs/refs/</code> zit in regels die uit jouw projectfouten komen. Een lege tabel met de juiste categorieën is waardevoller dan tien gekopieerde regels.</p></div>
 
 <h3>Stap 8: Stel .gitignore in</h3>
 <pre><code># Voeg toe aan .gitignore
