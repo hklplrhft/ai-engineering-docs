@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoom.nl Code Readiness -- Plan voor AI-assisted Development</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--bg-card:#111827;--bg-code:#0d1320;--border:#1e293b;--text:#e2e8f0;--text-muted:#94a3b8;--text-dim:#64748b;--blue:#38bdf8;--cyan:#22d3ee;--green:#34d399;--yellow:#fbbf24;--orange:#fb923c;--red:#f87171;--purple:#a78bfa;--pink:#f472b6}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scrollbar-width:thin;scrollbar-color:#1e293b #0a0e17}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;font-weight:300;overflow:hidden;height:100vh}
+
+.nav{position:fixed;top:0;left:0;width:264px;height:100vh;background:var(--bg-card);border-right:1px solid var(--border);overflow-y:auto;padding:20px 0;z-index:100;scrollbar-width:thin;scrollbar-color:#1e293b var(--bg-card)}
+.nav-logo{padding:0 18px 18px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.nav-logo h2{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;background:linear-gradient(135deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-logo p{font-size:10px;color:var(--text-dim);margin-top:3px}
+.nav a{display:block;padding:5px 18px;color:var(--text-muted);text-decoration:none;font-size:12px;font-weight:400;transition:all .2s;border-left:2px solid transparent;cursor:pointer}
+.nav a:hover,.nav a.active{color:var(--orange);background:rgba(251,146,60,.05);border-left-color:var(--orange)}
+.ng{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);padding:12px 18px 3px;pointer-events:none}
+
+.main{margin-left:264px;height:100vh;position:relative}
+
+/* Slide system */
+.slide{display:none;height:100vh;overflow-y:auto;padding:44px 44px 120px;max-width:1094px}
+.slide.active{display:block}
+
+.hero{margin-bottom:52px;padding-bottom:36px;border-bottom:1px solid var(--border)}
+.hb{display:inline-block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:2px;padding:3px 10px;border-radius:4px;background:rgba(251,146,60,.1);color:var(--orange);border:1px solid rgba(251,146,60,.2);margin-bottom:14px}
+.hero h1{font-size:38px;font-weight:800;line-height:1.15;margin-bottom:12px;letter-spacing:-1px}
+.hero h1 span{background:linear-gradient(135deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero>p{font-size:16px;color:var(--text-muted);font-weight:300;max-width:620px}
+
+section{margin-bottom:44px}section[id]{scroll-margin-top:20px}section+section{padding-top:24px;border-top:1px solid var(--border)}
+h2{font-size:24px;font-weight:700;margin-bottom:6px;letter-spacing:-.5px}
+.dn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--orange);display:block;margin-bottom:3px;letter-spacing:1px}
+h3{font-size:18px;font-weight:600;margin:24px 0 8px;color:var(--cyan)}
+h4{font-size:15px;font-weight:600;margin:18px 0 6px;color:var(--text)}
+p{margin-bottom:12px;color:var(--text-muted)}strong{color:var(--text);font-weight:600}em{color:var(--text)}
+ol,ul{color:var(--text-muted);margin:8px 0 12px 18px;font-size:14.5px}li{margin-bottom:5px}
+
+pre{background:var(--bg-code);border:1px solid var(--border);border-radius:6px;padding:13px 16px;margin:12px 0;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.6;color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(251,146,60,.08);padding:1px 5px;border-radius:3px;color:var(--orange)}
+pre code{background:none;padding:0;color:inherit}
+
+.co{border-radius:7px;padding:16px 20px;margin:16px 0;font-size:14px}.co p{margin-bottom:6px}.co p:last-child{margin-bottom:0}
+.cl{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:block}
+.ci{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15)}.ci .cl{color:var(--blue)}
+.cw{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15)}.cw .cl{color:var(--yellow)}
+.ca{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15)}.ca .cl{color:var(--green)}
+.cd{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.15)}.cd .cl{color:var(--red)}
+
+.lc{background:var(--bg-card);border:1px solid var(--border);border-radius:7px;padding:20px;margin:16px 0;border-left:3px solid var(--orange)}
+.lc.lcp{border-left-color:var(--purple)}.lc.lcb{border-left-color:var(--blue)}.lc.lcc{border-left-color:var(--cyan)}.lc.lcy{border-left-color:var(--yellow)}.lc.lcg{border-left-color:var(--green)}.lc.lcr{border-left-color:var(--red)}.lc.lck{border-left-color:var(--pink)}
+.lh{display:flex;align-items:center;gap:9px;margin-bottom:9px;flex-wrap:wrap}
+.ln{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:1px;background:rgba(251,146,60,.15);color:var(--orange)}
+.lcp .ln{background:rgba(167,139,250,.15);color:var(--purple)}.lcb .ln{background:rgba(56,189,248,.15);color:var(--blue)}.lcc .ln{background:rgba(34,211,238,.15);color:var(--cyan)}.lcy .ln{background:rgba(251,191,36,.15);color:var(--yellow)}.lcg .ln{background:rgba(52,211,153,.15);color:var(--green)}.lcr .ln{background:rgba(248,113,113,.15);color:var(--red)}.lck .ln{background:rgba(244,114,182,.15);color:var(--pink)}
+.lt{font-size:16px;font-weight:700;color:var(--text)}.lp{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);margin-left:auto}
+
+.dg{display:grid;gap:5px;margin:18px 0}
+.dr{display:grid;grid-template-columns:160px 1fr 1fr;gap:8px;align-items:start;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:5px;font-size:12.5px}
+.dr .nm{font-weight:600;color:var(--text)}.dr .ct{color:var(--green)}.dr .ms{color:var(--text-muted)}
+
+.pb{display:flex;border-radius:5px;overflow:hidden;margin:16px 0;height:40px;font-size:12px;font-weight:600}
+.pb>div{display:flex;align-items:center;justify-content:center;gap:4px}
+.pp{background:var(--blue);color:#0a0e17;flex:50}.pe{background:var(--cyan);color:#0a0e17;flex:10}.pw{background:var(--yellow);color:#0a0e17;flex:40}
+
+.tl{margin:18px 0;padding-left:18px;border-left:2px solid var(--border)}
+.ti{position:relative;padding:0 0 22px 18px}
+.ti::before{content:'';position:absolute;left:-23px;top:5px;width:7px;height:7px;border-radius:50%;background:var(--orange)}
+.ti .wk{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--orange);font-weight:700}
+.ti h4{margin:2px 0 3px;font-size:14.5px}.ti p{font-size:13px;margin:0}
+
+.gt{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.gt th{text-align:left;padding:7px 10px;background:var(--bg-card);color:var(--orange);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border)}
+.gt td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.gt td:first-child{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--cyan);white-space:nowrap;font-weight:700}
+.gt td:last-child{color:var(--text-muted)}
+
+.badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.5px;vertical-align:middle}
+.bi{background:rgba(251,146,60,.15);color:var(--orange)}.bh{background:rgba(52,211,153,.15);color:var(--green)}.bm{background:rgba(251,191,36,.15);color:var(--yellow)}.bl{background:rgba(56,189,248,.15);color:var(--blue)}
+
+.sp{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0}
+.sc{background:var(--bg-card);border:1px solid var(--border);border-radius:7px;padding:16px;transition:border-color .3s}
+.sc:hover{border-color:var(--orange)}
+.sc h4{margin:0 0 5px;font-size:15px}.sc p{font-size:13px;margin:0;line-height:1.55}
+
+.rules{display:grid;gap:6px;margin:16px 0;counter-reset:rule}
+.rule{display:flex;align-items:baseline;gap:10px;padding:10px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:5px;font-size:13.5px;color:var(--text-muted);counter-increment:rule}
+.rule::before{content:counter(rule);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--orange);min-width:18px}
+
+.step{background:var(--bg-card);border:1px solid var(--border);border-radius:7px;padding:18px;margin:10px 0;display:grid;grid-template-columns:50px 1fr;gap:14px}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--orange);text-align:center;padding-top:2px}
+.step-what{font-weight:600;color:var(--text);font-size:15px;margin-bottom:6px}
+.step-cmd{background:var(--bg-code);border:1px solid var(--border);border-radius:5px;padding:10px 14px;margin:8px 0;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--cyan);line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.step-need{font-size:12.5px;color:var(--yellow);margin-top:6px}
+.step-need::before{content:'Nodig: ';font-weight:700}
+
+/* Slide navigation bar */
+.slide-nav{position:fixed;bottom:0;left:264px;right:0;height:56px;background:var(--bg-card);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:99}
+.slide-nav-btn{background:none;border:1px solid var(--border);color:var(--text-muted);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:8px 20px;border-radius:5px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.slide-nav-btn:hover{color:var(--orange);border-color:var(--orange)}
+.slide-nav-btn:disabled{opacity:.3;cursor:default;color:var(--text-dim);border-color:var(--border)}
+.slide-nav-btn:disabled:hover{color:var(--text-dim);border-color:var(--border)}
+.slide-counter{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:1px}
+.slide-nav-arrow{font-size:16px}
+
+/* Fase section styling */
+.fase-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.fase-meta-block{background:var(--bg-card);border:1px solid var(--border);border-radius:7px;padding:14px 18px}
+.fase-meta-block.verificatie{border-left:3px solid var(--green)}
+.fase-meta-block.livegang{border-left:3px solid var(--blue)}
+.fase-meta-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:block}
+.verificatie .fase-meta-label{color:var(--green)}
+.livegang .fase-meta-label{color:var(--blue)}
+.fase-meta-block p{font-size:13px;margin:0;color:var(--text-muted)}
+
+@media(max-width:1024px){
+  .nav{display:none}
+  .main{margin-left:0;height:100vh}
+  .slide{padding:24px 18px 130px}
+  .sp{grid-template-columns:1fr}
+  .dr{grid-template-columns:1fr;gap:2px}
+  .slide-nav{left:0;height:64px;padding:0 16px}
+  .slide-nav-btn{padding:10px 18px;font-size:14px}
+  .slide-counter{font-size:14px}
+  .fase-meta{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<div class="nav-logo"><h2>Zoom.nl Readiness</h2><p>Code plan voor AI-development</p></div>
+<div class="ng">Overzicht</div>
+<a data-slide="0">Introductie</a>
+<a data-slide="1">Context & Doel</a>
+<a data-slide="2">Overzicht & Planning</a>
+<a data-slide="3">De Bouwblokken</a>
+<div class="ng">De 7 Fasen</div>
+<a data-slide="4">Fase 0: Guard Rails</a>
+<a data-slide="5">Fase 1+2: Constanten & XSS</a>
+<a data-slide="6">Fase 3: Bestanden Splitsen</a>
+<a data-slide="7">Fase 4+5: Tests & TypeScript</a>
+<a data-slide="8">Fase 6: Accessibility</a>
+<div class="ng">Samenwerken & Migratie</div>
+<a data-slide="9">Samenwerken bij Zoom.nl</a>
+<a data-slide="10">Migratie & Livegang</a>
+</nav>
+
+<main class="main">
+
+<!-- SLIDE 0: Hero -->
+<div class="slide" data-slide-id="0" data-hash="intro">
+<div class="hero">
+<div class="hb">Zoom.nl &middot; Code Readiness Plan</div>
+<h1>Van Vibe Coding naar<br><span>Veilig Samenwerken met AI</span></h1>
+<p>Hoe we de zoom-nl codebase klaarmaken zodat het hele team veilig en efficient kan bouwen met Claude Code. Van guard rails tot samenwerkingsafspraken.</p>
+<div class="co ci"><span class="cl">Methodiek</span><p>Dit plan is gebaseerd op de <a href="index.html" style="color:var(--blue)">AI Engineering Gids</a> -- alle principes, werkwijzen en samenwerkingsregels staan daar uitgelegd.</p></div>
+</div>
+</div>
+
+<!-- SLIDE 1: Context -->
+<div class="slide" data-slide-id="1" data-hash="context">
+<section id="context">
+<h2><span class="dn">START HIER</span>Context & Doel</h2>
+<p>De rest van de monorepo (Astro apps, packages/ui, packages/api-new) is al grotendeels TypeScript en goed gestructureerd. <strong>Zoom.nl is de uitzondering:</strong></p>
+
+<div class="sp">
+<div class="sc"><h4>598 JavaScript bestanden</h4><p>Terwijl alle andere apps TypeScript-first zijn. Geen type safety, geen compiler die fouten vangt.</p></div>
+<div class="sc"><h4>0 tests</h4><p>Geen vangnet. Elke AI-wijziging is een gok -- je weet pas in productie of het werkt.</p></div>
+<div class="sc"><h4>10 bestanden >300 regels</h4><p>De foto detail pagina is 675 regels. Mixed concerns: data, logica, rendering in een bestand.</p></div>
+<div class="sc"><h4>60+ hardcoded URLs</h4><p>Geen Single Source of Truth. AI gaat URLs opnieuw hardcoden omdat er geen config is.</p></div>
+</div>
+
+<div class="lc lcg">
+<div class="lh"><span class="ln">DOEL</span><span class="lt">De codebase zo inrichten dat een AI moeilijk dingen kapot kan maken</span></div>
+<p>Dit plan brengt zoom-nl stap voor stap in lijn met de rest van de monorepo. Niet herschrijven -- verbeteren. Zodat AI-assistenten dezelfde patronen kunnen volgen die al werken in de andere apps.</p>
+</div>
+</section>
+</div>
+
+<!-- SLIDE 2: Overzicht & Planning -->
+<div class="slide" data-slide-id="2" data-hash="overzicht">
+<section id="overzicht">
+<h2><span class="dn">OVERZICHT</span>Overzicht & Planning</h2>
+<table class="gt">
+<thead><tr><th>Fase</th><th>Wat</th><th>Impact</th><th>Moeite</th><th>Week</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>Guard rails (AGENTS.md, hooks, .env, skills)</td><td><span class="badge bi">ZEER HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1</span></td></tr>
+<tr><td>1</td><td>Constanten centraliseren</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1</span></td></tr>
+<tr><td>2</td><td>XSS-risico's dichten</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1</span></td></tr>
+<tr><td>3</td><td>Grote bestanden opsplitsen</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bm">MEDIUM</span></td><td><span class="badge bl">2-3</span></td></tr>
+<tr><td>4</td><td>Tests voor kritieke utils en hooks</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bm">MEDIUM</span></td><td><span class="badge bl">3-4</span></td></tr>
+<tr><td>5</td><td>TypeScript migratie (geleidelijk)</td><td><span class="badge bi">ZEER HOOG</span></td><td><span class="badge bl">HOOG</span></td><td><span class="badge bl">4+</span></td></tr>
+<tr><td>6</td><td>Accessibility baseline</td><td><span class="badge bm">MEDIUM</span></td><td><span class="badge bm">MEDIUM</span></td><td><span class="badge bl">doorlopend</span></td></tr>
+</tbody>
+</table>
+
+<h3>Timeline</h3>
+<div class="tl">
+<div class="ti"><div class="wk">WEEK 1</div><h4>Fase 0 + 1 + 2: Guard rails, constanten, XSS</h4><p>Iedereen leest de AI Engineering Gids. AGENTS.md, .env.example, hooks, skills, littekens-bestand, en samenwerkingsregels staan klaar. Constanten gecentraliseerd. XSS-risico's gedicht.</p></div>
+<div class="ti"><div class="wk">WEEK 2</div><h4>Fase 3.1-3.2: Foto detail + instellingen opsplitsen</h4><p>De twee grootste bestanden (675 + 420 regels) opgesplitst in pagina, hooks, en utils.</p></div>
+<div class="ti"><div class="wk">WEEK 3</div><h4>Fase 3.3-3.5 + 4.1-4.2: Overige bestanden + test setup</h4><p>Alle bestanden >300 regels opgesplitst. Jest geconfigureerd. Tests voor de 5 belangrijkste utils.</p></div>
+<div class="ti"><div class="wk">WEEK 4</div><h4>Fase 4.3-4.4 + 5.1-5.2: Service tests + TypeScript setup</h4><p>Tests voor services. <code>allowJs: true</code> in tsconfig. Type interfaces voor API responses.</p></div>
+<div class="ti"><div class="wk">DOORLOPEND</div><h4>Fase 5.3 + 6 + feedback loop</h4><p>TypeScript per feature. Accessibility. Elke fout wordt een regel. Elke herhaalde taak wordt een skill.</p></div>
+</div>
+</section>
+</div>
+
+<!-- SLIDE 3: Bouwblokken -->
+<div class="slide" data-slide-id="3" data-hash="bouwblokken">
+<section id="bouwblokken">
+<h2><span class="dn">ACHTERGROND</span>De 5 Bouwblokken van zoom-nl</h2>
+<p>Elk bouwblok heeft een specifieke rol. Na het opsplitsen (fase 3) kan een AI alleen het relevante bestand lezen en aanpassen.</p>
+<div class="dg">
+<div class="dr"><span class="nm">Pagina</span><span class="ct"><code>pages/</code> -- een URL in de browser. Haalt data op, rendert components. Alleen lijm.</span><span class="ms">Voorbeeld: <code>pages/index.js</code></span></div>
+<div class="dr"><span class="nm">Component</span><span class="ct"><code>src/components/</code> -- herbruikbaar stuk UI. Weet hoe iets eruitziet, niet waar data vandaan komt.</span><span class="ms">Voorbeeld: <code>HeroSection</code></span></div>
+<div class="dr"><span class="nm">Hook</span><span class="ct"><code>src/hooks/</code> -- herbruikbare logica zonder UI. State, side effects, berekeningen. Begint met <code>use</code>.</span><span class="ms">Voorbeeld: <code>usePhotoLike</code></span></div>
+<div class="dr"><span class="nm">Util</span><span class="ct"><code>src/utils/</code> -- pure functies zonder state. Input erin, output eruit. Overal bruikbaar.</span><span class="ms">Voorbeeld: <code>getImage()</code></span></div>
+<div class="dr"><span class="nm">Constante</span><span class="ct"><code>src/config/</code> -- waarden die niet veranderen. SSOT: als het op 3+ plekken voorkomt, hoort het hier.</span><span class="ms">Voorbeeld: <code>SITE_URL</code></span></div>
+</div>
+</section>
+</div>
+
+<!-- SLIDE 4: Fase 0 -- Guard Rails -->
+<div class="slide" data-slide-id="4" data-hash="fase0">
+<section id="fase0">
+<h2><span class="dn">FASE 0</span>Guard Rails <span class="badge bh">1-2 DAGEN</span></h2>
+<p>Geen code-wijzigingen nodig. Dit is de "dag 0" setup die alles daarna veiliger maakt.</p>
+
+<div class="step">
+<div class="step-num">0.1</div>
+<div>
+<div class="step-what">AGENTS.md uitbreiden met off-limits en patronen</div>
+<p>Het huidige bestand is 25 regels en mist concrete regels. Voeg off-limits bestanden en patronen voor nieuwe code toe.</p>
+<div class="lc lcr">
+<div class="lh"><span class="ln">OFF-LIMITS</span><span class="lt">Bestanden die een AI niet mag wijzigen</span></div>
+<pre><code>- src/services/authentication.js  -- nooit zonder security review
+- src/services/resources.js       -- token refresh, kritiek pad
+- middleware.js                    -- raakt elke request
+- src/services/captcha.js          -- reCAPTCHA verificatie</code></pre>
+</div>
+<div class="lc lcg">
+<div class="lh"><span class="ln">PATRONEN</span><span class="lt">Hoe nieuwe code eruit moet zien</span></div>
+<pre><code>- Nieuwe pagina:     pages/_template.js als basis
+- Nieuwe hook:       src/hooks/&lt;naam&gt;.js
+- Nieuwe util:       src/utils/&lt;naam&gt;.js
+- Nieuwe component:  src/components/&lt;naam&gt;/components/index.js
+- Constanten:        src/config/site.js
+- API URLs:          altijd via environment variables</code></pre>
+</div>
+<div class="step-cmd">"Breid apps/zoom-nl/AGENTS.md uit met off-limits bestanden (authentication.js, resources.js, middleware.js, captcha.js), patronen voor nieuwe code, en wat een AI niet mag doen. Lees het huidige bestand en docs/plan-zoom-nl-code-readiness.html voor de details."</div>
+<div class="step-need">Review door team -- klopt de off-limits lijst?</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">0.2</div>
+<div>
+<div class="step-what">.env.example aanmaken</div>
+<p>Er is geen <code>.env.example</code>. Een AI weet niet welke variabelen beschikbaar zijn en gaat URLs hardcoden.</p>
+<pre><code>NEXT_PUBLIC_SITE_URL=https://www.zoom.nl
+NEXT_PUBLIC_IMAGE_HOST_DEV=https://mp-tst.reshift.nl/zoom/
+NEXT_PUBLIC_IMAGE_HOST_PROD=https://mp.reshift.nl/zoom/
+NEXT_PUBLIC_GTM_ID=GTM-P7PBC3
+NEXT_PUBLIC_DFP_NETWORK_ID=116488029</code></pre>
+<div class="step-cmd">"Maak een .env.example aan voor zoom-nl op basis van alle environment variabelen die in de code gebruikt worden. Zoek naar process.env in de hele app."</div>
+<div class="step-need">DevOps -- kloppen de variabelen met het Vercel dashboard?</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">0.3</div>
+<div>
+<div class="step-what">Pagina template aanmaken</div>
+<p>Een minimaal voorbeeld dat een AI kan kopieren. Voorkomt dat patronen worden overgenomen uit de 675-regel foto detail pagina.</p>
+<div class="step-cmd">"Maak pages/_template.js aan als minimaal voorbeeld voor nieuwe pagina's. Gebruik het bestaande getServerSideProps patroon uit andere pagina's."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">0.4</div>
+<div>
+<div class="step-what">Hooks instellen (lint, secrets, tests)</div>
+<div class="co cd"><span class="cl">Kernvraag bij elke regel</span><p>"Wat als Claude dit negeert?" <strong>Vervelend = regel in AGENTS.md.</strong> <strong>Kapot = hook.</strong></p></div>
+<div class="dg">
+<div class="dr"><span class="nm">Pre-commit: lint</span><span class="ct">Fouten = commit geblokkeerd. Claude ziet fout en fixt zelf.</span><span class="ms"><span class="badge bh">DETERMINISTISCH</span></span></div>
+<div class="dr"><span class="nm">Pre-commit: secrets</span><span class="ct">Scan op hardcoded API keys, tokens, wachtwoorden.</span><span class="ms"><span class="badge bh">DETERMINISTISCH</span></span></div>
+<div class="dr"><span class="nm">Post-write: tests</span><span class="ct">Tests draaien automatisch na elke file write. Claude past aan bij falen.</span><span class="ms"><span class="badge bh">DETERMINISTISCH</span></span></div>
+</div>
+<div class="step-cmd">Typ /hooks in Claude Code en configureer:
+- PreCommit: npx next lint --quiet
+- PreCommit: secret detection (grep op API keys)
+- PostWrite: npx jest --bail --findRelatedTests (na fase 4)</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">0.5</div>
+<div>
+<div class="step-what">Skills aanmaken voor herhaalde taken</div>
+<p>Taak 3x handmatig gedaan? Maak een skill in <code>.claude/skills/</code>.</p>
+<div class="step-cmd">"Maak een .claude/skills/new-page/SKILL.md skill aan voor het aanmaken van nieuwe zoom-nl pagina's. De skill moet _template.js kopieren, resource path aanpassen, en een build draaien."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">0.6</div>
+<div>
+<div class="step-what">Feedback loop: littekens-bestand aanmaken</div>
+<p>Maak <code>docs/refs/zoom-nl-littekens.md</code> -- elke AI-fout wordt een regel die voorkomt dat het opnieuw gebeurt.</p>
+<pre><code># Zoom.nl -- Littekens (geleerde lessen)
+- image.fileName is camelCase, NIET image.filename
+- creator.slug kan undefined zijn -- altijd null-checken
+- dangerouslySetInnerHTML NOOIT zonder sanitizeHtml() wrapper</code></pre>
+<div class="step-cmd">"Maak docs/refs/zoom-nl-littekens.md aan. Voeg de fouten toe die we al kennen: image.fileName is camelCase, creator.slug kan undefined zijn, dangerouslySetInnerHTML nooit zonder sanitizer."</div>
+</div>
+</div>
+
+<div class="fase-meta">
+<div class="fase-meta-block verificatie">
+<span class="fase-meta-label">Verificatie</span>
+<p>AGENTS.md review door team, <code>.env.example</code> klopt met Vercel dashboard, hooks actief</p>
+</div>
+<div class="fase-meta-block livegang">
+<span class="fase-meta-label">Livegang</span>
+<p>Geen deploy nodig. Dit zijn configuratiebestanden -- ze veranderen niets aan de applicatie. Merge naar develop, klaar.</p>
+</div>
+</div>
+</section>
+</div>
+
+<!-- SLIDE 5: Fase 1+2 -- Constanten & XSS -->
+<div class="slide" data-slide-id="5" data-hash="fase1-2">
+<section id="fase1-2">
+<h2><span class="dn">FASE 1+2</span>Constanten & XSS Dichten <span class="badge bh">2-3 DAGEN</span></h2>
+
+<h3>Fase 1: Constanten centraliseren</h3>
+<p>60+ hardcoded URLs, 14 hardcoded kleuren in JS. Maak een Single Source of Truth.</p>
+
+<div class="step">
+<div class="step-num">1.1</div>
+<div>
+<div class="step-what">Site configuratie centraliseren</div>
+<pre><code>// src/config/site.js
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zoom.nl';
+export const SITE_NAME = 'Zoom.nl';
+export const IMAGE_HOST = process.env.NEXT_PUBLIC_ENV === 'development'
+  ? process.env.NEXT_PUBLIC_IMAGE_HOST_DEV
+  : process.env.NEXT_PUBLIC_IMAGE_HOST_PROD;
+export const DFP_NETWORK_ID = process.env.NEXT_PUBLIC_DFP_NETWORK_ID || '116488029';</code></pre>
+<div class="step-cmd">"Maak src/config/site.js aan met SITE_URL, SITE_NAME, IMAGE_HOST, en DFP_NETWORK_ID. Gebruik environment variabelen. Migreer daarna src/utils/images.js en de display-ad component om deze config te gebruiken in plaats van hardcoded URLs."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">1.2</div>
+<div>
+<div class="step-what">Analytics IDs + hardcoded kleuren migreren</div>
+<div class="dg">
+<div class="dr"><span class="nm">app/layout.js</span><span class="ct">GTM en GA IDs naar environment variables</span><span class="ms">Analytics</span></div>
+<div class="dr"><span class="nm">display-ad/</span><span class="ct">Vervang <code>dfpNetworkId="116488029"</code> door config</span><span class="ms">2 instances</span></div>
+<div class="dr"><span class="nm">6 component files</span><span class="ct">Hardcoded kleuren (#fb001c, #191919, #dcdcdc) naar CSS vars</span><span class="ms">14 instances</span></div>
+</div>
+<div class="step-cmd">"Verplaats de hardcoded GTM ID en GA IDs in app/layout.js naar environment variabelen. Definieer ze in src/config/site.js."</div>
+</div>
+</div>
+
+<h3>Fase 2: XSS-risico's dichten</h3>
+
+<div class="step">
+<div class="step-num">2.1</div>
+<div>
+<div class="step-what">DOMPurify installeren en wrapper maken</div>
+<p>9 instances van <code>dangerouslySetInnerHTML</code> gevonden. 5 daarvan renderen user/API content zonder sanitization:</p>
+<table class="gt">
+<thead><tr><th>Bestand</th><th>Bron</th><th>Risico</th></tr></thead>
+<tbody>
+<tr><td>foto/[[...slug]].js</td><td>Foto beschrijving (API)</td><td><span class="badge bi">HOOG</span></td></tr>
+<tr><td>profile-header-description.js</td><td>Gebruiker bio (user input)</td><td><span class="badge bi">HOOG</span></td></tr>
+<tr><td>article-detail/index.js</td><td>Artikel body (CMS)</td><td><span class="badge bm">MEDIUM</span></td></tr>
+<tr><td>static-page/index.js</td><td>Statische pagina (CMS)</td><td><span class="badge bh">LAAG</span></td></tr>
+<tr><td>feedback-tool/index.js</td><td>Extern script</td><td><span class="badge bm">MEDIUM</span></td></tr>
+</tbody>
+</table>
+<div class="step-cmd">"Installeer isomorphic-dompurify. Maak src/utils/sanitize.js met een sanitizeHtml wrapper. Zoek daarna alle dangerouslySetInnerHTML usages die user of API content renderen en wrap ze met sanitizeHtml."</div>
+<div class="step-need">Security review op de sanitize wrapper</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">2.2</div>
+<div>
+<div class="step-what">innerHTML assignments vervangen</div>
+<p>2 bestanden gebruiken <code>innerHTML = tag</code> -- XSS als tags user input bevatten. Vervang door React state of <code>textContent</code>.</p>
+<div class="step-cmd">"Zoek alle innerHTML assignments in src/components/field/tags/ en vervang ze door textContent of React state. innerHTML met user input is een XSS-risico."</div>
+</div>
+</div>
+
+<div class="fase-meta">
+<div class="fase-meta-block verificatie">
+<span class="fase-meta-label">Verificatie</span>
+<p><strong>Fase 1:</strong> <code>grep -r "https://www.zoom.nl" src/</code> geeft 0 resultaten (behalve config). Build slaagt + steekproef op images en ads.<br>
+<strong>Fase 2:</strong> Alle user-content <code>dangerouslySetInnerHTML</code> instances gebruiken sanitizer.</p>
+</div>
+<div class="fase-meta-block livegang">
+<span class="fase-meta-label">Livegang</span>
+<p><strong>Fase 1:</strong> Laag risico. Functionaliteit verandert niet.<br>
+<strong>Fase 2:</strong> Medium risico. DOMPurify kan in theorie HTML-content anders renderen. Check artikelpagina's, profielpagina's en foto-beschrijvingen op missende content.</p>
+</div>
+</div>
+</section>
+</div>
+
+<!-- SLIDE 6: Fase 3 -- Bestanden Splitsen -->
+<div class="slide" data-slide-id="6" data-hash="fase3">
+<section id="fase3">
+<h2><span class="dn">FASE 3</span>Grote Bestanden Opsplitsen <span class="badge bm">3-5 DAGEN</span></h2>
+<div class="co ci"><span class="cl">Waarom dit de grootste verbetering is</span><p>Bij een 675-regel bestand moet een AI het hele bestand lezen om iets kleins te wijzigen. Hogere kans op fouten, meer tokens, hogere kosten. <strong>Vuistregel: max 150 regels per bestand.</strong></p></div>
+
+<div class="co cw"><span class="cl">Belangrijk</span><p>Gebruik <strong>/plan</strong> voor elke split. Laat Claude eerst analyseren welke state, hooks en functies er zijn, en hoe ze opgesplitst kunnen worden. Akkoord geven, dan pas uitvoeren.</p></div>
+
+<div class="step">
+<div class="step-num">3.1</div>
+<div>
+<div class="step-what">Foto detail pagina opsplitsen (675 regels)</div>
+<pre><code>pages/foto/[category]/[id]/[[...slug]].js  -- rendering + SSR (~150 regels)
+src/hooks/usePhotoDetail.js                 -- state + resource loading
+src/hooks/usePhotoLike.js                   -- like logica
+src/hooks/usePopState.js                    -- back-navigatie</code></pre>
+<div class="step-cmd">/plan eerst!
+"Splits pages/foto/[category]/[id]/[[...slug]].js op in: de pagina (rendering + SSR, max 150 regels), src/hooks/usePhotoDetail.js (state + resource loading), src/hooks/usePhotoLike.js (like logica), en src/hooks/usePopState.js (back-navigatie)."</div>
+<div class="step-need">Handmatig testen van de foto detail pagina na de split</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">3.2</div>
+<div>
+<div class="step-what">Upload dialog opsplitsen (758 regels)</div>
+<pre><code>src/dialogs/views/dialog-upload.js          -- dialog container
+src/dialogs/components/upload-form.js       -- formulier
+src/dialogs/components/upload-preview.js    -- preview stap
+src/hooks/useUpload.js                      -- upload state + API</code></pre>
+<div class="step-cmd">/plan eerst!
+"Splits src/dialogs/views/dialog-upload.js op in: dialog container met stappen, upload-form component, upload-preview component, en useUpload hook voor state en API calls."</div>
+<div class="step-need">Handmatig testen van de upload flow</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">3.3</div>
+<div>
+<div class="step-what">Profiel instellingen + EXIF component opsplitsen</div>
+<pre><code>-- Profiel instellingen (420 regels):
+pages/profiel/instellingen.js               -- pagina
+src/hooks/useProfileSettings.js             -- form state + save logica
+src/utils/validation.js                     -- regex patterns
+
+-- EXIF component (440 regels):
+photo-detail-exif.js                        -- rendering
+src/config/exif-labels.js                   -- Nederlandse labels
+src/utils/exif.js                           -- helper functies</code></pre>
+<div class="step-cmd">/plan eerst!
+"Splits pages/profiel/instellingen.js op: extract useProfileSettings hook (form state + save logica) en src/utils/validation.js (regex patterns, herbruikbaar)."
+
+"Splits photo-detail-exif.js: verplaats de Nederlandse EXIF labels naar src/config/exif-labels.js en de helper functies naar src/utils/exif.js."</div>
+<div class="step-need">Handmatig testen van profiel instellingen en EXIF weergave</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">3.4</div>
+<div>
+<div class="step-what">Overige 5 bestanden >300 regels</div>
+<div class="dg">
+<div class="dr"><span class="nm">services/resources.js</span><span class="ct">Extract token refresh naar <code>services/token.js</code></span><span class="ms">Kritiek pad</span></div>
+<div class="dr"><span class="nm">services/helpers.js</span><span class="ct">Split: <code>helpers/auth.js</code>, <code>helpers/user.js</code>, <code>helpers/url.js</code></span><span class="ms">Per domein</span></div>
+<div class="dr"><span class="nm">profile-header.js</span><span class="ct">Extract <code>useProfileFollow</code>, <code>useProfileActions</code></span><span class="ms">Hooks eruit</span></div>
+<div class="dr"><span class="nm">menu-bar/index.js</span><span class="ct">Extract <code>useMenuState</code> hook</span><span class="ms">State logica</span></div>
+</div>
+<div class="step-cmd">Per bestand apart:
+"Extract token refresh logica uit services/resources.js naar services/token.js"
+"Split services/helpers.js per domein: helpers/auth.js, helpers/user.js, helpers/url.js"
+"Extract useProfileFollow en useProfileActions hooks uit profile-header.js"
+"Extract useMenuState hook uit menu-bar/components/index.js"</div>
+</div>
+</div>
+
+<div class="fase-meta">
+<div class="fase-meta-block verificatie">
+<span class="fase-meta-label">Verificatie</span>
+<p>Geen bestanden >200 regels in <code>pages/</code>, geen >250 in <code>src/components/</code></p>
+</div>
+<div class="fase-meta-block livegang">
+<span class="fase-meta-label">Livegang</span>
+<p>Medium risico -- <strong>per bestand deployen, niet alles tegelijk.</strong> Split en deploy per bestand: foto detail -- deploy -- test. Upload dialog -- deploy -- test. Rollback plan: elke split is een aparte PR. Bij problemen: revert die ene PR.</p>
+</div>
+</div>
+</section>
+</div>
+
+<!-- SLIDE 7: Fase 4+5 -- Tests & TypeScript -->
+<div class="slide" data-slide-id="7" data-hash="fase4-5">
+<section id="fase4-5">
+<h2><span class="dn">FASE 4+5</span>Tests & TypeScript <span class="badge bm">3-5 DAGEN</span> + <span class="badge bl">DOORLOPEND</span></h2>
+
+<h3>Fase 4: Tests voor kritieke paden</h3>
+<div class="co ca"><span class="cl">Het goedkoopste vangnet</span><p>Als een AI een bug introduceert in een util, vangen tests dat op voor productie. Zonder tests is elke AI-wijziging een gok.</p></div>
+
+<div class="step">
+<div class="step-num">4.1</div>
+<div>
+<div class="step-what">Jest opzetten voor zoom-nl</div>
+<div class="step-cmd">"Configureer Jest voor zoom-nl. Er is al een packages/jestconfig. Voeg een test script toe aan package.json en maak jest.config.js aan. Zorg dat turbo run test --filter=zoom-nl werkt."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">4.2</div>
+<div>
+<div class="step-what">Tests voor de 5 kritieke utils</div>
+<div class="dg">
+<div class="dr"><span class="nm">images.js</span><span class="ct"><code>getImage</code>, <code>getAlt</code>, <code>getSrcSet</code></span><span class="ms">Elke afbeelding</span></div>
+<div class="dr"><span class="nm">photolikes.js</span><span class="ct"><code>getLiked</code>, <code>getLikes</code></span><span class="ms">Like-state op elke foto</span></div>
+<div class="dr"><span class="nm">hydrate.js</span><span class="ct"><code>hydrateString</code></span><span class="ms">URL generatie voor elke link</span></div>
+<div class="dr"><span class="nm">viewport.js</span><span class="ct"><code>getScreenSize</code>, <code>screenIs</code></span><span class="ms">Responsive rendering</span></div>
+</div>
+<p>Voeg toe aan AGENTS.md: <strong>elke nieuwe functie in <code>src/utils/</code> of <code>src/hooks/</code> krijgt een test.</strong></p>
+<div class="step-cmd">"Schrijf tests voor src/utils/images.js die alle functies dekken: getImage, getAlt, getSrcSet. Test edge cases: lege input, ontbrekende params, development vs production env."
+
+Herhaal voor: photolikes.js, hydrate.js, viewport.js, segments.js</div>
+</div>
+</div>
+
+<h3>Fase 5: TypeScript migratie</h3>
+<p>Zoom.nl is de <strong>enige app</strong> in de monorepo die nog JavaScript is. TypeScript geeft een AI exacte type-informatie en vangt fouten op bij het bouwen.</p>
+
+<div class="step">
+<div class="step-num">5.1</div>
+<div>
+<div class="step-what">TypeScript configuratie aanzetten</div>
+<div class="lc lcb">
+<div class="lh"><span class="ln">STAP 1</span><span class="lt">allowJs: true</span></div>
+<p>TS en JS bestaan naast elkaar. Geen big bang.</p>
+</div>
+<div class="step-cmd">"Zet allowJs: true in de tsconfig.json van zoom-nl zodat TypeScript en JavaScript naast elkaar kunnen bestaan. Zorg dat de build nog werkt."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">5.2</div>
+<div>
+<div class="step-what">Type interfaces voor API responses</div>
+<div class="lc lcb">
+<div class="lh"><span class="ln">STAP 2</span><span class="lt">Types voor API responses</span><span class="lp">Hoogste waarde/effort</span></div>
+<p>Definieer <code>Photo</code>, <code>Creator</code>, <code>Gallery</code> interfaces. Zelfs zonder bestanden te hernoemen geeft dit AI-assistenten structuur.</p>
+</div>
+<div class="step-cmd">"Maak src/types/photo.ts aan met TypeScript interfaces voor Photo, Creator, Gallery en Challenge. Baseer de types op het daadwerkelijke gebruik in de codebase -- kijk naar de destructuring in de components."</div>
+<div class="step-need">Backend team -- kloppen de types met wat de API daadwerkelijk teruggeeft?</div>
+</div>
+</div>
+
+<div class="lc lcb">
+<div class="lh"><span class="ln">DOORLOPEND</span><span class="lt">Migreer per feature</span></div>
+<p>Nieuwe bestanden in TypeScript. Bestaande bestanden alleen hernoemen als je ze toch aanpast.</p>
+</div>
+
+<div class="fase-meta">
+<div class="fase-meta-block verificatie">
+<span class="fase-meta-label">Verificatie</span>
+<p><strong>Tests:</strong> <code>turbo run test --filter=zoom-nl</code> slaagt, coverage >80% voor <code>src/utils/</code><br>
+<strong>TypeScript:</strong> <code>tsconfig.json</code> actief, nieuwe bestanden zijn <code>.ts</code>/<code>.tsx</code></p>
+</div>
+<div class="fase-meta-block livegang">
+<span class="fase-meta-label">Livegang</span>
+<p>Geen risico. Tests voegen alleen bestanden toe. <code>allowJs: true</code> en type-bestanden veranderen niets aan runtime gedrag. Kan altijd live.</p>
+</div>
+</div>
+</section>
+</div>
+
+<!-- SLIDE 8: Fase 6 -- Accessibility -->
+<div class="slide" data-slide-id="8" data-hash="fase6">
+<section id="fase6">
+<h2><span class="dn">FASE 6</span>Accessibility Baseline <span class="badge bm">2-3 DAGEN</span></h2>
+<p>De hele app heeft <strong>slechts 14 accessibility attributen</strong>. Root AGENTS.md: "Accessibility improvements are treated as SEO & LLM improvements."</p>
+
+<div class="step">
+<div class="step-num">6.1</div>
+<div>
+<div class="step-what">Accessibility verbeteren</div>
+<div class="dg">
+<div class="dr"><span class="nm">Icon buttons</span><span class="ct">aria-label op search, notifications, more, like, upload</span><span class="ms">Menu-bar + foto's</span></div>
+<div class="dr"><span class="nm">Formulieren</span><span class="ct">aria-label of &lt;label&gt; op search, comment, upload, profiel</span><span class="ms">Alle forms</span></div>
+<div class="dr"><span class="nm">Afbeeldingen</span><span class="ct">Img component valt terug op URL als alt -- maak alt verplicht</span><span class="ms">Hele app</span></div>
+</div>
+<div class="step-cmd">"Voeg aria-labels toe aan alle icon buttons in de menu-bar en photo-item components. Voeg labels toe aan de search bar, comment formulier en upload formulier."</div>
+<div class="step-need">Lighthouse accessibility check na elke ronde</div>
+</div>
+</div>
+
+<div class="fase-meta">
+<div class="fase-meta-block verificatie">
+<span class="fase-meta-label">Verificatie</span>
+<p>Lighthouse accessibility score >80 op homepage en foto detail</p>
+</div>
+<div class="fase-meta-block livegang">
+<span class="fase-meta-label">Livegang</span>
+<p>Laag risico. Voegt alleen aria-labels en semantische attributen toe. Geen functionele wijzigingen.</p>
+</div>
+</div>
+</section>
+</div>
+
+<!-- SLIDE 9: Samenwerken bij Zoom.nl (merged from old slides 10+11) -->
+<div class="slide" data-slide-id="9" data-hash="samenwerken">
+<section id="samenwerken">
+<h2><span class="dn">SAMENWERKEN</span>Samenwerken bij Zoom.nl</h2>
+
+<h3>De twee sporen</h3>
+<div class="lc lcb">
+<div class="lh"><span class="ln">SPOOR 1</span><span class="lt">Dagelijks werk -- features & fixes</span></div>
+<p>Het team bouwt door. Nieuwe code volgt de nieuwe patronen (kleine bestanden, hooks apart, constanten in config).</p>
+</div>
+
+<div class="lc lcy">
+<div class="lh"><span class="ln">SPOOR 2</span><span class="lt">Readiness werk -- dit plan</span></div>
+<p>1-2 developers werken aan de fasen. Infrastructuurwerk dat het dagelijkse werk niet blokkeert.</p>
+</div>
+
+<div class="co cd"><span class="cl">Vuistregel</span><p><strong>Spoor 1 en 2 raken nooit hetzelfde bestand tegelijk.</strong> Plan bestandsverdeling in het weekoverleg.</p></div>
+
+<div class="co ci"><span class="cl">Samenwerkingsregels</span><p>De complete set samenwerkingsregels en werkwijze staat in de <a href="deel-14.html" style="color:var(--blue)">AI Engineering Gids -- Parallel Werken</a>. Inclusief de 9 regels, bestandsverdeling strategie, en commit-discipline.</p></div>
+</section>
+</div>
+
+<!-- SLIDE 10: Migratie & Livegang -->
+<div class="slide" data-slide-id="10" data-hash="migratie">
+<section id="migratie">
+<h2><span class="dn">MIGRATIE</span>Migratie & Livegang</h2>
+
+<div class="co cd"><span class="cl">Niet stoppen</span><p>Dit plan draait naast het dagelijkse werk. Geen feature freeze nodig.</p></div>
+
+<h3>De twee sporen</h3>
+<div class="lc lcb">
+<div class="lh"><span class="ln">SPOOR 1</span><span class="lt">Dagelijks werk -- features & fixes</span></div>
+<p>Het team bouwt door. Nieuwe code volgt de nieuwe patronen (kleine bestanden, hooks apart, constanten in config). Bestaande code wordt niet actief gemigreerd tenzij je er toch aan werkt.</p>
+</div>
+
+<div class="lc lcy">
+<div class="lh"><span class="ln">SPOOR 2</span><span class="lt">Readiness werk -- dit plan</span></div>
+<p>1-2 developers werken aan de fasen. Infrastructuurwerk dat het dagelijkse werk niet blokkeert.</p>
+</div>
+
+<div class="co ci"><span class="cl">Vuistregel</span><p><strong>Spoor 1 en 2 raken nooit hetzelfde bestand tegelijk.</strong> Plan dit in het weekoverleg.</p></div>
+
+<h3>Wat kan doorgaan vs even wachten</h3>
+<div class="dg">
+<div class="dr"><span class="nm">Nieuwe features</span><span class="ct">Ja -- schrijf nieuwe code volgens de nieuwe patronen</span><span class="ms">Direct toepassen</span></div>
+<div class="dr"><span class="nm">Bugfixes</span><span class="ct">Ja -- fix de bug, schrijf een regressietest als het kan</span><span class="ms">Business as usual</span></div>
+<div class="dr"><span class="nm">Grote refactors >300 regels</span><span class="ct">Wacht tot fase 3 -- dan splitsen we ze gestructureerd</span><span class="ms">Week 2-3</span></div>
+<div class="dr"><span class="nm">Nieuwe hardcoded URLs</span><span class="ct">Wacht op site.js config (fase 1) of gebruik alvast env vars</span><span class="ms">Week 1</span></div>
+</div>
+
+<h3>Livegang per fase</h3>
+<table class="gt">
+<thead><tr><th>Fase</th><th>Risico</th><th>Verificatie</th><th>Strategie</th></tr></thead>
+<tbody>
+<tr><td>0</td><td><span class="badge bh">GEEN</span></td><td>AGENTS.md review, .env.example klopt, hooks actief</td><td>Merge naar develop, geen deploy nodig</td></tr>
+<tr><td>1</td><td><span class="badge bh">LAAG</span></td><td>Geen hardcoded URLs meer (behalve config), images + ads laden</td><td>Build check + steekproef</td></tr>
+<tr><td>2</td><td><span class="badge bm">MEDIUM</span></td><td>Alle user-content via sanitizer</td><td>Check artikelen, profielen en foto-beschrijvingen</td></tr>
+<tr><td>3</td><td><span class="badge bm">MEDIUM</span></td><td>Geen bestanden >200 regels in pages/</td><td>Per bestand deployen + testen. Elke split is aparte PR.</td></tr>
+<tr><td>4</td><td><span class="badge bh">GEEN</span></td><td>Tests slagen, coverage >80% voor utils</td><td>Voegt alleen bestanden toe</td></tr>
+<tr><td>5</td><td><span class="badge bh">GEEN</span></td><td>tsconfig actief, nieuwe bestanden zijn .ts/.tsx</td><td>Geen runtime wijzigingen</td></tr>
+<tr><td>6</td><td><span class="badge bh">LAAG</span></td><td>Lighthouse score >80</td><td>Alleen aria-labels, geen functionele wijzigingen</td></tr>
+</tbody>
+</table>
+
+<p>Het plan is nooit "klaar" als eenmalige migratie. Na week 4 is de codebase klaar voor veilig AI-assisted development. Daarna draait de <strong>feedback loop</strong> door: elke fout wordt een regel, elke herhaalde taak wordt een skill, nieuwe code is TypeScript.</p>
+</section>
+</div>
+
+</main>
+
+<!-- Slide navigation bar -->
+<div class="slide-nav">
+<button class="slide-nav-btn" id="prevBtn"><span class="slide-nav-arrow">&larr;</span> Vorige</button>
+<span class="slide-counter" id="slideCounter">1 / 11</span>
+<button class="slide-nav-btn" id="nextBtn">Volgende <span class="slide-nav-arrow">&rarr;</span></button>
+</div>
+
+<script>
+(function() {
+  var slides = document.querySelectorAll('.slide');
+  var navLinks = document.querySelectorAll('.nav a[data-slide]');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var counter = document.getElementById('slideCounter');
+  var total = slides.length;
+  var current = 0;
+
+  function showSlide(index, pushHash) {
+    if (index < 0 || index >= total) return;
+    current = index;
+    // Hide all slides
+    for (var i = 0; i < slides.length; i++) {
+      slides[i].classList.remove('active');
+    }
+    // Show current
+    slides[current].classList.add('active');
+    // Scroll slide to top
+    slides[current].scrollTop = 0;
+    // Update nav
+    for (var j = 0; j < navLinks.length; j++) {
+      navLinks[j].classList.remove('active');
+      if (parseInt(navLinks[j].getAttribute('data-slide')) === current) {
+        navLinks[j].classList.add('active');
+        // Scroll nav link into view
+        navLinks[j].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    }
+    // Update buttons
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+    // Update counter
+    counter.textContent = (current + 1) + ' / ' + total;
+    // Update URL hash
+    if (pushHash !== false) {
+      var hash = slides[current].getAttribute('data-hash');
+      if (hash) {
+        history.replaceState(null, '', '#' + hash);
+      }
+    }
+  }
+
+  // Nav clicks
+  for (var k = 0; k < navLinks.length; k++) {
+    navLinks[k].addEventListener('click', function(e) {
+      e.preventDefault();
+      var idx = parseInt(this.getAttribute('data-slide'));
+      showSlide(idx);
+    });
+  }
+
+  // Prev/Next buttons
+  prevBtn.addEventListener('click', function() { showSlide(current - 1); });
+  nextBtn.addEventListener('click', function() { showSlide(current + 1); });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      showSlide(current - 1);
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      showSlide(current + 1);
+    }
+  });
+
+  // Load from hash on init
+  function getSlideFromHash() {
+    var hash = window.location.hash.replace('#', '');
+    if (!hash) return 0;
+    for (var i = 0; i < slides.length; i++) {
+      if (slides[i].getAttribute('data-hash') === hash) return i;
+    }
+    return 0;
+  }
+
+  // Handle hash changes (browser back/forward)
+  window.addEventListener('hashchange', function() {
+    showSlide(getSlideFromHash(), false);
+  });
+
+  // Init
+  showSlide(getSlideFromHash(), false);
+})();
+</script>
+</body>
+</html>

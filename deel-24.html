@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP-servers -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html" class="active">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="mcp">
+<h2><span class="dn">DEEL 24</span>MCP-servers -- Claude verbinden met de buitenwereld</h2>
+<p>Het <strong>Model Context Protocol (MCP)</strong> is een open standaard waarmee Claude Code verbinding maakt met externe tools en diensten. Waar plugins alles bundelen (skills, hooks, agents), zijn MCP-servers gerichte koppelingen: een browsertool, een database-client, een API-connector.</p>
+
+<h3>Wat is een MCP-server?</h3>
+<p>Een MCP-server is een klein programma dat draait op je machine en Claude extra <strong>tools</strong> geeft. Denk aan: een browser besturen, bestanden doorzoeken, API's aanroepen, of databases bevragen. Claude "ziet" deze tools automatisch en kan ze gebruiken in je gesprek.</p>
+
+<div class="sp">
+<div class="sc l3"><div class="lv">PLUGINS</div><h4>Bundels</h4><p>Combineren skills, hooks, agents en MCP-servers in een pakket. Installeer via <code>/plugin</code>.</p></div>
+<div class="sc l4"><div class="lv">MCP-SERVERS</div><h4>Gerichte tools</h4><p>Enkele koppeling met een externe dienst. Configureer via <code>claude mcp add</code>.</p></div>
+</div>
+
+<h3>MCP-server toevoegen</h3>
+<pre><code># Voeg een MCP-server toe (standaard: user scope)
+claude mcp add server-naam -- npx -y @pakket/mcp-server
+
+# Voorbeeld: Playwright (browser besturen)
+claude mcp add playwright -- npx -y @anthropic-ai/mcp-server-playwright
+
+# Voorbeeld: Filesystem (bestanden buiten je project)
+claude mcp add filesystem -- npx -y @anthropic-ai/mcp-server-filesystem /pad/naar/map
+
+# Bekijk welke servers actief zijn
+claude mcp list
+
+# Verwijder een server
+claude mcp remove server-naam</code></pre>
+
+<h3>Scopes</h3>
+<p>MCP-servers kunnen op verschillende niveaus worden geconfigureerd:</p>
+<table class="gt">
+<thead><tr><th>Scope</th><th>Waar</th><th>Wanneer</th></tr></thead>
+<tbody>
+<tr><td><code>user</code></td><td><code>~/.claude/settings.json</code></td><td>Altijd beschikbaar, in elk project</td></tr>
+<tr><td><code>project</code></td><td><code>.claude/settings.json</code></td><td>Alleen in dit project, gedeeld met team</td></tr>
+<tr><td><code>local</code></td><td><code>.claude/settings.local.json</code></td><td>Alleen voor jou, niet in Git</td></tr>
+</tbody>
+</table>
+<pre><code># Stel de scope in bij het toevoegen
+claude mcp add --scope user playwright -- npx -y @anthropic-ai/mcp-server-playwright
+claude mcp add --scope project database -- npx -y @mcp/postgres-server</code></pre>
+
+<h3>Populaire MCP-servers</h3>
+<table class="gt">
+<thead><tr><th>Server</th><th>Wat het doet</th><th>Installatie</th></tr></thead>
+<tbody>
+<tr><td><strong>Playwright</strong></td><td>Browser besturen: pagina's openen, screenshots maken, formulieren invullen, testen</td><td><code>@anthropic-ai/mcp-server-playwright</code></td></tr>
+<tr><td><strong>Filesystem</strong></td><td>Bestanden lezen/schrijven buiten je projectmap</td><td><code>@anthropic-ai/mcp-server-filesystem</code></td></tr>
+<tr><td><strong>PostgreSQL</strong></td><td>Database queries uitvoeren, schema inspecteren</td><td><code>@anthropic-ai/mcp-server-postgres</code></td></tr>
+<tr><td><strong>Fetch</strong></td><td>Webpagina's ophalen en omzetten naar tekst</td><td><code>@anthropic-ai/mcp-server-fetch</code></td></tr>
+<tr><td><strong>Memory</strong></td><td>Persistent geheugen via een knowledge graph</td><td><code>@anthropic-ai/mcp-server-memory</code></td></tr>
+<tr><td><strong>GitHub</strong></td><td>Issues, PR's, repos beheren via de GitHub API</td><td><code>@github/mcp-server</code></td></tr>
+<tr><td><strong>Slack</strong></td><td>Berichten lezen en versturen in Slack kanalen</td><td><code>@anthropic-ai/mcp-server-slack</code></td></tr>
+<tr><td><strong>Google Drive</strong></td><td>Documenten en spreadsheets doorzoeken en lezen</td><td><code>@anthropic-ai/mcp-server-gdrive</code></td></tr>
+<tr><td><strong>Puppeteer</strong></td><td>Alternatief voor Playwright, Chrome/Chromium aansturen</td><td><code>@anthropic-ai/mcp-server-puppeteer</code></td></tr>
+<tr><td><strong>Brave Search</strong></td><td>Web zoeken via Brave Search API</td><td><code>@anthropic-ai/mcp-server-brave-search</code></td></tr>
+</tbody>
+</table>
+
+<h3>Voorbeeld: Playwright in actie</h3>
+<p>Met de Playwright MCP-server kan Claude je browser besturen. Handig voor frontend-debugging, visual testing, of data ophalen van websites.</p>
+<pre><code># Na installatie kun je in je gesprek zeggen:
+"Open de homepage en maak een screenshot"
+"Vul het contactformulier in met testdata"
+"Check of de navigatie werkt op mobiel formaat"
+"Vergelijk de live site met mijn lokale versie"</code></pre>
+
+<h3>Voorbeeld: claude.ai MCP-koppelingen</h3>
+<p>In claude.ai (de webversie) kun je ook MCP-koppelingen activeren, zoals <strong>Gmail</strong> en <strong>Google Calendar</strong>. Deze werken via OAuth en geven Claude toegang tot je mail en agenda -- handig voor planning en communicatie.</p>
+
+<h3>Eigen MCP-server bouwen</h3>
+<p>Een MCP-server is een programma dat het MCP-protocol implementeert. Je kunt er zelf een bouwen in Python, TypeScript of elke andere taal:</p>
+<pre><code># Minimaal voorbeeld (TypeScript)
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+
+const server = new McpServer({ name: "mijn-tool", version: "1.0.0" });
+
+server.tool("zoek_klant", { naam: z.string() }, async ({ naam }) => {
+  const klant = await database.zoek(naam);
+  return { content: [{ type: "text", text: JSON.stringify(klant) }] };
+});
+
+const transport = new StdioServerTransport();
+await server.connect(transport);</code></pre>
+<pre><code># Registreer je eigen server
+claude mcp add mijn-tool -- node /pad/naar/mijn-server.js</code></pre>
+
+<div class="co ci"><span class="cl">Wanneer MCP vs Plugin?</span>
+<p><strong>MCP-server:</strong> Je wilt een specifieke externe tool koppelen (database, browser, API).<br>
+<strong>Plugin:</strong> Je wilt een complete workflow met skills, hooks en agents bundelen.<br>
+Veel plugins <em>gebruiken</em> MCP-servers onder de motorkap -- de plugin regelt dan de configuratie voor je.</p></div>
+
+<div class="co cw"><span class="cl">Veiligheid</span><p>MCP-servers draaien lokaal met jouw rechten. Een database-server heeft toegang tot je database, een filesystem-server tot je bestanden. Geef alleen toegang tot wat nodig is en review welke tools een server aanbiedt (<code>claude mcp list</code>).</p></div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-23.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">25 / 30</span>
+<a href="deel-25.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

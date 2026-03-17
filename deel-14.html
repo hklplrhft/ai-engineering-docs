@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parallel Werken -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html" class="active">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="parallel">
+<h2><span class="dn">DEEL 14</span>Parallel Werken</h2>
+<p>Meerdere Claude Code-instanties tegelijk, elk op een eigen branch/worktree.</p>
+
+<h3>Worktrees -- eenvoudig parallel werken</h3>
+<pre><code># Start Claude in een eigen worktree (eigen branch + bestanden)
+claude --worktree feature-auth
+
+# Start nog een sessie in een aparte worktree
+claude --worktree bugfix-123
+
+# Of laat Claude zelf een worktree maken
+"Werk in een worktree voor deze feature"</code></pre>
+<p>Worktrees worden automatisch opgeruimd als er geen wijzigingen zijn.</p>
+
+<h3>Writer/Reviewer patroon</h3>
+<p>Een frisse context reviewt beter -- Claude is niet bevooroordeeld naar code die het net zelf schreef.</p>
+<div class="dg">
+<div class="dr"><span class="nm">Sessie A (Writer)</span><span class="ct">"Implementeer een rate limiter voor onze API endpoints"</span><span class="ms">Schrijft de code</span></div>
+<div class="dr"><span class="nm">Sessie B (Reviewer)</span><span class="ct">"Review de rate limiter in @src/middleware/rateLimiter.ts op edge cases en race conditions"</span><span class="ms">Reviewt met frisse blik</span></div>
+<div class="dr"><span class="nm">Sessie A (Writer)</span><span class="ct">"Hier is de review feedback: [output]. Los deze issues op."</span><span class="ms">Verwerkt feedback</span></div>
+</div>
+
+<h3>Meer patronen</h3>
+<div class="dg">
+<div class="dr"><span class="nm">Test-first</span><span class="ct">Sessie A schrijft tests, sessie B schrijft code die de tests laat slagen</span><span class="ms">TDD met twee Claudes</span></div>
+<div class="dr"><span class="nm">Fan-out</span><span class="ct">Loop door een lijst bestanden met <code>claude -p</code> voor bulk migraties</span><span class="ms">Schaalbaar</span></div>
+</div>
+
+<p><strong>Aandachtspunten:</strong> Aparte branches (voorkom merge-conflicten). Elk op ander deel van codebase. Controleer plan-limieten.</p>
+
+<h3>Samenwerken in een team -- conflicten voorkomen</h3>
+
+<div class="co cd"><span class="cl">De gouden regel</span><p><strong>Werk nooit tegelijk aan hetzelfde bestand.</strong> AI herschrijft grote blokken code -- merge-conflicten zijn moeilijk te resolven en kosten meer tijd dan ze besparen.</p></div>
+
+<h4>Bestandsverdeling strategie</h4>
+<p><strong>Verdeel op bestandsniveau, niet op feature-niveau.</strong> Plan vooraf wie welke bestanden raakt. Twee developers aan dezelfde feature is prima, zolang ze verschillende bestanden aanpassen.</p>
+
+<pre><code>develop
+  |-- feature/hero-section          (Developer A: src/components/hero/)
+  |-- feature/dark-mode             (Developer B: src/styles/, src/hooks/useTheme.js)
+  |-- refactor/split-photo-detail   (Developer C: pages/foto/, src/hooks/usePhoto*)</code></pre>
+
+<h4>Coordinatie</h4>
+<p>Check voor je begint of iemand recent aan hetzelfde bestand heeft gewerkt:</p>
+<pre><code>git log --all --oneline --since="3 days ago" -- &lt;bestand&gt;</code></pre>
+<p>Splits grote features in stappen die verschillende bestanden raken: eerst nieuwe bestanden (geen conflict), dan kleine wijzigingen aan bestaande (snel mergen).</p>
+
+<div class="co cw"><span class="cl">PR-regel</span><p><strong>Nooit twee open PRs die hetzelfde bestand raken.</strong> Bij overlap: een developer gaat eerst en merget. De tweede rebaset op develop.</p></div>
+
+<h3>De 9 samenwerkingsregels voor AI-teams</h3>
+<p>Checklist voor teams die met AI-assistenten werken. Print uit, hang op, maak er een habit van.</p>
+<div class="dg">
+<div class="dr"><span class="nm">1. Branch</span><span class="ct">Altijd op een branch, nooit op main/develop direct</span><span class="ms">Geen uitzonderingen</span></div>
+<div class="dr"><span class="nm">2. Check collega's</span><span class="ct">Check welke bestanden collega's raken voor je begint</span><span class="ms"><code>git log --all</code></span></div>
+<div class="dr"><span class="nm">3. Specifiek committen</span><span class="ct">Commit alleen relevante bestanden, niet <code>git add .</code></span><span class="ms">AI maakt extra files</span></div>
+<div class="dr"><span class="nm">4. Commit-ritme</span><span class="ct">Commit na elke geslaagde wijziging</span><span class="ms">Elk commit = herstelpunt</span></div>
+<div class="dr"><span class="nm">5. Context schoon</span><span class="ct"><code>/clear</code> tussen taken, <code>/compact</code> bij lange sessies</span><span class="ms">#1 faalfactor</span></div>
+<div class="dr"><span class="nm">6. Handoff</span><span class="ct">Schrijf HANDOFF.md bij sessie-overdracht</span><span class="ms">Cruciaal voor team</span></div>
+<div class="dr"><span class="nm">7. Geen PR-overlap</span><span class="ct">Nooit twee open PRs die hetzelfde bestand raken</span><span class="ms">Communiceer vooraf</span></div>
+<div class="dr"><span class="nm">8. Plan eerst</span><span class="ct">Gebruik <code>/plan</code> voor alles dat meer dan 1 bestand raakt</span><span class="ms">50% voorbereiding</span></div>
+<div class="dr"><span class="nm">9. Feedback loop</span><span class="ct">Elke AI-fout wordt een regel (littekens-bestand)</span><span class="ms">Levend document</span></div>
+</div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-13.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">15 / 30</span>
+<a href="deel-15.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

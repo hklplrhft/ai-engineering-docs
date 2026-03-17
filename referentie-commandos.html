@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commandoreferentie -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html" class="active">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="commandref">
+<h2><span class="dn">REFERENTIE</span>Commandoreferentie</h2>
+<p>Alle slash commands in Claude Code, gegroepeerd op functie. De <a href="deel-02.html" style="color:var(--blue)">essentiële commando's</a> zijn vetgedrukt.</p>
+
+<h3>Sessie & Context</h3>
+<table class="gt">
+<thead><tr><th>Commando</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td><strong>/clear</strong></td><td>Wis context, behoud CLAUDE.md (aliases: <code>/reset</code>, <code>/new</code>)</td></tr>
+<tr><td><strong>/compact [focus]</strong></td><td>Comprimeer geschiedenis met optionele focus-instructie</td></tr>
+<tr><td><strong>/context</strong></td><td>Visuele grid van huidig tokengebruik</td></tr>
+<tr><td>/fork [naam]</td><td>Fork het gesprek op dit punt</td></tr>
+<tr><td>/resume [sessie]</td><td>Hervat een eerder gesprek (alias: <code>/continue</code>)</td></tr>
+<tr><td><strong>/rename [naam]</strong></td><td>Hernoem de sessie, of laat automatisch naamgeven</td></tr>
+<tr><td>/export [bestand]</td><td>Exporteer gesprek als plain text</td></tr>
+<tr><td>/exit</td><td>Sluit af (alias: <code>/quit</code>)</td></tr>
+</tbody>
+</table>
+
+<h3>Model & Modus</h3>
+<table class="gt">
+<thead><tr><th>Commando</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td><strong>/model [model]</strong></td><td>Wissel model (sonnet, opus, haiku) met effort level</td></tr>
+<tr><td><strong>/plan</strong></td><td>Activeer Plan Mode -- analyseren zonder wijzigen</td></tr>
+<tr><td>/fast [on|off]</td><td>Toggle snellere output (zelfde model)</td></tr>
+</tbody>
+</table>
+
+<h3>Code & Git</h3>
+<table class="gt">
+<thead><tr><th>Commando</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td><strong>/init</strong></td><td>Genereer starter CLAUDE.md op basis van je project</td></tr>
+<tr><td>/diff</td><td>Interactieve diff viewer (uncommitted + per-turn changes)</td></tr>
+<tr><td><strong>/rewind</strong></td><td>Spoel terug naar eerder punt in gesprek en code (alias: <code>/checkpoint</code>)</td></tr>
+<tr><td>/pr-comments [PR]</td><td>Haal GitHub PR comments op (auto-detecteert of accepteert URL/nummer)</td></tr>
+<tr><td>/install-github-app</td><td>Zet Claude GitHub Actions app op voor een repository</td></tr>
+<tr><td>/security-review</td><td>Analyseer pending changes op security kwetsbaarheden</td></tr>
+</tbody>
+</table>
+
+<h3>Configuratie & Tools</h3>
+<table class="gt">
+<thead><tr><th>Commando</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td><strong>/config</strong></td><td>Instellingen: thinking mode, output style (alias: <code>/settings</code>)</td></tr>
+<tr><td><strong>/hooks</strong></td><td>Configureer hooks interactief</td></tr>
+<tr><td><strong>/permissions</strong></td><td>Beheer tool-permissions (alias: <code>/allowed-tools</code>)</td></tr>
+<tr><td>/memory</td><td>Bewerk CLAUDE.md memory bestanden, schakel auto-memory in/uit</td></tr>
+<tr><td>/skills</td><td>Lijst beschikbare skills</td></tr>
+<tr><td>/agents</td><td>Beheer agent configuraties</td></tr>
+<tr><td>/mcp</td><td>Beheer MCP server verbindingen</td></tr>
+<tr><td>/plugin</td><td>Beheer Claude Code plugins</td></tr>
+<tr><td>/reload-plugins</td><td>Herlaad plugins na wijzigingen</td></tr>
+<tr><td>/sandbox</td><td>Toggle sandbox mode (file- en netwerkisolatie)</td></tr>
+<tr><td>/theme</td><td>Verander kleurenthema</td></tr>
+<tr><td>/vim</td><td>Wissel tussen Vim en Normal editing</td></tr>
+<tr><td>/keybindings</td><td>Open keybindings configuratie</td></tr>
+<tr><td>/terminal-setup</td><td>Configureer terminal keybindings (Shift+Enter etc.)</td></tr>
+<tr><td>/statusline</td><td>Configureer de status line</td></tr>
+</tbody>
+</table>
+
+<h3>Info & Diagnostiek</h3>
+<table class="gt">
+<thead><tr><th>Commando</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td>/cost</td><td>Toon token usage statistieken</td></tr>
+<tr><td>/usage</td><td>Plan usage limieten en rate limit status</td></tr>
+<tr><td>/stats</td><td>Dagelijks gebruik, sessiegeschiedenis, streaks</td></tr>
+<tr><td>/insights</td><td>Analyserapport van je Claude Code sessies</td></tr>
+<tr><td><strong>/doctor</strong></td><td>Diagnose installatie en configuratie</td></tr>
+<tr><td>/status</td><td>Versie, model, account en connectiviteit</td></tr>
+<tr><td>/release-notes</td><td>Bekijk het changelog</td></tr>
+<tr><td>/help</td><td>Toon help en beschikbare commands</td></tr>
+<tr><td>/feedback</td><td>Dien feedback in (alias: <code>/bug</code>)</td></tr>
+</tbody>
+</table>
+
+<h3>Integraties & Account</h3>
+<table class="gt">
+<thead><tr><th>Commando</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td>/chrome</td><td>Configureer Claude in Chrome</td></tr>
+<tr><td>/ide</td><td>Beheer IDE integraties</td></tr>
+<tr><td>/desktop</td><td>Zet sessie voort in Desktop app (alias: <code>/app</code>)</td></tr>
+<tr><td>/remote-control</td><td>Maak sessie beschikbaar voor remote control (alias: <code>/rc</code>)</td></tr>
+<tr><td>/login</td><td>Aanmelden bij Anthropic account</td></tr>
+<tr><td>/logout</td><td>Afmelden</td></tr>
+<tr><td>/upgrade</td><td>Open upgrade pagina</td></tr>
+<tr><td>/privacy-settings</td><td>Bekijk en update privacy instellingen</td></tr>
+</tbody>
+</table>
+
+<h3>Overig</h3>
+<table class="gt">
+<thead><tr><th>Commando</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td>/copy</td><td>Kopieer laatste response naar clipboard</td></tr>
+<tr><td>/btw [vraag]</td><td>Snelle side question zonder aan gesprek toe te voegen</td></tr>
+<tr><td>/tasks</td><td>Lijst en beheer background tasks</td></tr>
+<tr><td>/extra-usage</td><td>Configureer extra usage bij rate limits</td></tr>
+<tr><td>! &lt;command&gt;</td><td>Voer bash-commando direct uit</td></tr>
+<tr><td>Esc Esc</td><td>Undo de laatste actie van Claude</td></tr>
+</tbody>
+</table>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-27.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">29 / 30</span>
+<a href="referentie-begrippen.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

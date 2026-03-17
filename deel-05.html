@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agents -- De Specialisten -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html" class="active">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="agents">
+<h2><span class="dn">DEEL 5</span>Agents — De Specialisten <span class="badge bp">PROBABILISTISCH</span></h2>
+<p>Zelfstandige Claude Code-instantie met eigen context. Skill = recept in je huidige sessie. Agent = aparte kok die je oproept.</p>
+<p><strong>Waarom:</strong> Focus (weet alleen wat relevant is), schone context (start fris), parallellisme (meerdere tegelijk), kosten besparen (goedkoper model per agent).</p>
+
+<h3>Ingebouwde agents</h3>
+<div class="dg">
+<div class="dr"><span class="nm">Explore</span><span class="ct">Read-only, codebase doorzoeken (Haiku -- snel &amp; goedkoop)</span><span class="ms">Kan niets wijzigen</span></div>
+<div class="dr"><span class="nm">Plan</span><span class="ct">Research voor Plan Mode (erft model)</span><span class="ms">Read-only</span></div>
+<div class="dr"><span class="nm">General-purpose</span><span class="ct">Complexe multi-step taken (erft model, alle tools)</span><span class="ms">Breed inzetbaar</span></div>
+</div>
+
+<h3>Eigen agents maken</h3>
+<p>Markdown-bestand met YAML frontmatter. Maak via <code>/agents</code> of handmatig.</p>
+<pre><code>---
+name: code-reviewer
+description: Reviews code for quality and best practices.
+  Use proactively after code changes.
+tools: Read, Grep, Glob, Bash
+model: sonnet
+---
+
+You are a senior code reviewer. When invoked:
+1. Run git diff to see recent changes
+2. Review for quality, security, maintainability
+3. Provide feedback: critical / warnings / suggestions</code></pre>
+
+<h3>Scopes -- waar agents leven</h3>
+<div class="dg">
+<div class="dr"><span class="nm">.claude/agents/</span><span class="ct">Project-level -- check in version control, deel met team</span><span class="ms">Prioriteit 2</span></div>
+<div class="dr"><span class="nm">~/.claude/agents/</span><span class="ct">User-level -- beschikbaar in al je projecten</span><span class="ms">Prioriteit 3</span></div>
+<div class="dr"><span class="nm">--agents CLI flag</span><span class="ct">Sessie-only -- JSON, niet opgeslagen</span><span class="ms">Prioriteit 1</span></div>
+<div class="dr"><span class="nm">Plugin agents/</span><span class="ct">Via plugins geinstalleerd</span><span class="ms">Prioriteit 4</span></div>
+</div>
+
+<h3>Configuratie-opties</h3>
+<div class="dg">
+<div class="dr"><span class="nm">model</span><span class="ct"><code>sonnet</code>, <code>opus</code>, <code>haiku</code>, of <code>inherit</code></span><span class="ms">Default: inherit</span></div>
+<div class="dr"><span class="nm">tools / disallowedTools</span><span class="ct">Whitelist of blacklist van tools</span><span class="ms">Default: erft alles</span></div>
+<div class="dr"><span class="nm">permissionMode</span><span class="ct"><code>default</code>, <code>acceptEdits</code>, <code>dontAsk</code>, <code>plan</code></span><span class="ms">Override parent</span></div>
+<div class="dr"><span class="nm">maxTurns</span><span class="ct">Maximaal aantal iteraties</span><span class="ms">Voorkom eindeloze loops</span></div>
+<div class="dr"><span class="nm">skills</span><span class="ct">Skill-content preloaden in agent context</span><span class="ms">Agents erven geen skills</span></div>
+<div class="dr"><span class="nm">memory</span><span class="ct"><code>user</code>, <code>project</code>, of <code>local</code> -- persistent leren</span><span class="ms">Bouwt kennis op</span></div>
+<div class="dr"><span class="nm">isolation: worktree</span><span class="ct">Agent werkt in eigen git worktree</span><span class="ms">Automatische cleanup</span></div>
+<div class="dr"><span class="nm">hooks</span><span class="ct">PreToolUse, PostToolUse, Stop hooks per agent</span><span class="ms">Fijnmazige controle</span></div>
+<div class="dr"><span class="nm">background: true</span><span class="ct">Draait concurrent op achtergrond</span><span class="ms">Ctrl+B om te backgrounden</span></div>
+</div>
+
+<h3>Agent memory -- persistent leren</h3>
+<p>Met <code>memory: user</code> onthoudt een agent wat hij leert <em>over sessies heen</em>. Na 10x code reviewen kent hij je patronen, conventies en terugkerende problemen.</p>
+<pre><code>---
+name: code-reviewer
+description: Reviews code for quality
+memory: user       # leert over alle projecten
+# memory: project  # leert alleen binnen dit project
+# memory: local    # project-specifiek, niet in git
+---</code></pre>
+
+<h3>Workflows</h3>
+<h4>Foreground vs background</h4>
+<p><strong>Foreground:</strong> blokkeert je sessie, kan vragen stellen. <strong>Background:</strong> draait concurrent, auto-deniet ontbrekende permissions. Druk <strong>Ctrl+B</strong> om een lopende agent naar de achtergrond te sturen.</p>
+
+<h4>Resume -- eerder werk voortzetten</h4>
+<p>Elke agent-aanroep start normaal fris. Maar je kunt vragen om voort te bouwen op eerder werk:</p>
+<pre><code>"Gebruik de code-reviewer om de auth module te reviewen"
+[Agent klaar]
+"Ga verder met die review en bekijk nu de authorization logica"
+→ Claude hervat de agent met volledige context</code></pre>
+
+<h4>Chaining -- agents in serie</h4>
+<p>Resultaat van agent A → input voor agent B:</p>
+<pre><code>"Gebruik code-reviewer om performance issues te vinden,
+ gebruik daarna optimizer om ze te fixen"</code></pre>
+
+<h4>Parallel research</h4>
+<pre><code>"Onderzoek de auth, database en API modules parallel
+ met aparte agents"</code></pre>
+
+<h3>Wanneer wat gebruiken?</h3>
+<div class="dg">
+<div class="dr"><span class="nm">Main conversation</span><span class="ct">Iteratief werk, snelle wijzigingen, gedeelde context</span><span class="ms">Context vult sneller</span></div>
+<div class="dr"><span class="nm">Subagent</span><span class="ct">Verbose output isoleren, tool-restricties, zelfstandig werk</span><span class="ms">Latency bij opstarten</span></div>
+<div class="dr"><span class="nm">Skill</span><span class="ct">Herbruikbare prompts die in main context draaien</span><span class="ms">Deelt context</span></div>
+<div class="dr"><span class="nm">/btw</span><span class="ct">Snelle side question, geen tools, niet in historie</span><span class="ms">Geen tool access</span></div>
+<div class="dr"><span class="nm">Agent Team</span><span class="ct">Meerdere agents die parallel coordineren, eigen context</span><span class="ms">Complexer setup</span></div>
+</div>
+
+<h3>Patronen</h3>
+<p><strong>Bouwers:</strong> <code>content-writer</code>, <code>explore</code>. <strong>Bewakers:</strong> <code>audit-seo</code>, <code>audit-db</code>, <code>security-advisor</code>.</p>
+<p><strong>Orchestrator-patroon:</strong> Een meta-agent (<code>audit-all</code>) stuurt specialisten aan.</p>
+
+<div class="co ca"><span class="cl">Best practices</span>
+<p><strong>1.</strong> Elke agent moet uitblinken in een specifieke taak -- niet alles-in-een.<br>
+<strong>2.</strong> Schrijf gedetailleerde descriptions -- Claude gebruikt dit om te delegeren.<br>
+<strong>3.</strong> Beperk tool access tot wat nodig is (security + focus).<br>
+<strong>4.</strong> Check project agents in version control -- deel met je team.<br>
+<strong>5.</strong> Gebruik "proactively" in description als de agent automatisch moet activeren.</p></div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-04.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">6 / 30</span>
+<a href="deel-06.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git-discipline -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html" class="active">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="git">
+<h2><span class="dn">DEEL 11</span>Git-discipline</h2>
+<p>AI kan regressies introduceren. <strong>Commit na elke voltooide taak.</strong> Niet elk uur -- na elke geslaagde wijziging. Terugdraaien wordt triviaal.</p>
+
+<h3>Git basics -- de essentiële workflow</h3>
+<p>Of je nu solo werkt of in een team: deze workflow voorkomt problemen.</p>
+
+<h4>1. Werk altijd op een branch, nooit op main</h4>
+<p><code>main</code> (of <code>master</code>) is je stabiele versie. Elke wijziging begint op een eigen branch.</p>
+<pre><code># Nieuwe branch aanmaken en ernaar switchen
+git checkout -b feature/login-page
+
+# Of laat Claude het doen
+"Maak een nieuwe branch voor de login pagina"</code></pre>
+
+<h4>2. Commit regelmatig met duidelijke messages</h4>
+<p>Kleine, frequente commits. Elke commit is een herstelpunt als iets misgaat.</p>
+<pre><code># Handmatig
+git add login.html styles.css
+git commit -m "Add login page layout and styling"
+
+# Of laat Claude het doen (schrijft betere messages)
+"Commit deze wijzigingen met een goede message"</code></pre>
+<div class="co cw"><span class="cl">Let op</span><p>Commit nooit gevoelige data (API keys, wachtwoorden, .env bestanden). Gebruik <code>.gitignore</code> en een pre-commit hook voor secret detection.</p></div>
+
+<h4>Specifieke git add vs git add .</h4>
+<p>Bij AI-development is <strong>selectief toevoegen essentieel</strong>. Claude maakt soms onverwachte bestanden aan -- debug files, tijdelijke output, IDE-configuratie. Met <code>git add .</code> neem je dat allemaal mee zonder het te zien.</p>
+<pre><code># GOED: specifieke bestanden
+git add src/components/hero-section/index.js
+git commit -m "Add hero section component"
+
+# FOUT: alles toevoegen
+git add .
+# Pakt onbedoeld mee: debug files, IDE config, onafgemaakt werk</code></pre>
+<div class="co cd"><span class="cl">Commit-ritme</span><p><strong>Commit na elke geslaagde wijziging.</strong> Niet elk uur, niet aan het eind van de dag -- na elke wijziging die werkt. Elke commit is een herstelpunt. Als Claude iets kapotmaakt in de volgende stap, draai je terug naar de laatste werkende staat.</p></div>
+
+<h4>3. Push je branch naar GitHub</h4>
+<p>Push maakt je werk beschikbaar voor anderen (en is een backup).</p>
+<pre><code># Eerste keer pushen van een nieuwe branch
+git push -u origin feature/login-page
+
+# Daarna volstaat
+git push</code></pre>
+
+<h4>4. Open een Pull Request (PR)</h4>
+<p>Een PR is een verzoek om je branch samen te voegen met main. Hier vindt code review plaats.</p>
+<pre><code># Laat Claude een PR aanmaken
+"Open een PR met een samenvatting van de wijzigingen"
+
+# Of via gh CLI
+gh pr create --title "Add login page" --body "..."</code></pre>
+<div class="co ca"><span class="cl">Pro tip: Draft PRs</span><p>Laat Claude draft PRs maken. Laag risico -- review alles voordat het "ready" wordt.</p></div>
+
+<h4>5. Review, merge, en opruimen</h4>
+<p>Na goedkeuring: merge de PR naar main. Verwijder de branch.</p>
+<pre><code># Na merge: lokale branch opruimen
+git checkout main
+git pull
+git branch -d feature/login-page</code></pre>
+
+<h3>Samenwerken in een team</h3>
+<div class="dg">
+<div class="dr"><span class="nm">Bescherm main</span><span class="ct">Stel branch protection in op GitHub -- vereis PR reviews voor merge</span><span class="ms">Settings → Branches</span></div>
+<div class="dr"><span class="nm">Pull voor je pusht</span><span class="ct"><code>git pull</code> voordat je begint -- voorkom merge-conflicten</span><span class="ms">Dagelijks doen</span></div>
+<div class="dr"><span class="nm">Kleine PRs</span><span class="ct">Liever 5 kleine PRs dan 1 grote -- makkelijker te reviewen</span><span class="ms">Max ~300 regels</span></div>
+<div class="dr"><span class="nm">Naamconventies</span><span class="ct"><code>feature/</code>, <code>fix/</code>, <code>refactor/</code> prefix op branches</span><span class="ms">Overzicht bewaren</span></div>
+<div class="dr"><span class="nm">Conflicten oplossen</span><span class="ct">"Los de merge-conflicten op in dit bestand" -- Claude kan dit</span><span class="ms">Review altijd het resultaat</span></div>
+</div>
+
+<h3>Claude en Git -- wat Claude allemaal kan</h3>
+<pre><code># Alles via natuurlijke taal
+"Maak een commit met een goede message"
+"Open een PR met samenvatting"
+"Welke bestanden zijn gewijzigd?"
+"Los de merge-conflicten op"
+"Maak een nieuwe branch voor feature X"
+"Wat is er veranderd sinds gisteren?"
+"Revert de laatste commit"</code></pre>
+
+<h3>CI/CD integratie</h3>
+<p>Claude Code draait niet alleen lokaal. Met <strong>GitHub Actions</strong> en <strong>GitLab CI/CD</strong> automatiseer je reviews en triage.</p>
+<div class="dg">
+<div class="dr"><span class="nm">Automatische code review</span><span class="ct">Claude reviewt elke PR automatisch op kwaliteit en security</span><span class="ms">GitHub Code Review</span></div>
+<div class="dr"><span class="nm">Issue triage</span><span class="ct">Nieuwe issues automatisch labelen, prioriteren, toewijzen</span><span class="ms">GitHub Actions</span></div>
+<div class="dr"><span class="nm">PR van bug report</span><span class="ct">@Claude in Slack met bug → PR terug</span><span class="ms">Slack integratie</span></div>
+</div>
+<pre><code># Claude in een CI pipeline (non-interactief)
+claude -p "review this PR for security issues" \
+  --output-format json \
+  --max-budget-usd 2</code></pre>
+<div class="co cw"><span class="cl">Let op</span><p>CI-gebruik verbruikt API-credits. Gebruik <code>--max-budget-usd</code> om kosten te begrenzen en <code>--fallback-model haiku</code> voor goedkopere runs.</p></div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-10.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">12 / 30</span>
+<a href="deel-12.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

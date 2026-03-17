@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starter Kit -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html" class="active">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="starterkit">
+<h2><span class="dn">DEEL 22</span>Starter Kit -- Direct Goed Beginnen</h2>
+<p>Je hoeft niet alles uit deze gids te onthouden. Met de juiste inrichting dwingt Claude Code de werkwijze grotendeels <em>automatisch</em> af. Kopieer deze bestanden, en iedereen in je team werkt meteen volgens best practices.</p>
+
+<div class="co ca"><span class="cl">Wat wordt afgedwongen vs. wat vereist discipline?</span>
+<p><strong>Automatisch (hooks):</strong> lint, typecheck, tests, secret detection -- Claude kan niet committen zonder.<br>
+<strong>Sterk gestuurd (CLAUDE.md + skills):</strong> branches, plan mode, commit-messages, werkwijze.<br>
+<strong>Vereist discipline:</strong> code reviewen, goede prompts schrijven, /clear gebruiken.</p></div>
+
+<h3>Stap 1: Installeer Claude Code</h3>
+<pre><code># macOS / Linux
+npm install -g @anthropic-ai/claude-code
+
+# Of via installer script (macOS / Linux)
+# curl -fsSL https://claude.ai/install.sh | bash
+
+# Start Claude in je project
+cd mijn-project && claude</code></pre>
+
+<h3>Stap 2: Kopieer de globale CLAUDE.md</h3>
+<p>Maak <code>~/.claude/CLAUDE.md</code> aan. Dit geldt voor <strong>al je projecten</strong>.</p>
+<pre><code># ~/.claude/CLAUDE.md -- Persoonlijke regels
+
+## Werkwijze
+- Werk ALTIJD op een branch, nooit direct op main
+- Gebruik /plan bij taken die meer dan 1 bestand raken
+- Commit na elke voltooide taak met een beschrijvende message
+- Herinner me aan /clear bij wisseling van onderwerp
+- Herinner me aan /compact bij lange sessies
+- Geef bij elke implementatie verificatiecriteria mee (tests)
+
+## Veiligheid
+- Commit NOOIT .env, API keys, of wachtwoorden
+- Vraag bevestiging voor: rm -rf, git push --force, drop table
+- Review shell-commando's op veiligheid
+
+## Stijl
+- Comments in het Nederlands
+- Code in het Engels
+- Wees beknopt in uitleg, gedetailleerd in code</code></pre>
+
+<h3>Stap 3: Genereer project CLAUDE.md</h3>
+<pre><code># In je project directory
+claude
+/init
+
+# Verfijn het resultaat -- voeg toe:
+# - Verwijzingen naar docs/refs/ voor specifieke regels
+# - Test commando's (npm test, pytest, etc.)
+# - Kritieke project-regels</code></pre>
+
+<h3>Stap 4: Stel hooks in</h3>
+<p>Dit is het belangrijkste deel -- hooks zijn <strong>onmogelijk te omzeilen</strong>. Maak <code>.claude/settings.json</code> aan in je project:</p>
+<pre><code>{
+  "hooks": {
+    "PreCommit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npm run lint && npm run typecheck"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npm test -- --related 2>&1 | head -50"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude is klaar\" with title \"Claude Code\"'"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+<div class="co ci"><span class="cl">Wat doet dit?</span>
+<p><strong>PreCommit:</strong> Elke commit wordt geblokkeerd als lint of typecheck faalt. Onmogelijk te omzeilen.<br>
+<strong>PostToolUse:</strong> Na elke bestandswijziging draaien automatisch de gerelateerde tests. Claude ziet fouten en fixt ze zelf.<br>
+<strong>Notification:</strong> Desktop-melding als Claude klaar is of op je wacht.</p></div>
+
+<h3>Stap 5: Maak een start-feature skill</h3>
+<p>Maak <code>.claude/skills/start-feature/SKILL.md</code> aan. Dit dwingt het juiste proces af bij elke nieuwe feature:</p>
+<pre><code>---
+name: start-feature
+description: Start een nieuwe feature volgens de teamwerkwijze.
+  Activeer wanneer iemand een feature, component, of pagina wil bouwen.
+disable-model-invocation: true
+---
+Start een nieuwe feature: $ARGUMENTS
+
+## Verplichte stappen
+1. Maak een nieuwe branch: feature/[korte-naam]
+2. Ga in Plan Mode en analyseer wat nodig is
+3. Presenteer het plan en wacht op goedkeuring
+4. Na goedkeuring: implementeer stap voor stap
+5. Schrijf tests voor elke nieuwe functie
+6. Draai alle tests en fix fouten
+7. Commit met een beschrijvende message
+8. Open een draft PR met samenvatting
+
+## Regels
+- Wijzig NOOIT bestanden buiten de scope van de feature
+- Bij twijfel: vraag, implementeer niet
+- Elke publieke functie krijgt minimaal 1 test</code></pre>
+<p>Gebruik: <code>/start-feature login pagina met e-mail en wachtwoord</code></p>
+
+<h3>Stap 6: Maak een fix-bug skill</h3>
+<p>Maak <code>.claude/skills/fix-bug/SKILL.md</code> aan:</p>
+<pre><code>---
+name: fix-bug
+description: Fix een bug volgens de teamwerkwijze.
+  Activeer bij bugs, errors, of onverwacht gedrag.
+disable-model-invocation: true
+---
+Fix de volgende bug: $ARGUMENTS
+
+## Verplichte stappen
+1. Maak een branch: fix/[korte-naam]
+2. Reproduceer de bug (draai de code, bekijk de error)
+3. Analyseer de oorzaak (niet het symptoom)
+4. Schrijf EERST een test die de bug reproduceert (test moet falen)
+5. Fix de bug (test moet slagen)
+6. Draai alle tests om te checken dat niets anders breekt
+7. Voeg een regel toe aan docs/refs/ als dit een terugkerende fout is
+8. Commit en open een draft PR
+
+## Regels
+- Fix de root cause, niet het symptoom
+- Elke bugfix MOET een regressietest hebben
+- Bij onduidelijke oorzaak: gebruik /plan eerst</code></pre>
+<p>Gebruik: <code>/fix-bug users krijgen een 500 error bij het inloggen na session timeout</code></p>
+
+<h3>Stap 7: Maak een docs/refs/ map</h3>
+<pre><code>mkdir -p docs/refs
+# Voeg hier regels toe na elke fout die Claude maakt:
+
+# Voorbeeld: docs/refs/database-regels.md
+# - Kolom is `is_answer_ready`, NIET `answer_ready`
+# - Gebruik altijd soft deletes
+# - Foreign keys MOETEN ON DELETE CASCADE hebben</code></pre>
+
+<h3>Stap 8: Stel .gitignore in</h3>
+<pre><code># Voeg toe aan .gitignore
+.env
+.env.local
+.claude/worktrees/
+node_modules/</code></pre>
+
+<h3>De complete mapstructuur</h3>
+<pre><code>~/.claude/
+└── CLAUDE.md                    ← globale regels (stap 2)
+
+mijn-project/
+├── CLAUDE.md                    ← project regels (stap 3)
+├── .claude/
+│   ├── settings.json            ← hooks (stap 4)
+│   └── skills/
+│       ├── start-feature/
+│       │   └── SKILL.md         ← feature workflow (stap 5)
+│       └── fix-bug/
+│           └── SKILL.md         ← bugfix workflow (stap 6)
+├── docs/
+│   └── refs/                    ← littekens/regels (stap 7)
+├── .gitignore                   ← bescherming (stap 8)
+└── src/                         ← je code</code></pre>
+
+<h3>Wat is nu automatisch?</h3>
+<div class="dg">
+<div class="dr"><span class="nm">Lint + typecheck</span><span class="ct">Hook blokkeert commit bij fouten</span><span class="ms">Afgedwongen</span></div>
+<div class="dr"><span class="nm">Tests na wijziging</span><span class="ct">Hook draait tests, Claude fixt fouten zelf</span><span class="ms">Afgedwongen</span></div>
+<div class="dr"><span class="nm">Geen secrets in git</span><span class="ct">.gitignore + CLAUDE.md regel</span><span class="ms">Afgedwongen + gestuurd</span></div>
+<div class="dr"><span class="nm">Branch-based werken</span><span class="ct">Skills starten altijd op een branch</span><span class="ms">Gestuurd via skill</span></div>
+<div class="dr"><span class="nm">Plan voor code</span><span class="ct">Skills forceren plan-stap</span><span class="ms">Gestuurd via skill</span></div>
+<div class="dr"><span class="nm">Tests bij elke feature</span><span class="ct">Skills vereisen tests als stap</span><span class="ms">Gestuurd via skill</span></div>
+<div class="dr"><span class="nm">Regressietest bij bugfix</span><span class="ct">fix-bug skill verplicht het</span><span class="ms">Gestuurd via skill</span></div>
+<div class="dr"><span class="nm">Littekens vastleggen</span><span class="ct">fix-bug skill herinnert aan docs/refs/</span><span class="ms">Gestuurd via skill</span></div>
+<div class="dr"><span class="nm">Commit na elke taak</span><span class="ct">Skills eindigen met commit</span><span class="ms">Gestuurd via skill</span></div>
+<div class="dr"><span class="nm">Draft PR</span><span class="ct">Skills eindigen met draft PR</span><span class="ms">Gestuurd via skill</span></div>
+</div>
+
+<h3>Eerste sessie checklist</h3>
+<p>Geef dit aan iedereen die voor het eerst met Claude Code werkt:</p>
+<ol>
+<li><strong>Open je terminal in het project:</strong> <code>cd mijn-project && claude</code></li>
+<li><strong>Verken het project:</strong> "Geef me een overzicht van dit project"</li>
+<li><strong>Start een feature:</strong> <code>/start-feature [beschrijving]</code></li>
+<li><strong>Claude maakt een branch, plan, en wacht op goedkeuring</strong></li>
+<li><strong>Review het plan</strong> -- stel vragen, vraag aanpassingen</li>
+<li><strong>Zeg "ga door"</strong> -- Claude implementeert, test, en commit</li>
+<li><strong>Check de draft PR</strong> op GitHub</li>
+<li><strong>Wissel van taak?</strong> Typ <code>/clear</code> eerst</li>
+<li><strong>Bug gevonden?</strong> <code>/fix-bug [beschrijving met error]</code></li>
+<li><strong>Sessie langer dan 30 min?</strong> Typ <code>/compact</code></li>
+</ol>
+
+<div class="co ca"><span class="cl">Check dit in naar git</span><p>De <code>.claude/</code> map, <code>CLAUDE.md</code> en <code>docs/refs/</code> horen in version control. Zo werkt iedereen die het project cloned meteen volgens dezelfde werkwijze -- zonder iets te hoeven configureren.</p></div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-21.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">23 / 30</span>
+<a href="deel-23.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

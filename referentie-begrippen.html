@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Begrippenlijst -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html" class="active">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="glossary">
+<h2><span class="dn">REFERENTIE</span>Begrippenlijst</h2>
+<table class="gt">
+<thead><tr><th>Term</th><th>Betekenis</th></tr></thead>
+<tbody>
+<tr><td>CLAUDE.md</td><td>Markdown met projectinstructies, automatisch geladen</td></tr>
+<tr><td>Skill</td><td>Herbruikbare instructieset (SKILL.md), via slash-commando of auto-invoke</td></tr>
+<tr><td>Hook</td><td>Shell-script, deterministisch op vast moment in workflow</td></tr>
+<tr><td>Agent</td><td>Zelfstandige Claude-instantie met eigen context</td></tr>
+<tr><td>Subagent</td><td>Agent die rapporteert aan parent, praat niet met andere subagents</td></tr>
+<tr><td>Agent Team</td><td>Meerdere instanties die parallel coördineren</td></tr>
+<tr><td>SSOT</td><td>Single Source of Truth — elk feit op één plek</td></tr>
+<tr><td>Progressive Disclosure</td><td>Details laden wanneer nodig</td></tr>
+<tr><td>MCP</td><td>Model Context Protocol — AI verbinden met externe diensten</td></tr>
+<tr><td>Plan Mode</td><td>Claude analyseert en plant maar wijzigt niets tot goedkeuring</td></tr>
+<tr><td>Context window</td><td>Tekst die Claude tegelijk "onthoudt" (200K–1M tokens)</td></tr>
+<tr><td>Token</td><td>~0.75 woord, bepaalt context limiet</td></tr>
+<tr><td>/clear</td><td>Reset context, behoud CLAUDE.md</td></tr>
+<tr><td>/compact</td><td>Comprimeer geschiedenis, behoud kern</td></tr>
+<tr><td>Handoff file</td><td>Status + volgende stappen voor sessie-overdracht</td></tr>
+<tr><td>Golden file test</td><td>Output vergelijken met vastgelegde correcte versie</td></tr>
+<tr><td>Worktree</td><td>Git: meerdere branches naast elkaar voor parallel werk</td></tr>
+<tr><td>Auto memory</td><td>Claude leert automatisch tijdens het werken -- build commands, debugging, patronen</td></tr>
+<tr><td>Surface</td><td>Omgeving waarin Claude Code draait: terminal, VS Code, desktop app, web, etc.</td></tr>
+<tr><td>Remote Control</td><td>Sessie voortzetten op ander apparaat via <code>/remote-control</code></td></tr>
+<tr><td>Piping (-p)</td><td>Claude non-interactief draaien in scripts en pipelines</td></tr>
+<tr><td>Agent scope</td><td>Waar een agent leeft: project, user, CLI flag, of plugin</td></tr>
+<tr><td>Agent memory</td><td>Persistent geheugen per agent -- leert over sessies heen</td></tr>
+<tr><td>permissionMode</td><td>Hoe een agent omgaat met permissions: default, acceptEdits, plan, etc.</td></tr>
+<tr><td>maxTurns</td><td>Maximaal aantal iteraties voor een agent -- voorkomt eindeloze loops</td></tr>
+<tr><td>Branch</td><td>Parallelle versie van je code -- werk hier, niet op main</td></tr>
+<tr><td>Main / Master</td><td>De stabiele hoofdbranch -- bescherm deze, werk er niet direct op</td></tr>
+<tr><td>Commit</td><td>Snapshot van je wijzigingen -- herstelpunt als iets misgaat</td></tr>
+<tr><td>Push</td><td>Lokale commits uploaden naar GitHub/remote</td></tr>
+<tr><td>Pull Request (PR)</td><td>Verzoek om branch samen te voegen met main -- hier vindt review plaats</td></tr>
+<tr><td>Merge</td><td>Twee branches samenvoegen (bijv. feature-branch naar main)</td></tr>
+<tr><td>Merge conflict</td><td>Tegenstrijdige wijzigingen in dezelfde regels -- handmatig of door Claude op te lossen</td></tr>
+<tr><td>.gitignore</td><td>Bestand dat aangeeft welke bestanden Git moet negeren (.env, node_modules, etc.)</td></tr>
+<tr><td>gh CLI</td><td>GitHub's command-line tool -- PRs, issues, actions vanuit terminal</td></tr>
+<tr><td>Chaining</td><td>Agents in serie: resultaat van A als input voor B</td></tr>
+<tr><td>/btw</td><td>Snelle side question zonder tools, niet in historie</td></tr>
+<tr><td>@-referentie</td><td>Verwijs naar bestanden in prompts met @ -- Claude leest ze direct</td></tr>
+<tr><td>Verificatiecriteria</td><td>Tests, verwachte output of screenshots meegeven zodat Claude zichzelf kan checken</td></tr>
+<tr><td>Plugin</td><td>Installeerbaar pakket met skills, hooks, agents en MCP servers via <code>/plugin</code></td></tr>
+<tr><td>Writer/Reviewer</td><td>Twee sessies: een schrijft code, een ander reviewt met frisse context</td></tr>
+<tr><td>Fan-out</td><td>Bulk-taken verdelen over meerdere <code>claude -p</code> aanroepen</td></tr>
+<tr><td>Deterministisch</td><td>Altijd hetzelfde resultaat (hooks, tests, builds)</td></tr>
+<tr><td>Probabilistisch</td><td>Kan variëren (regels, skills, agents, LLM-output)</td></tr>
+</tbody>
+</table>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="referentie-commandos.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">30 / 30</span>
+<span class="nav-btn nav-disabled"></span>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

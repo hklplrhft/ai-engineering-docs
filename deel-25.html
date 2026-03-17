@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tips &amp; Tricks -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html" class="active">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="tips">
+<h2><span class="dn">DEEL 25</span>Dagelijkse Tips & Tricks</h2>
+<p>Praktische features die je dagelijks sneller maken. De meeste hiervan ontdek je pas na weken werken -- hier staan ze alvast.</p>
+
+<h3>Afbeeldingen en screenshots gebruiken</h3>
+<p>Claude Code is <strong>multimodaal</strong> -- je kunt afbeeldingen meesturen in je prompt. Enorm handig voor UI-bugs, design reviews, of foutmeldingen.</p>
+<table class="gt">
+<thead><tr><th>Methode</th><th>Hoe</th></tr></thead>
+<tbody>
+<tr><td>Plakken</td><td><code>Ctrl+V</code> in de chat -- plakt een screenshot van je klembord</td></tr>
+<tr><td>Bestandspad</td><td>Sleep een bestand naar de terminal, of typ het pad: <code>/Users/jij/screenshot.png</code></td></tr>
+<tr><td>@ referentie</td><td><code>@screenshot.png</code> als het bestand in je project staat</td></tr>
+<tr><td>URL</td><td>Plak een afbeeldings-URL direct in je prompt</td></tr>
+</tbody>
+</table>
+<pre><code># Voorbeeldprompts met afbeeldingen
+"Hier is een screenshot van de bug [Ctrl+V] -- fix de CSS"
+"Maak deze Figma mockup @designs/homepage.png na in React"
+"Wat gaat er mis in deze foutmelding? [plak screenshot]"</code></pre>
+
+<h3>Voice input (spraak)</h3>
+<p>Claude Code ondersteunt <strong>push-to-talk</strong> spraakherkenning. Houd de <code>Spatiebalk</code> ingedrukt in de chat om te dicteren in plaats van te typen.</p>
+<div class="co ci"><span class="cl">Wanneer handig</span><p>Bij lange uitleg van wat je wilt, als je handen moe zijn, of als je sneller praat dan typt. Claude ontvangt de getranscribeerde tekst als gewone prompt.</p></div>
+
+<h3>Sessies hervatten en doorzoeken</h3>
+<p>Claude Code onthoudt je sessiegeschiedenis. Je hoeft niet elke keer opnieuw te beginnen.</p>
+<table class="gt">
+<thead><tr><th>Actie</th><th>Hoe</th></tr></thead>
+<tbody>
+<tr><td>Laatste sessie hervatten</td><td><code>claude --resume</code> of <code>claude -r</code></td></tr>
+<tr><td>Sessie kiezen</td><td><code>claude --resume</code> toont een lijst met recente sessies</td></tr>
+<tr><td>Sessie zoeken op tekst</td><td><code>Ctrl+R</code> in Claude Code -- zoek door je promptgeschiedenis</td></tr>
+<tr><td>Vorige prompt hergebruiken</td><td>Pijltje omhoog (<code>↑</code>) in de chat</td></tr>
+<tr><td>Sessie exporteren</td><td><code>/export</code> -- slaat het hele gesprek op als Markdown</td></tr>
+</tbody>
+</table>
+<pre><code># Hervat je laatste sessie
+claude --resume
+
+# Hervat een specifieke sessie
+claude --resume abc123
+
+# Continue in een specifieke map
+claude --resume --cwd /pad/naar/project</code></pre>
+
+<h3>Stash -- werk even parkeren</h3>
+<p>Met <code>Ctrl+S</code> kun je je huidige invoer <strong>stashen</strong> (opzij zetten). Handig als je midden in een prompt zit maar even iets anders moet doen.</p>
+<pre><code># Je bent een lange prompt aan het typen...
+# Druk Ctrl+S om te stashen
+# Doe iets anders
+# Druk Ctrl+S weer om je gestashte tekst terug te halen</code></pre>
+
+<h3>Undo -- wijzigingen terugdraaien</h3>
+<p>Als Claude een wijziging maakt die je niet bevalt, kun je die direct ongedaan maken:</p>
+<table class="gt">
+<thead><tr><th>Actie</th><th>Hoe</th></tr></thead>
+<tbody>
+<tr><td>Laatste actie ongedaan maken</td><td><code>Esc Esc</code> (dubbel escape) of <code>Ctrl+_</code></td></tr>
+<tr><td>Terugspoelen in gesprek</td><td><code>/rewind</code> -- ga terug naar een eerder punt in het gesprek</td></tr>
+<tr><td>Specifiek punt herstellen</td><td><code>/rewind 3</code> -- ga 3 stappen terug</td></tr>
+</tbody>
+</table>
+<div class="co ci"><span class="cl">Tip</span><p><code>/rewind</code> is als een "undo" voor het hele gesprek. Claude vergeet alles na dat punt en je kunt een andere richting inslaan. Veel krachtiger dan handmatig terugdraaien.</p></div>
+
+<h3>Background tasks -- multitasken</h3>
+<p>Je kunt een lopende taak naar de achtergrond sturen zodat je ondertussen verder kunt werken.</p>
+<table class="gt">
+<thead><tr><th>Actie</th><th>Hoe</th></tr></thead>
+<tbody>
+<tr><td>Taak naar achtergrond</td><td><code>Ctrl+B</code> terwijl Claude werkt</td></tr>
+<tr><td>Overzicht van taken</td><td><code>/tasks</code></td></tr>
+<tr><td>Taak terughalen</td><td><code>/tasks</code> en selecteer de taak</td></tr>
+</tbody>
+</table>
+<pre><code># Start een langlopende taak
+"Refactor alle API calls naar de nieuwe SDK"
+# Druk Ctrl+B -- taak gaat naar achtergrond
+# Je kunt nu een nieuwe prompt typen
+"Wat is de status van de migratie naar v2?"
+# Check later: /tasks</code></pre>
+
+<h3>Model wisselen mid-gesprek</h3>
+<p>Je hoeft niet vast te zitten aan een model. Wissel on-the-fly:</p>
+<table class="gt">
+<thead><tr><th>Actie</th><th>Hoe</th></tr></thead>
+<tbody>
+<tr><td>Model picker openen</td><td><code>Meta+P</code> (Cmd+P op Mac)</td></tr>
+<tr><td>Fast mode toggle</td><td><code>Meta+O</code> (Cmd+O op Mac) of <code>/fast</code></td></tr>
+<tr><td>Thinking toggle</td><td><code>Meta+T</code> (Cmd+T op Mac)</td></tr>
+<tr><td>Effort level aanpassen</td><td>In model picker: pijltjes links/rechts</td></tr>
+</tbody>
+</table>
+<div class="co ci"><span class="cl">Wanneer wisselen</span>
+<p><strong>Opus</strong> voor complexe architectuurbeslissingen en moeilijke bugs.<br>
+<strong>Sonnet</strong> voor dagelijks werk -- snel en goed genoeg.<br>
+<strong>Haiku</strong> voor simpele taken, formatting, of als fallback.<br>
+<strong>Fast mode</strong> voor snellere output bij eenvoudige vragen.</p></div>
+
+<h3>Externe editor voor lange prompts</h3>
+<p>Voor complexe, lange prompts kun je je favoriete editor gebruiken:</p>
+<pre><code># Druk Ctrl+G om je $EDITOR te openen (vim, nano, VS Code)
+# Schrijf je prompt daar met alle ruimte
+# Sla op en sluit -- de tekst wordt als prompt verstuurd
+
+# Stel je editor in via environment variable
+export EDITOR="code --wait"   # VS Code
+export EDITOR="vim"            # Vim
+export EDITOR="nano"           # Nano</code></pre>
+
+<h3>Slim werken met @ referenties</h3>
+<p>Met <code>@</code> verwijs je direct naar bestanden, mappen of URLs in je prompt. Claude leest ze automatisch mee.</p>
+<pre><code># Verwijs naar een bestand
+"Refactor @src/utils/api.ts naar async/await"
+
+# Verwijs naar een hele map
+"Bekijk @src/components/ en verbeter de TypeScript types"
+
+# Verwijs naar meerdere bestanden
+"Vergelijk @old-api.ts met @new-api.ts en documenteer de verschillen"
+
+# Verwijs naar een URL
+"Implementeer de API volgens @https://api-docs.example.com/v2"</code></pre>
+
+<h3>Notificaties bij lange taken</h3>
+<p>Configureer een notificatie-hook zodat je een melding krijgt als Claude klaar is:</p>
+<pre><code>// .claude/settings.json
+{
+  "hooks": {
+    "Notification": [{
+      "matcher": "",
+      "hooks": [{
+        "type": "command",
+        "command": "osascript -e 'display notification \"$CLAUDE_NOTIFICATION\" with title \"Claude Code\"'"
+      }]
+    }]
+  }
+}</code></pre>
+<p>Nu krijg je een macOS-melding als Claude klaar is met een langlopende taak -- handig als je ondertussen in een andere app werkt.</p>
+
+<h3>Diagnose en troubleshooting</h3>
+<table class="gt">
+<thead><tr><th>Probleem</th><th>Oplossing</th></tr></thead>
+<tbody>
+<tr><td>Claude doet raar of is traag</td><td><code>/doctor</code> -- checkt installatie, API-verbinding, configuratie</td></tr>
+<tr><td>Context vol / verward</td><td><code>/clear</code> om context te wissen, of <code>/compact</code> om samen te vatten</td></tr>
+<tr><td>Plugin werkt niet</td><td><code>/reload-plugins</code> of <code>claude mcp list</code> voor MCP-status</td></tr>
+<tr><td>Wil weten wat iets kost</td><td><code>/cost</code> voor huidige sessie, <code>/usage</code> voor totaalverbruik</td></tr>
+<tr><td>Foute wijziging gemaakt</td><td><code>Esc Esc</code> voor undo, <code>/rewind</code> voor gesprek terugdraaien</td></tr>
+<tr><td>Weet niet welke versie</td><td><code>/status</code> toont versie, model, account, connectiviteit</td></tr>
+<tr><td>Wil alles resetten</td><td><code>/clear</code> + nieuw gesprek starten</td></tr>
+</tbody>
+</table>
+
+<h3>Handige one-liners</h3>
+<pre><code># Snel een bestand laten reviewen
+claude -p "Review dit bestand op bugs en security issues" < src/auth.ts
+
+# Screenshot analyseren
+claude -p "Beschrijf wat je ziet" < screenshot.png
+
+# Git diff laten reviewen
+git diff | claude -p "Review deze wijzigingen, focus op bugs"
+
+# Meerdere bestanden tegelijk
+cat src/api/*.ts | claude -p "Zijn er inconsistenties in deze API calls?"
+
+# Output direct naar bestand
+claude -p "Genereer een .gitignore voor een Node.js project" > .gitignore
+
+# JSON output voor scripting
+claude -p "Lijst alle TODO's in dit project" --output-format json</code></pre>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-24.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">26 / 30</span>
+<a href="deel-26.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

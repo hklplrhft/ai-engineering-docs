@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugins &amp; Tools -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html" class="active">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="plugins">
+<h2><span class="dn">DEEL 23</span>Plugins, Tools & Community Resources</h2>
+<p>Claude Code heeft een plugin-systeem waarmee je kant-en-klare extensies kunt installeren. Plugins bundelen skills, hooks, agents en MCP servers.</p>
+
+<h3>Plugins installeren</h3>
+<pre><code># Open de plugin manager
+/plugin
+
+# Installeer een plugin uit de officiële marketplace
+/plugin install plugin-naam@claude-plugins-official
+
+# Voeg een community marketplace toe
+/plugin marketplace add anthropics/claude-code
+
+# Herlaad na installatie
+/reload-plugins</code></pre>
+
+<h3>Officiele code intelligence plugins</h3>
+<p>Deze geven Claude "go to definition", "find references" en automatische foutdetectie na edits. <strong>Sterk aanbevolen</strong> voor je primaire taal.</p>
+<table class="gt">
+<thead><tr><th>Taal</th><th>Plugin</th><th>Vereist</th></tr></thead>
+<tbody>
+<tr><td>TypeScript</td><td><code>typescript-lsp</code></td><td>typescript-language-server</td></tr>
+<tr><td>Python</td><td><code>pyright-lsp</code></td><td>pyright-langserver</td></tr>
+<tr><td>Rust</td><td><code>rust-analyzer-lsp</code></td><td>rust-analyzer</td></tr>
+<tr><td>Go</td><td><code>gopls-lsp</code></td><td>gopls</td></tr>
+<tr><td>Java</td><td><code>jdtls-lsp</code></td><td>jdtls</td></tr>
+<tr><td>PHP</td><td><code>php-lsp</code></td><td>intelephense</td></tr>
+<tr><td>C/C++</td><td><code>clangd-lsp</code></td><td>clangd</td></tr>
+<tr><td>Swift</td><td><code>swift-lsp</code></td><td>sourcekit-lsp</td></tr>
+<tr><td>C#</td><td><code>csharp-lsp</code></td><td>csharp-ls</td></tr>
+<tr><td>Kotlin</td><td><code>kotlin-lsp</code></td><td>kotlin-language-server</td></tr>
+</tbody>
+</table>
+<pre><code># Voorbeeld: TypeScript intelligence installeren
+/plugin install typescript-lsp@claude-plugins-official</code></pre>
+
+<h3>Officiele integratie-plugins</h3>
+<p>Verbind Claude met externe diensten zonder handmatige MCP-configuratie.</p>
+<table class="gt">
+<thead><tr><th>Categorie</th><th>Plugins</th></tr></thead>
+<tbody>
+<tr><td>Source control</td><td><code>github</code>, <code>gitlab</code></td></tr>
+<tr><td>Projectmanagement</td><td><code>atlassian</code> (Jira/Confluence), <code>asana</code>, <code>linear</code>, <code>notion</code></td></tr>
+<tr><td>Design</td><td><code>figma</code></td></tr>
+<tr><td>Infrastructuur</td><td><code>vercel</code>, <code>firebase</code>, <code>supabase</code></td></tr>
+<tr><td>Communicatie</td><td><code>slack</code></td></tr>
+<tr><td>Monitoring</td><td><code>sentry</code></td></tr>
+</tbody>
+</table>
+
+<h3>Officiele workflow-plugins</h3>
+<table class="gt">
+<thead><tr><th>Plugin</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td><code>commit-commands</code></td><td>Git commit, push en PR workflows</td></tr>
+<tr><td><code>pr-review-toolkit</code></td><td>Gespecialiseerde agents voor PR reviews</td></tr>
+<tr><td><code>agent-sdk-dev</code></td><td>Tools voor bouwen met de Claude Agent SDK</td></tr>
+<tr><td><code>plugin-dev</code></td><td>Toolkit voor eigen plugins maken</td></tr>
+<tr><td><code>explanatory-output-style</code></td><td>Educatieve uitleg bij implementatiekeuzes</td></tr>
+</tbody>
+</table>
+
+<h3>Community plugins & skills (aanbevolen)</h3>
+<p>De community bouwt actief mee. Dit zijn de meest nuttige open-source projecten:</p>
+
+<h4>Workflow & productiviteit</h4>
+<table class="gt">
+<thead><tr><th>Naam</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td>Superpowers</td><td>Planning, reviewing, TDD, debugging -- kernvaardigheden als skills gebundeld</td></tr>
+<tr><td>Context Engineering Kit</td><td>Geavanceerde context-engineering technieken met minimaal tokengebruik</td></tr>
+<tr><td>Claude Code PM</td><td>Projectmanagement workflow met agents, commands, en taakbeheer</td></tr>
+<tr><td>Compound Engineering</td><td>Transformeert fouten in leermomenten (past bij de feedback loop uit deze gids)</td></tr>
+<tr><td>RIPER Workflow</td><td>Gestructureerd: Research → Innovate → Plan → Execute → Review</td></tr>
+<tr><td>AB Method</td><td>Spec-driven workflow die grote problemen opsplitst in gerichte missies</td></tr>
+</tbody>
+</table>
+
+<h4>Security & code quality</h4>
+<table class="gt">
+<thead><tr><th>Naam</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td>Trail of Bits Security Skills</td><td>12+ security skills voor code auditing, CodeQL/Semgrep analyse, vulnerability detectie</td></tr>
+<tr><td>Dippy</td><td>Auto-approve veilige bash commands, prompt bij destructieve operaties</td></tr>
+<tr><td>parry</td><td>Prompt injection scanner voor hooks -- scant op aanvallen en data-exfiltratie</td></tr>
+</tbody>
+</table>
+
+<h4>Tooling & orchestratie</h4>
+<table class="gt">
+<thead><tr><th>Naam</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td>Claude Squad</td><td>Beheer meerdere Claude Code agents in aparte workspaces vanuit een terminal UI</td></tr>
+<tr><td>claudekit</td><td>CLI toolkit met auto-save checkpoints, quality hooks, en 20+ subagents</td></tr>
+<tr><td>recall</td><td>Full-text search door je Claude Code sessies -- typ, zoek, en hervat</td></tr>
+<tr><td>ccusage (CC Usage)</td><td>Dashboard met kosten en tokenverbruik per sessie</td></tr>
+<tr><td>Vibe-Log</td><td>Analyseer je Claude Code prompts lokaal met mooie HTML-rapporten</td></tr>
+</tbody>
+</table>
+
+<h4>Taalspecifieke skills</h4>
+<table class="gt">
+<thead><tr><th>Naam</th><th>Wat het doet</th></tr></thead>
+<tbody>
+<tr><td>Fullstack Dev Skills</td><td>65 skills voor full-stack frameworks + Jira/Confluence integratie</td></tr>
+<tr><td>cc-devops-skills</td><td>DevOps: validaties, generators, shell scripts voor infrastructure-as-code</td></tr>
+<tr><td>Claude Scientific Skills</td><td>Skills voor research, science, engineering, analyse en finance</td></tr>
+</tbody>
+</table>
+
+<h3>Handige community resources</h3>
+<table class="gt">
+<thead><tr><th>Resource</th><th>Wat het is</th></tr></thead>
+<tbody>
+<tr><td>awesome-claude-code</td><td>Uitgebreide lijst van skills, plugins, hooks, agents en tools</td></tr>
+<tr><td>Claude Code Tips (ykdojo)</td><td>45+ concrete tips van basis tot gevorderd</td></tr>
+<tr><td>Claude Code Ultimate Guide</td><td>Van beginner tot power user met templates en quizzes</td></tr>
+<tr><td>awesome-skills.com</td><td>Doorzoekbare database van community skills</td></tr>
+</tbody>
+</table>
+
+<div class="co cw"><span class="cl">Veiligheid</span><p>Plugins draaien code op je machine met je rechten. Installeer alleen plugins van bronnen die je vertrouwt. Check de homepage en code van een plugin voor je installeert.</p></div>
+
+<div class="co ca"><span class="cl">Zo begin je</span>
+<p><strong>Stap 1:</strong> Installeer de code intelligence plugin voor je taal (<code>/plugin install typescript-lsp@claude-plugins-official</code>).<br>
+<strong>Stap 2:</strong> Installeer <code>github</code> plugin als je met GitHub werkt.<br>
+<strong>Stap 3:</strong> Bekijk <code>Superpowers</code> of <code>Compound Engineering</code> voor workflow-skills.<br>
+<strong>Stap 4:</strong> Browse de <a href="https://github.com/hesreallyhim/awesome-claude-code" style="color:var(--blue)">awesome-claude-code</a> lijst voor meer.</p></div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-22.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">24 / 30</span>
+<a href="deel-24.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Het Instructiesysteem -- De 5 Lagen -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html" class="active">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="lagen">
+<h2><span class="dn">DEEL 3</span>Het Instructiesysteem — De 5 Lagen</h2>
+<p>Het hart van AI-engineered development. Bouw op in deze volgorde.</p>
+
+<div class="lc lcp"><div class="lh"><span class="ln">LAAG 1</span><span class="lt">Globale regels</span><span class="lp">~/.claude/CLAUDE.md</span></div>
+<p>Persoonlijke voorkeuren voor <em>alle</em> projecten. "Schrijf comments in het Nederlands." · "Gebruik hyphens, nooit em-dashes." · "Vraag bevestiging voor verwijderen."</p>
+<p><strong>Vuistregel:</strong> Geldt voor elk project → hier. Projectspecifiek → niet.</p></div>
+
+<div class="lc lcb"><div class="lh"><span class="ln">LAAG 2</span><span class="lt">Projectregels</span><span class="lp">./CLAUDE.md</span></div>
+<p>Briefing voor je specifieke project. Automatisch geladen. <strong>Houd het compact</strong> -- in de praktijk blijkt 400+ regels te veel; ~100 regels werkt beter. Frontier modellen volgen ~150-200 instructies, minus ~50 voor Claude Code's systeemprompt. Je hebt ~100-150 regels ruimte.</p>
+<p><strong>Erin:</strong> Project overview, tech stack, kritieke regels, verwijzingen naar ref-docs, testcommando's.<br>
+<strong>Niet erin:</strong> Code style (→ linter/hook), code-voorbeelden (→ verouderen), afleidbare informatie.</p>
+<div class="co ci"><span class="cl">Progressive disclosure -- kleine bestanden</span><p>CLAUDE.md is een <strong>inhoudsopgave</strong>, niet het hele boek. Stop details in aparte bestanden en verwijs ernaar. Claude laadt ze wanneer nodig.</p></div>
+<h4>Voorbeeld bestandsstructuur</h4>
+<pre><code>mijn-project/
+├── CLAUDE.md              ← kort: overzicht + verwijzingen
+├── docs/
+│   └── refs/
+│       ├── api-regels.md  ← API conventies en valkuilen
+│       ├── db-schema.md   ← kolomnamen, relaties, gotchas
+│       └── deploy.md      ← deployment stappen
+├── .claude/
+│   ├── settings.json      ← permissions, hooks
+│   ├── agents/            ← project agents
+│   └── skills/            ← project skills
+└── src/                   ← je code</code></pre>
+<h4>Voorbeeld CLAUDE.md</h4>
+<pre><code># Mijn Project
+
+## Overview
+Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
+
+## Tech stack
+- Frontend: React + Tailwind CSS
+- Backend: Next.js API routes
+- Database: PostgreSQL via Prisma
+- Tests: Jest + React Testing Library
+
+## Kritieke regels
+- ALTIJD Prisma migrate gebruiken, nooit raw SQL voor schema changes
+- Componenten in src/components/, pages in src/app/
+- Zie docs/refs/api-regels.md voor API conventies
+- Zie docs/refs/db-schema.md voor database valkuilen
+
+## Commando's
+- Test: npm test
+- Lint: npm run lint
+- Build: npm run build
+- Dev: npm run dev</code></pre>
+<p>Quick start: draai <code>/init</code> om een starter CLAUDE.md te genereren.</p></div>
+
+<div class="lc lcc"><div class="lh"><span class="ln">LAAG 3</span><span class="lt">Taakspecifieke regels</span><span class="lp">docs/refs/</span></div>
+<p>Je <strong>"littekens"</strong> -- lessen van productiefouten. Laden op aanvraag. Claude maakt fout → je schrijft regel → nooit meer herhaald.</p>
+<pre><code># docs/refs/db-schema.md
+
+## Valkuilen
+- De kolom is `is_answer_ready`, NIET `answer_ready`
+- Gebruik altijd soft deletes (deleted_at), nooit hard deletes
+- Foreign keys MOETEN ON DELETE CASCADE hebben
+
+## Naamconventies
+- Tabellen: meervoud, snake_case (users, order_items)
+- Kolommen: snake_case (created_at, is_active)</code></pre>
+<div class="co ca"><span class="cl">Hoe het werkt</span><p>CLAUDE.md zegt: "Zie docs/refs/db-schema.md voor database valkuilen." Claude leest dat bestand alleen wanneer hij met de database werkt. Zo blijft je hoofdbestand klein en je context schoon.</p></div></div>
+
+<div class="lc lcy"><div class="lh"><span class="ln">LAAG 4</span><span class="lt">Persistent geheugen</span><span class="lp">MEMORY.md + auto memory</span></div>
+<p>Overleeft sessies. Bekende bugs, beslissingen, project IDs, procedures. Zonder dit begint elke sessie opnieuw.</p>
+<h4>Handmatig geheugen</h4>
+<p><code>/memory</code> om CLAUDE.md memory bestanden te bewerken. Schrijf regels, beslissingen en context op die je wilt behouden.</p>
+<h4>Auto memory</h4>
+<p>Claude leert <em>automatisch</em> tijdens het werken. Build-commando's, debugging-inzichten, project-patronen -- worden opgeslagen zonder dat je iets hoeft te schrijven. Schakel in/uit via <code>/memory</code>.</p>
+<div class="co ci"><span class="cl">Twee vormen, samen sterker</span><p><strong>Auto memory</strong> vangt operationele kennis op (hoe te builden, welke tests draaien). <strong>Handmatig geheugen</strong> voor architectuurbeslissingen en regels die Claude moet volgen. Gebruik beide.</p></div>
+<p><strong>Handoff files.</strong> Beëindig je een sessie? Vraag Claude om <code>HANDOFF.md</code> te schrijven met: doel, wat geprobeerd, wat werkte, wat faalde, volgende stappen.</p></div>
+
+<div class="lc lck"><div class="lh"><span class="ln">LAAG 5</span><span class="lt">Uitvoerbare extensies</span><span class="lp">skills, agents, hooks</span></div>
+<p>Code die Claude niet alleen leest maar <em>uitvoert</em>. Van "de AI helpt mij" naar "het systeem werkt voor mij." Drie fundamenteel verschillende dingen — zie volgende delen.</p></div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-02.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">4 / 30</span>
+<a href="deel-04.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

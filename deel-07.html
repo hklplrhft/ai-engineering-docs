@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tests -- Het Bewijs -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html" class="active">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="tests">
+<h2><span class="dn">DEEL 7</span>Tests -- Het Bewijs <span class="badge bd">DETERMINISTISCH</span></h2>
+<p>Tests bewijzen dat je code werkt -- en <strong>blijft</strong> werken na wijzigingen. Zonder tests is elke verandering een gok.</p>
+
+<h3>Drie soorten tests</h3>
+<div class="dg">
+<div class="dr"><span class="nm">Unit tests</span><span class="ct">Testen individuele functies -- snel, vangen logica-fouten</span><span class="ms">Meest voorkomend</span></div>
+<div class="dr"><span class="nm">Integration tests</span><span class="ct">Testen componenten samen -- API + database, frontend + backend</span><span class="ms">Trager, maar realistischer</span></div>
+<div class="dr"><span class="nm">Golden file tests</span><span class="ct">Vergelijken output met vastgelegde correcte versie</span><span class="ms">Goed voor HTML/JSON output</span></div>
+</div>
+
+<h3>Voorbeeld: laat Claude tests schrijven</h3>
+<pre><code># Vraag Claude om tests te schrijven
+"Schrijf tests voor de calculateDiscount functie
+ die alle edge cases dekt"
+
+# Claude genereert bijv.:
+describe('calculateDiscount', () => {
+  test('applies 10% for orders over 100', () => {
+    expect(calculateDiscount(150)).toBe(135);
+  });
+
+  test('no discount for orders under 100', () => {
+    expect(calculateDiscount(50)).toBe(50);
+  });
+
+  test('handles zero amount', () => {
+    expect(calculateDiscount(0)).toBe(0);
+  });
+
+  test('handles negative amount', () => {
+    expect(() => calculateDiscount(-10)).toThrow();
+  });
+});</code></pre>
+
+<h3>De automatische feedback loop</h3>
+<div class="lv2">
+<div class="ls">Claude schrijft code</div><div class="la">→</div>
+<div class="ls">Hook draait tests</div><div class="la">→</div>
+<div class="ls">Test faalt</div><div class="la">→</div>
+<div class="ls">Claude ziet fout</div><div class="la">→</div>
+<div class="ls">Claude fixt</div><div class="la">→</div>
+<div class="ls">Tests slagen</div><div class="la">→</div>
+<div class="ls">Commit</div>
+</div>
+<p>Dit hele proces verloopt zonder jouw tussenkomst. De post-write hook (zie <a href="deel-06.html" style="color:var(--blue)">Hooks</a>) draait tests na elke wijziging. Claude leest de foutmelding en past de code aan tot alles slaagt.</p>
+
+<h3>Zo begin je</h3>
+<ol>
+<li>Vraag Claude: "Welk test framework past bij dit project?"</li>
+<li>"Stel het test framework in en maak een eerste test"</li>
+<li>"Schrijf tests voor [functie X] die alle edge cases dekt"</li>
+<li>Stel een post-write hook in die tests automatisch draait</li>
+<li>Bij elke bugfix: "Fix de bug en schrijf een regressietest die voorkomt dat dit terugkomt"</li>
+</ol>
+<div class="co ca"><span class="cl">Gouden regel</span><p>Elke bugfix verdient een test. Zonder test is een fix tijdelijk -- dezelfde bug kan morgen terugkomen. Claude is verrassend goed in edge cases die je zelf mist.</p></div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-06.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">8 / 30</span>
+<a href="deel-08.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

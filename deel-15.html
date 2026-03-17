@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Single Source of Truth -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html" class="active">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="ssot">
+<h2><span class="dn">DEEL 15</span>Single Source of Truth</h2>
+<p><strong>3-plekken regel:</strong> Staat dezelfde waarde op 3+ plekken? Maak een SSOT. Eén bron, de rest verwijst.</p>
+
+<h3>Waarom dit belangrijk is</h3>
+<p>Zonder SSOT verandert Claude de waarde op 2 van de 3 plekken en vergeet de derde. Bugs die je uren kosten om te vinden.</p>
+
+<h3>In je code</h3>
+<pre><code>// GOED: één bron
+export const CONFIG = { maxUpload: 10485760 }
+// Overal verwijzen naar CONFIG.maxUpload
+
+// FOUT: dezelfde waarde op meerdere plekken
+const MAX_UPLOAD = 10485760;       // in upload.js
+const UPLOAD_LIMIT = 10485760;     // in validation.js
+"Maximaal 10MB"                    // in error message
+// → Claude past er 2 aan, vergeet de derde</code></pre>
+
+<h3>In je instructies</h3>
+<pre><code>// GOED: definieer in docs/refs/, verwijs vanuit CLAUDE.md
+# CLAUDE.md
+"Zie docs/refs/api-regels.md voor API conventies"
+
+// FOUT: dezelfde regel in CLAUDE.md, in een skill, en in een agent
+// → regels raken uit sync, Claude krijgt tegenstrijdige instructies</code></pre>
+
+<h3>In je project</h3>
+<div class="dg">
+<div class="dr"><span class="nm">Configuratie</span><span class="ct">Eén config bestand, overal importeren</span><span class="ms">Niet kopiëren naar meerdere bestanden</span></div>
+<div class="dr"><span class="nm">Constanten</span><span class="ct">Eén constants.js/ts, exporteer alles</span><span class="ms">Niet dezelfde waarde in 3 bestanden</span></div>
+<div class="dr"><span class="nm">Types/interfaces</span><span class="ct">Eén types bestand per domein</span><span class="ms">Niet herdefinieren per component</span></div>
+<div class="dr"><span class="nm">Claude-regels</span><span class="ct">Definieer in docs/refs/, verwijs vanuit CLAUDE.md</span><span class="ms">Niet dezelfde regel op meerdere plekken</span></div>
+</div>
+<div class="co ci"><span class="cl">Vuistregel</span><p>Als je dezelfde waarde wilt wijzigen, moet je dat op precies 1 plek hoeven doen. Moet je op meerdere plekken zoeken? Dan heb je een SSOT-probleem.</p></div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-14.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">16 / 30</span>
+<a href="deel-16.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>

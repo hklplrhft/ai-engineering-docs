@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De Gereedschapskist -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-01.html">Het Spectrum</a>
+<a href="deel-02.html" class="active">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-09.html">Context Management</a>
+<a href="deel-10.html">50/10/40 Methode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-12.html">Problemen Opdelen</a>
+<a href="deel-13.html">Model-selectie</a>
+<a href="deel-14.html">Parallel Werken</a>
+<div class="ng">Principes</div>
+<a href="deel-15.html">Single Source of Truth</a>
+<a href="deel-16.html">Verdedigingssysteem</a>
+<a href="deel-17.html">Feedback Loop</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Permissions &amp; Veiligheid</a>
+<a href="deel-20.html">De Nieuwe Rol</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-21.html">Jouw Startplan</a>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-23.html">Plugins &amp; Tools</a>
+<a href="deel-24.html">MCP-servers</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-26.html">Sneltoetsen</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="tools">
+<h2><span class="dn">DEEL 2</span>De Gereedschapskist</h2>
+<p><strong>Claude Code</strong> — Terminal-tool van Anthropic. Leest bestanden, voert commando's uit, schrijft code, doet git. $20/mnd (Pro) of $100/mnd (Max). Dit is waar het hele systeem uit deze gids op draait.</p>
+
+<h3>Alle surfaces</h3>
+<p>Claude Code draait niet alleen in je terminal. Dezelfde engine, dezelfde CLAUDE.md, dezelfde settings -- overal.</p>
+<div class="dg">
+<div class="dr"><span class="nm">Terminal CLI</span><span class="ct">Volledige feature set, piping, scripting</span><span class="ms">Geen visuele diffs</span></div>
+<div class="dr"><span class="nm">VS Code / Cursor</span><span class="ct">Inline diffs, @-mentions, plan review</span><span class="ms">Extensie vereist</span></div>
+<div class="dr"><span class="nm">JetBrains</span><span class="ct">IntelliJ, PyCharm, WebStorm plugin</span><span class="ms">Beta</span></div>
+<div class="dr"><span class="nm">Desktop app</span><span class="ct">Visuele diff review, meerdere sessies naast elkaar</span><span class="ms">macOS / Windows</span></div>
+<div class="dr"><span class="nm">Web (claude.ai/code)</span><span class="ct">Geen lokale setup, lange taken, parallel werk</span><span class="ms">Browser vereist</span></div>
+<div class="dr"><span class="nm">Chrome extensie</span><span class="ct">Live web apps debuggen vanuit browser</span><span class="ms">Chrome only</span></div>
+<div class="dr"><span class="nm">Slack (@Claude)</span><span class="ct">Bug report in teamchat → PR terug</span><span class="ms">Slack app setup</span></div>
+</div>
+
+<h3>Sessies verplaatsen</h3>
+<p>Sessies zijn niet gebonden aan een surface. Zet terminal-sessie voort op telefoon met <code>/remote-control</code>. Open in Desktop app met <code>/desktop</code>.</p>
+
+<h3>CI/CD integratie</h3>
+<p>Claude Code werkt ook in pipelines. <strong>GitHub Actions</strong> en <strong>GitLab CI/CD</strong> voor automatische PR reviews, code review bij elke push, en issue triage. Zie <a href="deel-11.html" style="color:var(--blue)">Git-discipline</a>.</p>
+
+<p><strong>Cursor</strong> — AI-powered code-editor (VS Code fork). Agent mode + rules systeem. <strong>Windsurf</strong> — Vergelijkbaar, met "Cascade" agent.</p>
+<div class="co ca"><span class="cl">Aanbeveling</span><p>Begin met <strong>Claude Code in terminal</strong> — alle concepten (CLAUDE.md, skills, hooks, agents) hebben daar native ondersteuning. VS Code extensie of Desktop app ernaast voor visuele diffs.</p></div>
+</section>
+
+<!-- 2B COMMANDS -->
+<section id="commands">
+<h2><span class="dn">DEEL 2B</span>Essentiële Commando's</h2>
+<p>Je hoeft niet elk commando te kennen. Dit zijn de commando's met de meeste impact.</p>
+<div class="cg">
+<div class="cgi"><code>/init</code><p>Genereer starter CLAUDE.md op basis van je project</p></div>
+<div class="cgi"><code>/plan</code> of <code>Shift+Tab ×2</code><p>Plan Mode — Claude plant maar codeert niet</p></div>
+<div class="cgi"><code>/clear</code><p>Reset context. Gebruik tussen ongerelateerde taken</p></div>
+<div class="cgi"><code>/compact [focus]</code><p>Comprimeer geschiedenis. Optioneel: focus-instructie meegeven</p></div>
+<div class="cgi"><code>/model sonnet</code> of <code>opus</code><p>Wissel model zonder herstart</p></div>
+<div class="cgi"><code>/fast</code><p>Toggle snellere output (zelfde model, hogere snelheid)</p></div>
+<div class="cgi"><code>/context</code><p>Bekijk huidig tokengebruik als visuele grid</p></div>
+<div class="cgi"><code>/diff</code><p>Interactieve diff viewer met uncommitted en per-turn changes</p></div>
+<div class="cgi"><code>/cost</code> en <code>/usage</code><p>Token-statistieken en plan/rate limit status</p></div>
+<div class="cgi"><code>/rewind</code><p>Spoel terug naar een eerder punt in gesprek en code</p></div>
+<div class="cgi"><code>/export</code><p>Exporteer het gesprek als plain text (voor handoff)</p></div>
+<div class="cgi"><code>/hooks</code><p>Configureer hooks interactief</p></div>
+<div class="cgi"><code>/permissions</code><p>Beheer welke tools Claude mag gebruiken</p></div>
+<div class="cgi"><code>/doctor</code><p>Diagnose installatie en configuratie</p></div>
+<div class="cgi"><code>/config</code><p>Instellingen: thinking mode, output style</p></div>
+<div class="cgi"><code>Esc Esc</code><p>Undo -- rewind de laatste actie van Claude</p></div>
+<div class="cgi"><code>/rename</code><p>Hernoem sessie om later terug te vinden</p></div>
+<div class="cgi"><code>! &lt;command&gt;</code><p>Voer bash-commando direct uit zonder Claude-interpretatie</p></div>
+</div>
+<div class="co ci"><span class="cl">Tip</span><p>Zet in <code>/config</code> thinking mode op <strong>true</strong> en output style op <strong>Explanatory</strong>. Dan zie je hoe Claude redeneert. Alle commando's: zie <a href="referentie-commandos.html" style="color:var(--blue)">Commandoreferentie</a>.</p></div>
+</section>
+
+<!-- 2C CLI -->
+<section id="cli">
+<h2><span class="dn">DEEL 2C</span>CLI als Bouwsteen</h2>
+<p>Claude Code volgt de Unix-filosofie: je kunt het pipen, scripten en combineren met andere tools. Met de <code>-p</code> (print) flag draait Claude non-interactief -- ideaal voor automatisering.</p>
+<h3>Piping</h3>
+<pre><code># Monitor logs en krijg alerts
+tail -f app.log | claude -p "Slack me if you see anomalies"
+
+# Review alleen gewijzigde bestanden
+git diff main --name-only | claude -p "review these for security issues"
+
+# Bulk vertaling in CI
+claude -p "translate new strings into French and raise a PR"</code></pre>
+<h3>Scripting &amp; automatisering</h3>
+<pre><code># Gestructureerde output met JSON schema
+claude -p "list all TODOs" --output-format json --json-schema '{...}'
+
+# Budget limiet voor CI runs
+claude -p "fix lint errors" --max-budget-usd 5
+
+# Read-only analyse (geen writes)
+claude --allowedTools "Read,Glob,Grep" -p "explain the auth flow"
+
+# Fallback model bij overbelasting
+claude -p "write tests" --fallback-model haiku</code></pre>
+<div class="co ci"><span class="cl">Krachtig patroon</span><p>Combineer <code>-p</code> met <code>--output-format json</code> voor machine-leesbare output. Ideaal voor integratie in CI/CD pipelines, cron jobs, of eigen tooling.</p></div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-01.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">3 / 30</span>
+<a href="deel-03.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+</script>
+</body>
+</html>
