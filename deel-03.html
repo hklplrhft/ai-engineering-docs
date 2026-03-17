@@ -159,9 +159,9 @@ npm run build && git diff --exit-code public/js/</code></pre>
 </div>
 
 <div class="lc lcy"><div class="lh"><span class="ln">LAAG 4</span><span class="lt">Persistent geheugen</span><span class="lp">MEMORY.md + auto memory</span></div>
-<p>Overleeft sessies. Bekende bugs, beslissingen, project IDs, procedures. Zonder dit begint elke sessie opnieuw.</p>
+<p>Overleeft sessies. Bekende bugs, beslissingen, project IDs, procedures. Zonder dit begint elke sessie opnieuw. Memory is <strong>per project</strong> -- opgeslagen in <code>~/.claude/projects/</code>, niet in je repo.</p>
 <h4>Handmatig geheugen</h4>
-<p><code>/memory</code> om CLAUDE.md memory bestanden te bewerken. Schrijf regels, beslissingen en context op die je wilt behouden.</p>
+<p><code>/memory</code> om de project-specifieke memory bestanden te bewerken. Schrijf regels, beslissingen en context op die je wilt behouden.</p>
 <h4>Auto memory</h4>
 <p>Claude leert <em>automatisch</em> tijdens het werken. Build-commando's, debugging-inzichten, project-patronen -- worden opgeslagen zonder dat je iets hoeft te schrijven. Schakel in/uit via <code>/memory</code>.</p>
 <div class="co ci"><span class="cl">Twee vormen, samen sterker</span><p><strong>Auto memory</strong> vangt operationele kennis op (hoe te builden, welke tests draaien). <strong>Handmatig geheugen</strong> voor architectuurbeslissingen en regels die Claude moet volgen. Gebruik beide.</p></div>

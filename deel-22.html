@@ -97,7 +97,21 @@ claude
 # - Test commando's (npm test, pytest, etc.)
 # - Kritieke project-regels</code></pre>
 
-<p>Hier zijn kant-en-klare voorbeeldzinnen die je direct in je project <code>CLAUDE.md</code> kunt plakken. Pas aan waar nodig:</p>
+<div class="co ci"><span class="cl">Globaal vs. project -- waar hoort wat?</span>
+<p>Regels die voor <strong>elk project</strong> gelden (werkwijze, veiligheid, stijl) horen in je globale <code>~/.claude/CLAUDE.md</code> (stap 2). In je project <code>CLAUDE.md</code> zet je alleen wat <strong>specifiek is voor dit project</strong>: commando's, conventies, architectuurkeuzes. Dupliceer geen globale regels -- Claude leest beide bestanden automatisch.</p></div>
+
+<p>Hier zijn kant-en-klare voorbeeldzinnen voor je <strong>project</strong> <code>CLAUDE.md</code>. Alleen project-specifieke zaken:</p>
+<pre><code>## Commando's
+- Tests draaien: `npm test` / `pytest` / `flutter test`
+- Linting: `npm run lint` / `ruff check .`
+- Build: `npm run build` / `flutter build`
+
+## Projectregels
+- Volg de conventies in docs/refs/ voor architectuur- en codebeslissingen.
+- Gebruik bestaande utilities en patterns voordat je nieuwe maakt.
+- Voeg geen dependencies toe zonder overleg.</code></pre>
+
+<p>En als je globale <code>~/.claude/CLAUDE.md</code> uit stap 2 nog niet compleet is, vul aan met:</p>
 <pre><code>## Werkwijze
 - Werk altijd op een feature branch, nooit direct op main of develop.
 - Lees bestaande code voordat je wijzigingen voorstelt -- begrijp de context.
@@ -105,20 +119,10 @@ claude
 - Commit regelmatig met duidelijke, Engelstalige commit messages.
 - Push of deploy nooit zonder expliciete bevestiging.
 
-## Commando's
-- Tests draaien: `npm test` / `pytest` / `flutter test`
-- Linting: `npm run lint` / `ruff check .`
-- Build: `npm run build` / `flutter build`
-
 ## Veiligheid
 - Geen secrets hardcoden -- gebruik environment variables of .env (met .gitignore).
 - Review gegenereerde code op OWASP top 10 kwetsbaarheden.
 - Wees extra voorzichtig met destructieve shell commando's (rm -rf, git push --force, DROP TABLE).
-
-## Projectregels
-- Volg de conventies in docs/refs/ voor architectuur- en codebeslissingen.
-- Gebruik bestaande utilities en patterns voordat je nieuwe maakt.
-- Voeg geen dependencies toe zonder overleg.
 
 ## Stijl
 - Code, commits en comments in het Engels.
@@ -137,6 +141,10 @@ claude
           {
             "type": "command",
             "command": "npm run lint && npm run typecheck"
+          },
+          {
+            "type": "command",
+            "command": "grep -rn 'sk_live\\|AKIA\\|ghp_\\|-----BEGIN' --include='*.js' --include='*.ts' --include='*.py' --include='*.env' . && echo 'BLOCKED: possible secret detected' && exit 1 || true"
           }
         ]
       }
@@ -166,7 +174,7 @@ claude
   }
 }</code></pre>
 <div class="co ci"><span class="cl">Wat doet dit?</span>
-<p><strong>PreCommit:</strong> Elke commit wordt geblokkeerd als lint of typecheck faalt. Onmogelijk te omzeilen.<br>
+<p><strong>PreCommit:</strong> Elke commit wordt geblokkeerd als lint of typecheck faalt, of als er een secret-patroon wordt gevonden (zoals <code>sk_live</code>, <code>AKIA</code>, of <code>ghp_</code>). Onmogelijk te omzeilen.<br>
 <strong>PostToolUse:</strong> Na elke bestandswijziging draaien automatisch de gerelateerde tests. Claude ziet fouten en fixt ze zelf.<br>
 <strong>Notification:</strong> Desktop-melding als Claude klaar is of op je wacht.</p>
 <p>Dit voorbeeld gebruikt Node.js-commando's. Werk je met Flutter, Python of Go? Zie <a href="deel-06.html#hooks">Hooks -- Voorbeelden per stack</a> voor de juiste commando's.</p></div>
@@ -240,6 +248,22 @@ Fix de volgende bug: $ARGUMENTS
 .claude/worktrees/
 node_modules/</code></pre>
 
+<h4>.env.example -- veilig secrets delen</h4>
+<p>Ship een <code>.env.example</code> <strong>zonder waarden</strong> mee in git. Nieuwe teamleden kopieren dit naar <code>.env</code> en vullen hun eigen keys in.</p>
+<pre><code># .env.example -- check dit WEL in naar git
+DATABASE_URL=
+API_KEY=
+STRIPE_SECRET_KEY=</code></pre>
+
+<div class="co cw"><span class="cl">Secret gelekt? Doe dit onmiddellijk</span>
+<ol>
+<li><strong>Draai de key in</strong> bij de provider (Stripe, AWS, GitHub, etc.) -- dit is stap 1, niet stap 3.</li>
+<li><strong>Verwijder uit git history:</strong><br><code>git filter-repo --invert-paths --path &lt;bestand-met-secret&gt;</code></li>
+<li><strong>Force push</strong> na overleg met je team:<br><code>git push --force --all</code></li>
+<li><strong>Voeg het bestand toe aan <code>.gitignore</code></strong> zodat het niet opnieuw kan gebeuren.</li>
+</ol>
+<p>Een secret dat ooit in git heeft gestaan is <strong>gecompromitteerd</strong>, ook als je het daarna verwijdert. Bots scannen publieke repo's continu op gelekte keys.</p></div>
+
 <div class="co ca"><span class="cl">Verder groeien</span>
 <p>Na deze 8 stappen heb je een solide basis. De volgende niveaus:</p>
 <ul>
@@ -269,7 +293,7 @@ mijn-project/
 <div class="dg">
 <div class="dr"><span class="nm">Lint + typecheck</span><span class="ct">Hook blokkeert commit bij fouten</span><span class="ms">Afgedwongen</span></div>
 <div class="dr"><span class="nm">Tests na wijziging</span><span class="ct">Hook draait tests, Claude fixt fouten zelf</span><span class="ms">Afgedwongen</span></div>
-<div class="dr"><span class="nm">Geen secrets in git</span><span class="ct">.gitignore + CLAUDE.md regel</span><span class="ms">Afgedwongen + gestuurd</span></div>
+<div class="dr"><span class="nm">Geen secrets in git</span><span class="ct">.gitignore + hook + CLAUDE.md regel</span><span class="ms">Afgedwongen + gestuurd</span></div>
 <div class="dr"><span class="nm">Branch-based werken</span><span class="ct">Skills starten altijd op een branch</span><span class="ms">Gestuurd via skill</span></div>
 <div class="dr"><span class="nm">Plan voor code</span><span class="ct">Skills forceren plan-stap</span><span class="ms">Gestuurd via skill</span></div>
 <div class="dr"><span class="nm">Tests bij elke feature</span><span class="ct">Skills vereisen tests als stap</span><span class="ms">Gestuurd via skill</span></div>
