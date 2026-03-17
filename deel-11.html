@@ -139,17 +139,41 @@ git branch -d feature/login-page</code></pre>
 "Revert de laatste commit"</code></pre>
 
 <h3>CI/CD integratie</h3>
-<p>Claude Code draait niet alleen lokaal. Met <strong>GitHub Actions</strong> en <strong>GitLab CI/CD</strong> automatiseer je reviews en triage.</p>
+<p><strong>CI/CD</strong> staat voor Continuous Integration / Continuous Deployment. Het idee: elke keer als je code pusht naar GitHub (of GitLab), draait er automatisch een script dat je code controleert. Denk aan een robot die bij elke PR automatisch tests draait, code reviewt, of bestanden checkt -- zonder dat jij iets hoeft te doen.</p>
+
+<h4>Hoe werkt het?</h4>
+<p>Je plaatst een configuratiebestand in je repository. GitHub (of GitLab) leest dat bestand en voert de stappen uit op een server in de cloud.</p>
 <div class="dg">
-<div class="dr"><span class="nm">Automatische code review</span><span class="ct">Claude reviewt elke PR automatisch op kwaliteit en security</span><span class="ms">GitHub Code Review</span></div>
-<div class="dr"><span class="nm">Issue triage</span><span class="ct">Nieuwe issues automatisch labelen, prioriteren, toewijzen</span><span class="ms">GitHub Actions</span></div>
-<div class="dr"><span class="nm">PR van bug report</span><span class="ct">@Claude in Slack met bug → PR terug</span><span class="ms">Slack integratie</span></div>
+<div class="dr"><span class="nm">GitHub Actions</span><span class="ct">Configuratie in <code>.github/workflows/naam.yml</code>. Draait automatisch bij push, PR, of op een schema.</span><span class="ms">Gratis voor publieke repos</span></div>
+<div class="dr"><span class="nm">GitLab CI/CD</span><span class="ct">Configuratie in <code>.gitlab-ci.yml</code> in de root. Zelfde principe, andere syntax.</span><span class="ms">Gratis tier beschikbaar</span></div>
 </div>
-<pre><code># Claude in een CI pipeline (non-interactief)
-claude -p "review this PR for security issues" \
-  --output-format json \
-  --max-budget-usd 2</code></pre>
-<div class="co cw"><span class="cl">Let op</span><p>CI-gebruik verbruikt API-credits. Gebruik <code>--max-budget-usd</code> om kosten te begrenzen en <code>--fallback-model haiku</code> voor goedkopere runs.</p></div>
+
+<h4>Voorbeeld: Claude als automatische reviewer</h4>
+<p>Dit GitHub Actions bestand laat Claude elke PR reviewen zodra die geopend wordt:</p>
+<pre><code># .github/workflows/claude-review.yml
+name: Claude PR Review
+on:
+  pull_request:          # Trigger: bij elke nieuwe of bijgewerkte PR
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4        # Stap 1: code ophalen
+      - name: Claude review              # Stap 2: Claude draait
+        run: |
+          claude -p "Review deze PR op bugs en security" \
+            --output-format json \
+            --max-budget-usd 2</code></pre>
+<p>Resultaat: elke PR krijgt automatisch feedback van Claude -- nog voordat een teamgenoot ernaar kijkt.</p>
+
+<h4>Wat kun je hiermee automatiseren?</h4>
+<div class="dg">
+<div class="dr"><span class="nm">Automatische code review</span><span class="ct">Claude reviewt elke PR op kwaliteit en security. Vindt bugs voordat een mens kijkt.</span><span class="ms">Bij elke PR</span></div>
+<div class="dr"><span class="nm">Issue triage</span><span class="ct">Nieuwe issues automatisch labelen, prioriteren en aan de juiste persoon toewijzen.</span><span class="ms">Bij nieuw issue</span></div>
+<div class="dr"><span class="nm">Tests draaien</span><span class="ct">Unit tests, linting en type-checks bij elke push. PR wordt geblokkeerd als iets faalt.</span><span class="ms">Bij elke push</span></div>
+</div>
+<div class="co cw"><span class="cl">Let op: kosten</span><p>Elke CI-run verbruikt API-credits. Gebruik <code>--max-budget-usd</code> om een limiet te zetten en <code>--fallback-model haiku</code> voor goedkopere runs bij minder kritieke checks.</p></div>
 </section>
 
 </main>
