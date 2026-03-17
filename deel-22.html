@@ -246,12 +246,15 @@ Fix de volgende bug: $ARGUMENTS
 5. Fix de bug (test moet slagen)
 6. Draai alle tests om te checken dat niets anders breekt
 7. Voeg een regel toe aan docs/refs/ als dit een terugkerende fout is
-8. Commit en open een draft PR
+8. Als de regel projectbreed geldt: verwijs ernaar vanuit CLAUDE.md
+9. Bij kritieke fouten: stel een hook voor die herhaling blokkeert
+10. Commit en open een draft PR
 
 ## Regels
 - Fix de root cause, niet het symptoom
 - Elke bugfix MOET een regressietest hebben
-- Bij onduidelijke oorzaak: gebruik /plan eerst</code></pre>
+- Bij onduidelijke oorzaak: gebruik /plan eerst
+- Stap 8-9 sluiten de feedback loop (zie deel 3: CLAUDE.md)</code></pre>
 <p>Gebruik: <code>/fix-bug users krijgen een 500 error bij het inloggen na session timeout</code></p>
 
 <h3>Stap 7: Maak een docs/refs/ map</h3>

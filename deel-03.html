@@ -151,27 +151,16 @@ Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
 <h4>Concreet voorbeeld: van fout naar regel</h4>
 <p><strong>Situatie:</strong> Claude verwijdert een bestand uit <code>public/js/</code>. Blijkt: dat bestand wordt automatisch gegenereerd door een build-stap. Productie breekt.</p>
 
-<p><strong>Stap 1: Fix de fout</strong></p>
-<pre><code>"Herstel het verwijderde bestand en draai de build opnieuw"</code></pre>
+<table class="tc">
+<tr><th>Stap</th><th>Actie</th><th>Voorbeeld</th></tr>
+<tr><td>1. Fix</td><td>Los het probleem op</td><td><code>Herstel het bestand, draai de build opnieuw</code></td></tr>
+<tr><td>2. Test</td><td>Schrijf een regressietest</td><td><code>Test dat public/js/ compleet is na build</code></td></tr>
+<tr><td>3. Regel</td><td>Voeg toe aan <code>docs/refs/</code></td><td><code>Verwijder NOOIT bestanden uit public/js/</code></td></tr>
+<tr><td>4. CLAUDE.md</td><td>Verwijs naar de regel</td><td><code>Zie docs/refs/build-regels.md</code></td></tr>
+<tr><td>5. Hook</td><td>Blokkeer bij kritieke fouten</td><td><code>npm run build && git diff --exit-code public/js/</code></td></tr>
+</table>
 
-<p><strong>Stap 2: Schrijf een regressietest</strong></p>
-<pre><code>"Schrijf een test die verifieert dat alle verwachte
- bestanden in public/js/ aanwezig zijn na een build"</code></pre>
-
-<p><strong>Stap 3: Voeg een regel toe</strong></p>
-<pre><code># docs/refs/build-regels.md
-- Verwijder NOOIT bestanden uit public/js/ --
-  deze worden automatisch gegenereerd door de build.
-  Check eerst: npm run build</code></pre>
-
-<p><strong>Stap 4: Verwijs vanuit CLAUDE.md</strong></p>
-<pre><code># CLAUDE.md (voeg toe aan kritieke regels)
-- Zie docs/refs/build-regels.md voor build-gerelateerde valkuilen</code></pre>
-
-<p><strong>Stap 5 (optioneel): Maak een hook</strong></p>
-<p>Als de fout echt kritiek is, blokkeer het met een hook zodat het onmogelijk wordt:</p>
-<pre><code># Pre-commit hook die checkt of gegenereerde bestanden intact zijn
-npm run build && git diff --exit-code public/js/</code></pre>
+<div class="co ci"><span class="cl">In de praktijk</span><p>De <code>/fix-bug</code> skill (<a href="deel-22.html">Starter Kit, stap 6</a>) automatiseert dit patroon. Eén commando doorloopt alle stappen -- van branch aanmaken tot regressietest, regel in <code>docs/refs/</code>, en commit.</p></div>
 
 <div class="co ca"><span class="cl">Het patroon</span><p><strong>Fout → fix → test → regel → (hook)</strong>. Hoe kritischer de fout, hoe harder de garantie. Vervelend? Regel. Productie kapot? Hook. Dit is hoe je systeem steeds slimmer wordt.</p></div>
 </div>
