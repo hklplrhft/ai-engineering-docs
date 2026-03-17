@@ -19,7 +19,6 @@
 <div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
 <div class="ng">Fundament</div>
 <a href="index.html">Samenvatting</a>
-<a href="deel-01.html">Het Spectrum</a>
 <a href="deel-02.html">De Gereedschapskist</a>
 <div class="ng">Instructiesysteem</div>
 <a href="deel-03.html">De 5 Lagen</a>
@@ -27,26 +26,15 @@
 <a href="deel-05.html">Agents</a>
 <a href="deel-06.html">Hooks</a>
 <a href="deel-07.html">Tests</a>
-<a href="deel-17.html">Feedback Loop</a>
 <div class="ng">Werkwijze</div>
 <a href="deel-08.html">Plan Mode</a>
-<a href="deel-09.html">Context Management</a>
-<a href="deel-10.html">50/10/40 Methode</a>
 <a href="deel-11.html">Git-discipline</a>
-<a href="deel-12.html">Problemen Opdelen</a>
-<a href="deel-13.html">Model-selectie</a>
 <a href="deel-14.html">Parallel Werken</a>
-<div class="ng">Principes</div>
-<a href="deel-15.html">Single Source of Truth</a>
-<a href="deel-16.html">Verdedigingssysteem</a>
 <a href="deel-18.html">Veelgemaakte Fouten</a>
 <div class="ng">Aan de slag</div>
-<a href="deel-21.html">Jouw Startplan</a>
 <a href="deel-22.html" class="active">Starter Kit</a>
-<a href="deel-23.html">Plugins &amp; Tools</a>
-<a href="deel-24.html">MCP-servers</a>
+<a href="deel-24.html">Plugins &amp; Extensies</a>
 <a href="deel-25.html">Tips &amp; Tricks</a>
-<a href="deel-26.html">Sneltoetsen</a>
 <a href="deel-27.html">Bronnen &amp; Links</a>
 <div class="ng">Referentie</div>
 <a href="referentie-commandos.html">Commandoreferentie</a>
@@ -60,6 +48,25 @@
 <section id="starterkit">
 <h2><span class="dn">DEEL 22</span>Starter Kit -- Direct Goed Beginnen</h2>
 <p>Je hoeft niet alles uit deze gids te onthouden. Met de juiste inrichting dwingt Claude Code de werkwijze grotendeels <em>automatisch</em> af. Kopieer deze bestanden, en iedereen in je team werkt meteen volgens best practices.</p>
+
+<h3>Leerpad -- in welk tempo?</h3>
+<p>Je hoeft niet alles tegelijk op te zetten. Dit is een realistisch 10-weken schema om de 5 lagen stap voor stap te adopteren:</p>
+<div class="tl">
+<div class="ti"><div class="wk">WEEK 1–2 · FOUNDATION</div><h4>Installeer Claude Code + eerste CLAUDE.md</h4><p>Draai <code>/init</code>. Verfijn: overview, stack, 5-10 regels. Maak <code>~/.claude/CLAUDE.md</code>. Oefen met <code>/plan</code>, <code>/clear</code>, <code>/compact</code>.</p></div>
+<div class="ti"><div class="wk">WEEK 3–4 · LITTEKENS</div><h4>Verzamel je eerste regels</h4><p>Elke fout → regel. Maak <code>docs/refs/</code>. Commit na elke wijziging. Schrijf handoff files.</p></div>
+<div class="ti"><div class="wk">WEEK 5–6 · HOOKS</div><h4>Eerste harde garanties</h4><p>Pre-commit hook (lint/types). Post-write hook (tests). Configureer via <code>/hooks</code>.</p></div>
+<div class="ti"><div class="wk">WEEK 7–8 · SKILLS</div><h4>Eerste herbruikbare workflow</h4><p>Taak die je 3x handmatig deed → skill in <code>.claude/skills/</code>. Test op consistentie.</p></div>
+<div class="ti"><div class="wk">WEEK 9–10 · AGENTS</div><h4>Eerste gespecialiseerde agent</h4><p>Audit-agent voor één aspect: links, SEO, content freshness.</p></div>
+<div class="ti"><div class="wk">DOORLOPEND</div><h4>Feedback loop</h4><p>Fout → regel. Herhaalde taak → skill. Terugkerende controle → agent. Snoei CLAUDE.md. Experimenteer met modellen en parallel werk.</p></div>
+</div>
+<p>De stappen hieronder laten zien hoe je de eerste twee weken concreet inricht.</p>
+
+<div class="co ca" style="text-align:center;padding:20px">
+<span class="cl">Download</span>
+<p style="margin-bottom:12px">Alle templates uit deze pagina als kant-en-klare bestanden:</p>
+<a href="ai-engineering-starter-kit.zip" download style="display:inline-block;padding:10px 24px;background:var(--green);color:var(--bg);font-weight:700;border-radius:6px;text-decoration:none;font-size:15px">&#11015; Starter Kit downloaden (7 KB)</a>
+<p style="margin-top:10px;font-size:13px;color:var(--text-dim)">Bevat: ~/.claude/CLAUDE.md, project CLAUDE.md, hooks, skills, docs/refs/ templates</p>
+</div>
 
 <div class="co ca"><span class="cl">Wat wordt afgedwongen vs. wat vereist discipline?</span>
 <p><strong>Automatisch (hooks):</strong> lint, typecheck, tests, secret detection -- Claude kan niet committen zonder.<br>
@@ -272,9 +279,9 @@ mijn-project/
 </main>
 
 <nav class="page-nav" aria-label="Paginanavigatie">
-<a href="deel-21.html" class="nav-btn nav-prev">&larr; Vorige</a>
-<span class="nav-counter">21 / 28</span>
-<a href="deel-23.html" class="nav-btn nav-next">Volgende &rarr;</a>
+<a href="deel-18.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">12 / 17</span>
+<a href="deel-24.html" class="nav-btn nav-next">Volgende &rarr;</a>
 </nav>
 
 <button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>

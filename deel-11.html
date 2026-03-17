@@ -19,7 +19,6 @@
 <div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
 <div class="ng">Fundament</div>
 <a href="index.html">Samenvatting</a>
-<a href="deel-01.html">Het Spectrum</a>
 <a href="deel-02.html">De Gereedschapskist</a>
 <div class="ng">Instructiesysteem</div>
 <a href="deel-03.html">De 5 Lagen</a>
@@ -27,26 +26,15 @@
 <a href="deel-05.html">Agents</a>
 <a href="deel-06.html">Hooks</a>
 <a href="deel-07.html">Tests</a>
-<a href="deel-17.html">Feedback Loop</a>
 <div class="ng">Werkwijze</div>
 <a href="deel-08.html">Plan Mode</a>
-<a href="deel-09.html">Context Management</a>
-<a href="deel-10.html">50/10/40 Methode</a>
 <a href="deel-11.html" class="active">Git-discipline</a>
-<a href="deel-12.html">Problemen Opdelen</a>
-<a href="deel-13.html">Model-selectie</a>
 <a href="deel-14.html">Parallel Werken</a>
-<div class="ng">Principes</div>
-<a href="deel-15.html">Single Source of Truth</a>
-<a href="deel-16.html">Verdedigingssysteem</a>
 <a href="deel-18.html">Veelgemaakte Fouten</a>
 <div class="ng">Aan de slag</div>
-<a href="deel-21.html">Jouw Startplan</a>
 <a href="deel-22.html">Starter Kit</a>
-<a href="deel-23.html">Plugins &amp; Tools</a>
-<a href="deel-24.html">MCP-servers</a>
+<a href="deel-24.html">Plugins &amp; Extensies</a>
 <a href="deel-25.html">Tips &amp; Tricks</a>
-<a href="deel-26.html">Sneltoetsen</a>
 <a href="deel-27.html">Bronnen &amp; Links</a>
 <div class="ng">Referentie</div>
 <a href="referentie-commandos.html">Commandoreferentie</a>
@@ -65,12 +53,19 @@
 <p>Of je nu solo werkt of in een team: deze workflow voorkomt problemen.</p>
 
 <h4>1. Werk altijd op een branch, nooit op main</h4>
-<p><code>main</code> (of <code>master</code>) is je stabiele versie. Elke wijziging begint op een eigen branch.</p>
+<p><code>main</code> (of <code>master</code>) is je stabiele versie. Maak voor elke feature of bugfix een nieuwe branch. Binnen die branch maak je meerdere commits totdat het werk af is -- dan merge je terug naar main via een PR.</p>
 <pre><code># Nieuwe branch aanmaken en ernaar switchen
 git checkout -b feature/login-page
 
 # Of laat Claude het doen
-"Maak een nieuwe branch voor de login pagina"</code></pre>
+"Maak een nieuwe branch voor de login pagina"
+
+# Meerdere commits op dezelfde branch is normaal:
+git commit -m "Add login form layout"
+git commit -m "Add form validation"
+git commit -m "Add error messages"
+# Pas als alles werkt → PR → merge naar main</code></pre>
+<div class="co ci"><span class="cl">Wanneer een nieuwe branch?</span><p>Eén branch per feature, bugfix of taak. Niet per commit. Werk je aan de login pagina? Alles op <code>feature/login-page</code>. Daarna een bug fixen? Nieuwe branch: <code>fix/email-validation</code>.</p></div>
 
 <h4>2. Commit regelmatig met duidelijke messages</h4>
 <p>Kleine, frequente commits. Elke commit is een herstelpunt als iets misgaat.</p>
@@ -177,9 +172,9 @@ jobs:
 </main>
 
 <nav class="page-nav" aria-label="Paginanavigatie">
-<a href="deel-10.html" class="nav-btn nav-prev">&larr; Vorige</a>
-<span class="nav-counter">12 / 28</span>
-<a href="deel-12.html" class="nav-btn nav-next">Volgende &rarr;</a>
+<a href="deel-08.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">9 / 17</span>
+<a href="deel-14.html" class="nav-btn nav-next">Volgende &rarr;</a>
 </nav>
 
 <button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>

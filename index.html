@@ -19,7 +19,6 @@
 <div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
 <div class="ng">Fundament</div>
 <a href="index.html" class="active">Samenvatting</a>
-<a href="deel-01.html">Het Spectrum</a>
 <a href="deel-02.html">De Gereedschapskist</a>
 <div class="ng">Instructiesysteem</div>
 <a href="deel-03.html">De 5 Lagen</a>
@@ -27,26 +26,15 @@
 <a href="deel-05.html">Agents</a>
 <a href="deel-06.html">Hooks</a>
 <a href="deel-07.html">Tests</a>
-<a href="deel-17.html">Feedback Loop</a>
 <div class="ng">Werkwijze</div>
 <a href="deel-08.html">Plan Mode</a>
-<a href="deel-09.html">Context Management</a>
-<a href="deel-10.html">50/10/40 Methode</a>
 <a href="deel-11.html">Git-discipline</a>
-<a href="deel-12.html">Problemen Opdelen</a>
-<a href="deel-13.html">Model-selectie</a>
 <a href="deel-14.html">Parallel Werken</a>
-<div class="ng">Principes</div>
-<a href="deel-15.html">Single Source of Truth</a>
-<a href="deel-16.html">Verdedigingssysteem</a>
 <a href="deel-18.html">Veelgemaakte Fouten</a>
 <div class="ng">Aan de slag</div>
-<a href="deel-21.html">Jouw Startplan</a>
 <a href="deel-22.html">Starter Kit</a>
-<a href="deel-23.html">Plugins &amp; Tools</a>
-<a href="deel-24.html">MCP-servers</a>
+<a href="deel-24.html">Plugins &amp; Extensies</a>
 <a href="deel-25.html">Tips &amp; Tricks</a>
-<a href="deel-26.html">Sneltoetsen</a>
 <a href="deel-27.html">Bronnen &amp; Links</a>
 <div class="ng">Referentie</div>
 <a href="referentie-commandos.html">Commandoreferentie</a>
@@ -86,7 +74,7 @@
 <div class="lh"><span class="ln">DE 5 KERNCONCEPTEN</span><span class="lt">Dit is alles wat je nodig hebt</span></div>
 <p><strong>1. CLAUDE.md</strong> -- Een tekstbestand in je project met instructies voor Claude. "Gebruik TypeScript." "Test met Jest." "Comments in het Nederlands." Claude leest dit automatisch bij elke sessie. <a href="deel-03.html" style="color:var(--yellow)">→ Deel 3</a></p>
 <p><strong>2. Plan Mode</strong> -- Laat Claude eerst nadenken voor het begint te coderen. <code>/plan</code> of <code>Shift+Tab</code> twee keer. Claude analyseert, schetst een aanpak, en wacht op jouw goedkeuring. <a href="deel-08.html" style="color:var(--yellow)">→ Deel 8</a></p>
-<p><strong>3. Context = geheugen</strong> -- Claude onthoudt alles binnen een sessie, maar het geheugen is beperkt. Wissel van taak? Typ <code>/clear</code>. Lange sessie? Typ <code>/compact</code>. Dit is de #1 faalfactor als je het vergeet. <a href="deel-09.html" style="color:var(--yellow)">→ Deel 9</a></p>
+<p><strong>3. Context = geheugen</strong> -- Claude onthoudt alles binnen een sessie, maar het geheugen is beperkt. Wissel van taak? Typ <code>/clear</code>. Lange sessie? Typ <code>/compact</code>. Dit is de #1 faalfactor als je het vergeet. <a href="deel-08.html#context" style="color:var(--yellow)">→ Deel 9</a></p>
 <p><strong>4. Git = je vangnet</strong> -- Commit na elke geslaagde wijziging. Als Claude iets kapotmaakt, draai je terug. Werk op branches, niet op main. Claude kan al je git-werk doen. <a href="deel-11.html" style="color:var(--yellow)">→ Deel 11</a></p>
 <p><strong>5. Tests &amp; hooks = je bewaking</strong> -- Tests bewijzen dat code werkt. Hooks zijn automatische checks (lint, types) die fouten blokkeren voor ze in je code komen. Claude kan tests en hooks voor je schrijven. <a href="deel-07.html" style="color:var(--yellow)">→ Deel 7</a></p>
 </div>
@@ -110,7 +98,7 @@
 <p>Het verschil is niet het model of de tool -- het is <strong>jouw systeem eromheen</strong>. Deze gids helpt je dat systeem stap voor stap op te bouwen.</p>
 </div>
 
-<div class="co ci"><span class="cl">Voel je niet overweldigd</span><p>Je hoeft niet alles tegelijk te leren. Begin met CLAUDE.md + /plan + /clear + committen. Voeg skills, hooks en agents toe wanneer je er klaar voor bent. Het <a href="deel-21.html" style="color:var(--blue)">startplan</a> geeft je een 10-weken roadmap.</p></div>
+<div class="co ci"><span class="cl">Voel je niet overweldigd</span><p>Je hoeft niet alles tegelijk te leren. Begin met CLAUDE.md + /plan + /clear + committen. Voeg skills, hooks en agents toe wanneer je er klaar voor bent. Het <a href="deel-22.html" style="color:var(--blue)">leerpad</a> in de Starter Kit geeft je een 10-weken roadmap.</p></div>
 
 <div class="co ca"><span class="cl">Praktijkvoorbeeld</span><p>Wil je zien hoe deze gids eruitziet als concreet projectplan? Bekijk het <a href="zoom-nl-code-readiness.html" style="color:var(--green)">Zoom.nl Code Readiness Plan</a> -- een stap-voor-stap plan dat deze methodiek toepast op een bestaande codebase.</p></div>
 </section>
@@ -119,8 +107,8 @@
 
 <nav class="page-nav" aria-label="Paginanavigatie">
 <span class="nav-btn nav-disabled"></span>
-<span class="nav-counter">1 / 28</span>
-<a href="deel-01.html" class="nav-btn nav-next">Volgende &rarr;</a>
+<span class="nav-counter">1 / 17</span>
+<a href="deel-02.html" class="nav-btn nav-next">Volgende &rarr;</a>
 </nav>
 
 <button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>

@@ -19,7 +19,6 @@
 <div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
 <div class="ng">Fundament</div>
 <a href="index.html">Samenvatting</a>
-<a href="deel-01.html">Het Spectrum</a>
 <a href="deel-02.html" class="active">De Gereedschapskist</a>
 <div class="ng">Instructiesysteem</div>
 <a href="deel-03.html">De 5 Lagen</a>
@@ -27,26 +26,15 @@
 <a href="deel-05.html">Agents</a>
 <a href="deel-06.html">Hooks</a>
 <a href="deel-07.html">Tests</a>
-<a href="deel-17.html">Feedback Loop</a>
 <div class="ng">Werkwijze</div>
 <a href="deel-08.html">Plan Mode</a>
-<a href="deel-09.html">Context Management</a>
-<a href="deel-10.html">50/10/40 Methode</a>
 <a href="deel-11.html">Git-discipline</a>
-<a href="deel-12.html">Problemen Opdelen</a>
-<a href="deel-13.html">Model-selectie</a>
 <a href="deel-14.html">Parallel Werken</a>
-<div class="ng">Principes</div>
-<a href="deel-15.html">Single Source of Truth</a>
-<a href="deel-16.html">Verdedigingssysteem</a>
 <a href="deel-18.html">Veelgemaakte Fouten</a>
 <div class="ng">Aan de slag</div>
-<a href="deel-21.html">Jouw Startplan</a>
 <a href="deel-22.html">Starter Kit</a>
-<a href="deel-23.html">Plugins &amp; Tools</a>
-<a href="deel-24.html">MCP-servers</a>
+<a href="deel-24.html">Plugins &amp; Extensies</a>
 <a href="deel-25.html">Tips &amp; Tricks</a>
-<a href="deel-26.html">Sneltoetsen</a>
 <a href="deel-27.html">Bronnen &amp; Links</a>
 <div class="ng">Referentie</div>
 <a href="referentie-commandos.html">Commandoreferentie</a>
@@ -75,9 +63,6 @@
 
 <h3>Sessies verplaatsen</h3>
 <p>Sessies zijn niet gebonden aan een surface. Zet terminal-sessie voort op telefoon met <code>/remote-control</code>. Open in Desktop app met <code>/desktop</code>.</p>
-
-<h3>CI/CD integratie</h3>
-<p>Claude Code werkt ook in pipelines. <strong>GitHub Actions</strong> en <strong>GitLab CI/CD</strong> voor automatische PR reviews, code review bij elke push, en issue triage. Zie <a href="deel-11.html" style="color:var(--blue)">Git-discipline</a>.</p>
 
 <p><strong>Cursor</strong> — AI-powered code-editor (VS Code fork). Agent mode + rules systeem. <strong>Windsurf</strong> — Vergelijkbaar, met "Cascade" agent.</p>
 <div class="co ca"><span class="cl">Aanbeveling</span><p>Begin met <strong>Claude Code in terminal</strong> — alle concepten (CLAUDE.md, skills, hooks, agents) hebben daar native ondersteuning. VS Code extensie of Desktop app ernaast voor visuele diffs.</p></div>
@@ -138,11 +123,22 @@ claude -p "write tests" --fallback-model haiku</code></pre>
 <div class="co ci"><span class="cl">Krachtig patroon</span><p>Combineer <code>-p</code> met <code>--output-format json</code> voor machine-leesbare output. Ideaal voor integratie in CI/CD pipelines, cron jobs, of eigen tooling.</p></div>
 </section>
 
+
+<section id="modellen">
+<h2><span class="dn">DEEL 2D</span>Model-selectie</h2>
+<div class="dg">
+<div class="dr"><span class="nm">Opus 4.6</span><span class="ct">Complexe architectuur, moeilijke bugs</span><span class="ms">1.67x duurder dan Sonnet</span></div>
+<div class="dr"><span class="nm">Sonnet 4.6</span><span class="ct">Dagelijks werk, features, tests</span><span class="ms">Minder diep redeneren dan Opus</span></div>
+<div class="dr"><span class="nm">Haiku 4.5</span><span class="ct">Snelle lookups, uitleg, simpel werk</span><span class="ms">Minder instructies, minder complex</span></div>
+</div>
+<p><strong>Vuistregel:</strong> Sonnet default. Opus voor de moeilijke 20%. Haiku voor vragen. Wissel met <code>/model</code>.</p>
+</section>
+
 </main>
 
 <nav class="page-nav" aria-label="Paginanavigatie">
-<a href="deel-01.html" class="nav-btn nav-prev">&larr; Vorige</a>
-<span class="nav-counter">3 / 28</span>
+<a href="index.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">2 / 17</span>
 <a href="deel-03.html" class="nav-btn nav-next">Volgende &rarr;</a>
 </nav>
 

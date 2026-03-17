@@ -19,7 +19,6 @@
 <div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
 <div class="ng">Fundament</div>
 <a href="index.html">Samenvatting</a>
-<a href="deel-01.html">Het Spectrum</a>
 <a href="deel-02.html">De Gereedschapskist</a>
 <div class="ng">Instructiesysteem</div>
 <a href="deel-03.html">De 5 Lagen</a>
@@ -27,26 +26,15 @@
 <a href="deel-05.html">Agents</a>
 <a href="deel-06.html">Hooks</a>
 <a href="deel-07.html">Tests</a>
-<a href="deel-17.html">Feedback Loop</a>
 <div class="ng">Werkwijze</div>
 <a href="deel-08.html">Plan Mode</a>
-<a href="deel-09.html">Context Management</a>
-<a href="deel-10.html">50/10/40 Methode</a>
 <a href="deel-11.html">Git-discipline</a>
-<a href="deel-12.html">Problemen Opdelen</a>
-<a href="deel-13.html">Model-selectie</a>
 <a href="deel-14.html">Parallel Werken</a>
-<div class="ng">Principes</div>
-<a href="deel-15.html">Single Source of Truth</a>
-<a href="deel-16.html">Verdedigingssysteem</a>
 <a href="deel-18.html">Veelgemaakte Fouten</a>
 <div class="ng">Aan de slag</div>
-<a href="deel-21.html">Jouw Startplan</a>
 <a href="deel-22.html">Starter Kit</a>
-<a href="deel-23.html">Plugins &amp; Tools</a>
-<a href="deel-24.html">MCP-servers</a>
+<a href="deel-24.html">Plugins &amp; Extensies</a>
 <a href="deel-25.html" class="active">Tips &amp; Tricks</a>
-<a href="deel-26.html">Sneltoetsen</a>
 <a href="deel-27.html">Bronnen &amp; Links</a>
 <div class="ng">Referentie</div>
 <a href="referentie-commandos.html">Commandoreferentie</a>
@@ -228,14 +216,94 @@ claude -p "Genereer een .gitignore voor een Node.js project" > .gitignore
 
 # JSON output voor scripting
 claude -p "Lijst alle TODO's in dit project" --output-format json</code></pre>
+
+<h3>Sneltoetsen Cheat Sheet</h3>
+<p>Alle belangrijke keyboard shortcuts op een rij.</p>
+
+<h4>Chat & invoer</h4>
+<table class="gt">
+<thead><tr><th>Sneltoets</th><th>Actie</th></tr></thead>
+<tbody>
+<tr><td><code>Enter</code></td><td>Prompt versturen</td></tr>
+<tr><td><code>Shift+Enter</code></td><td>Nieuwe regel (na <code>/terminal-setup</code>)</td></tr>
+<tr><td><code>↑</code> / <code>↓</code></td><td>Door promptgeschiedenis bladeren</td></tr>
+<tr><td><code>Ctrl+R</code></td><td>Zoeken in promptgeschiedenis</td></tr>
+<tr><td><code>Ctrl+G</code></td><td>Externe editor openen voor lange prompts</td></tr>
+<tr><td><code>Ctrl+V</code></td><td>Afbeelding plakken van klembord</td></tr>
+<tr><td><code>Ctrl+S</code></td><td>Huidige invoer stashen / terughalen</td></tr>
+<tr><td><code>Spatiebalk</code> (ingedrukt)</td><td>Push-to-talk spraakherkenning</td></tr>
+<tr><td><code>Shift+Tab</code></td><td>Wissel tussen invoermodi</td></tr>
+</tbody>
+</table>
+
+<h4>Tijdens Claude's werk</h4>
+<table class="gt">
+<thead><tr><th>Sneltoets</th><th>Actie</th></tr></thead>
+<tbody>
+<tr><td><code>Escape</code></td><td>Huidige actie stoppen</td></tr>
+<tr><td><code>Esc Esc</code></td><td>Laatste wijziging ongedaan maken (undo)</td></tr>
+<tr><td><code>Ctrl+B</code></td><td>Taak naar achtergrond sturen</td></tr>
+<tr><td><code>Ctrl+F</code></td><td>Alle subagents stoppen</td></tr>
+<tr><td><code>Ctrl+_</code></td><td>Undo (alternatief)</td></tr>
+</tbody>
+</table>
+
+<h4>Model & modus</h4>
+<table class="gt">
+<thead><tr><th>Sneltoets</th><th>Actie</th></tr></thead>
+<tbody>
+<tr><td><code>Cmd+P</code></td><td>Model picker openen</td></tr>
+<tr><td><code>Cmd+O</code></td><td>Fast mode aan/uit</td></tr>
+<tr><td><code>Cmd+T</code></td><td>Thinking mode aan/uit</td></tr>
+<tr><td><code>← / →</code> (in model picker)</td><td>Effort level aanpassen</td></tr>
+</tbody>
+</table>
+
+<h4>Navigatie & overzicht</h4>
+<table class="gt">
+<thead><tr><th>Sneltoets</th><th>Actie</th></tr></thead>
+<tbody>
+<tr><td><code>Ctrl+T</code></td><td>Takenlijst tonen/verbergen</td></tr>
+<tr><td><code>Ctrl+O</code></td><td>Transcript tonen/verbergen</td></tr>
+<tr><td><code>Ctrl+Shift+O</code></td><td>Teammate preview tonen</td></tr>
+</tbody>
+</table>
+
+<h4>Bij goedkeuring van acties</h4>
+<table class="gt">
+<thead><tr><th>Sneltoets</th><th>Actie</th></tr></thead>
+<tbody>
+<tr><td><code>y</code> / <code>Enter</code></td><td>Goedkeuren</td></tr>
+<tr><td><code>n</code> / <code>Escape</code></td><td>Afwijzen</td></tr>
+<tr><td><code>Ctrl+E</code></td><td>Uitleg tonen/verbergen</td></tr>
+<tr><td><code>Shift+Tab</code></td><td>Wijzig permissie-modus</td></tr>
+</tbody>
+</table>
+
+<h4>Keybindings aanpassen</h4>
+<p>Wil je sneltoetsen anders? Bewerk <code>~/.claude/keybindings.json</code> of gebruik <code>/keybindings</code>:</p>
+<pre><code># Open de keybindings editor
+/keybindings
+
+# Of bewerk handmatig
+# ~/.claude/keybindings.json
+{
+  "bindings": [{
+    "context": "Chat",
+    "bindings": {
+      "ctrl+enter": "chat:submit",     // Ctrl+Enter om te versturen
+      "enter": "chat:newline"           // Enter voor nieuwe regel
+    }
+  }]
+}</code></pre>
 </section>
 
 </main>
 
 <nav class="page-nav" aria-label="Paginanavigatie">
 <a href="deel-24.html" class="nav-btn nav-prev">&larr; Vorige</a>
-<span class="nav-counter">24 / 28</span>
-<a href="deel-26.html" class="nav-btn nav-next">Volgende &rarr;</a>
+<span class="nav-counter">14 / 17</span>
+<a href="deel-27.html" class="nav-btn nav-next">Volgende &rarr;</a>
 </nav>
 
 <button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>

@@ -19,7 +19,6 @@
 <div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
 <div class="ng">Fundament</div>
 <a href="index.html">Samenvatting</a>
-<a href="deel-01.html">Het Spectrum</a>
 <a href="deel-02.html">De Gereedschapskist</a>
 <div class="ng">Instructiesysteem</div>
 <a href="deel-03.html" class="active">De 5 Lagen</a>
@@ -27,26 +26,15 @@
 <a href="deel-05.html">Agents</a>
 <a href="deel-06.html">Hooks</a>
 <a href="deel-07.html">Tests</a>
-<a href="deel-17.html">Feedback Loop</a>
 <div class="ng">Werkwijze</div>
 <a href="deel-08.html">Plan Mode</a>
-<a href="deel-09.html">Context Management</a>
-<a href="deel-10.html">50/10/40 Methode</a>
 <a href="deel-11.html">Git-discipline</a>
-<a href="deel-12.html">Problemen Opdelen</a>
-<a href="deel-13.html">Model-selectie</a>
 <a href="deel-14.html">Parallel Werken</a>
-<div class="ng">Principes</div>
-<a href="deel-15.html">Single Source of Truth</a>
-<a href="deel-16.html">Verdedigingssysteem</a>
 <a href="deel-18.html">Veelgemaakte Fouten</a>
 <div class="ng">Aan de slag</div>
-<a href="deel-21.html">Jouw Startplan</a>
 <a href="deel-22.html">Starter Kit</a>
-<a href="deel-23.html">Plugins &amp; Tools</a>
-<a href="deel-24.html">MCP-servers</a>
+<a href="deel-24.html">Plugins &amp; Extensies</a>
 <a href="deel-25.html">Tips &amp; Tricks</a>
-<a href="deel-26.html">Sneltoetsen</a>
 <a href="deel-27.html">Bronnen &amp; Links</a>
 <div class="ng">Referentie</div>
 <a href="referentie-commandos.html">Commandoreferentie</a>
@@ -120,7 +108,43 @@ Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
 ## Naamconventies
 - Tabellen: meervoud, snake_case (users, order_items)
 - Kolommen: snake_case (created_at, is_active)</code></pre>
-<div class="co ca"><span class="cl">Hoe het werkt</span><p>CLAUDE.md zegt: "Zie docs/refs/db-schema.md voor database valkuilen." Claude leest dat bestand alleen wanneer hij met de database werkt. Zo blijft je hoofdbestand klein en je context schoon.</p></div></div>
+<div class="co ca"><span class="cl">Hoe het werkt</span><p>CLAUDE.md zegt: "Zie docs/refs/db-schema.md voor database valkuilen." Claude leest dat bestand alleen wanneer hij met de database werkt. Zo blijft je hoofdbestand klein en je context schoon.</p></div>
+
+<h3>De Feedback Loop</h3>
+<div class="lv2">
+<div class="ls">Fout gevonden</div><div class="la">→</div>
+<div class="ls">Regel toegevoegd</div><div class="la">→</div>
+<div class="ls">Nooit meer herhaald</div><div class="la">↩</div>
+</div>
+<p>Elke fout wordt een regel. Na een maand: tientallen regels. Na drie maanden: het systeem kent jouw project beter dan welke nieuwe developer ook.</p>
+
+<h4>Concreet voorbeeld: van fout naar regel</h4>
+<p><strong>Situatie:</strong> Claude verwijdert een bestand uit <code>public/js/</code>. Blijkt: dat bestand wordt automatisch gegenereerd door een build-stap. Productie breekt.</p>
+
+<p><strong>Stap 1: Fix de fout</strong></p>
+<pre><code>"Herstel het verwijderde bestand en draai de build opnieuw"</code></pre>
+
+<p><strong>Stap 2: Schrijf een regressietest</strong></p>
+<pre><code>"Schrijf een test die verifieert dat alle verwachte
+ bestanden in public/js/ aanwezig zijn na een build"</code></pre>
+
+<p><strong>Stap 3: Voeg een regel toe</strong></p>
+<pre><code># docs/refs/build-regels.md
+- Verwijder NOOIT bestanden uit public/js/ --
+  deze worden automatisch gegenereerd door de build.
+  Check eerst: npm run build</code></pre>
+
+<p><strong>Stap 4: Verwijs vanuit CLAUDE.md</strong></p>
+<pre><code># CLAUDE.md (voeg toe aan kritieke regels)
+- Zie docs/refs/build-regels.md voor build-gerelateerde valkuilen</code></pre>
+
+<p><strong>Stap 5 (optioneel): Maak een hook</strong></p>
+<p>Als de fout echt kritiek is, blokkeer het met een hook zodat het onmogelijk wordt:</p>
+<pre><code># Pre-commit hook die checkt of gegenereerde bestanden intact zijn
+npm run build && git diff --exit-code public/js/</code></pre>
+
+<div class="co ca"><span class="cl">Het patroon</span><p><strong>Fout → fix → test → regel → (hook)</strong>. Hoe kritischer de fout, hoe harder de garantie. Vervelend? Regel. Productie kapot? Hook. Dit is hoe je systeem steeds slimmer wordt.</p></div>
+</div>
 
 <div class="lc lcy"><div class="lh"><span class="ln">LAAG 4</span><span class="lt">Persistent geheugen</span><span class="lp">MEMORY.md + auto memory</span></div>
 <p>Overleeft sessies. Bekende bugs, beslissingen, project IDs, procedures. Zonder dit begint elke sessie opnieuw.</p>
@@ -146,7 +170,7 @@ Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
 
 <nav class="page-nav" aria-label="Paginanavigatie">
 <a href="deel-02.html" class="nav-btn nav-prev">&larr; Vorige</a>
-<span class="nav-counter">4 / 28</span>
+<span class="nav-counter">3 / 17</span>
 <a href="deel-04.html" class="nav-btn nav-next">Volgende &rarr;</a>
 </nav>
 
