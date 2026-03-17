@@ -51,7 +51,16 @@
 
 <div class="lc lcp"><div class="lh"><span class="ln">LAAG 1</span><span class="lt">Globale regels</span><span class="lp">~/.claude/CLAUDE.md</span></div>
 <p>Persoonlijke voorkeuren voor <em>alle</em> projecten. "Schrijf comments in het Nederlands." · "Gebruik hyphens, nooit em-dashes." · "Vraag bevestiging voor verwijderen."</p>
-<p><strong>Vuistregel:</strong> Geldt voor elk project → hier. Projectspecifiek → niet.</p></div>
+<p><strong>Vuistregel:</strong> Geldt voor elk project → hier. Projectspecifiek → niet.</p>
+
+<h3>De globale CLAUDE.md als poortwachter</h3>
+<p>Laag 1 is meer dan stijlvoorkeuren -- het is het mechanisme om je <strong>hele werkwijze</strong> af te dwingen. Door twee compacte secties toe te voegen aan je globale CLAUDE.md, transformeer je het van passief naar actief:</p>
+<div class="co ca"><span class="cl">Twee toevoegingen die alles veranderen</span>
+<p><strong>1. Project-inrichting checks</strong> -- Claude controleert bij elke sessie of de basis aanwezig is: CLAUDE.md, hooks, docs/refs/ en .gitignore. Ontbreekt er iets? Claude biedt aan om het op te zetten.</p>
+<p><strong>2. Werkwijze-signalen</strong> -- Claude signaleert automatisch op cruciale momenten: bugfix → regel aanbieden, herhaling → skill voorstellen, terugkerende controle → agent aanbieden, vastlopen → reset suggereren, taakwissel → /clear herinneren, einde → handoff aanbieden, bloat → snoei waarschuwen, nieuwe code → test herinneren.</p>
+<p>Dit implementeert de <a href="#feedback-loop" style="color:var(--yellow)">feedback loop</a> (Laag 3) en de <a href="deel-18.html" style="color:var(--yellow)">anti-patronen</a> automatisch. De concrete copy-paste configuratie vind je in de <a href="deel-22.html" style="color:var(--yellow)">Starter Kit</a> (stap 2).</p>
+</div>
+</div>
 
 <div class="lc lcb"><div class="lh"><span class="ln">LAAG 2</span><span class="lt">Projectregels</span><span class="lp">./CLAUDE.md</span></div>
 <p>Briefing voor je specifieke project. Automatisch geladen. <strong>Houd het compact</strong> -- in de praktijk blijkt 400+ regels te veel; ~100 regels werkt beter. Frontier modellen volgen ~150-200 instructies, minus ~50 voor Claude Code's systeemprompt. Je hebt ~100-150 regels ruimte.</p>

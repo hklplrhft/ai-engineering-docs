@@ -85,7 +85,28 @@ cd mijn-project && claude</code></pre>
 ## Stijl
 - Comments in het Nederlands
 - Code in het Engels
-- Wees beknopt in uitleg, gedetailleerd in code</code></pre>
+- Wees beknopt in uitleg, gedetailleerd in code
+
+## Project-inrichting
+Bij de start van een taak, check of het project het volgende heeft:
+- CLAUDE.md in de project root -- zo niet, bied /init aan
+- .claude/settings.json met hooks -- zo niet, bied aan om in te richten
+- docs/refs/ map -- zo niet, bied aan bij eerste bugfix
+- .env in .gitignore -- zo niet, waarschuw direct
+
+## Werkwijze-signalen
+- Na een bugfix: bied aan om een regel in docs/refs/ toe te voegen
+- Na 3x dezelfde instructie: bied aan om een skill te maken (.claude/skills/)
+- Na 2 mislukte pogingen: stop, analyseer, stel /clear + nieuwe aanpak voor
+- Bij taakwissel: herinner aan /clear
+- Bij complexe lopende taken aan het einde: bied HANDOFF.md aan
+- Als project CLAUDE.md > 150 regels: waarschuw en stel snoeien voor
+- Na een terugkerende controle (3x handmatig): bied aan om een agent te maken (.claude/agents/)
+- Bij elke bugfix of nieuwe feature: herinner aan regressietest / test schrijven</code></pre>
+
+<div class="co ca"><span class="cl">Wat doen deze twee secties?</span>
+<p><strong>Project-inrichting checks</strong> zorgen dat elk project de basis heeft -- Claude controleert dit automatisch bij de start van een sessie en biedt aan om ontbrekende onderdelen op te zetten.</p>
+<p><strong>Werkwijze-signalen</strong> implementeren de <a href="deel-03.html" style="color:var(--yellow)">littekens-workflow</a> (Laag 3) en voorkomen de <a href="deel-18.html" style="color:var(--yellow)">veelgemaakte fouten</a> automatisch. Elke fout wordt een regel, elke herhaling een skill, en je project wordt slimmer met elke sessie.</p></div>
 
 <h3>Stap 3: Genereer project CLAUDE.md</h3>
 <pre><code># In je project directory
