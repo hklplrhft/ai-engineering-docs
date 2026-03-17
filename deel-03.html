@@ -134,7 +134,14 @@ Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
 <p><strong>Handoff files.</strong> Beëindig je een sessie? Vraag Claude om <code>HANDOFF.md</code> te schrijven met: doel, wat geprobeerd, wat werkte, wat faalde, volgende stappen.</p></div>
 
 <div class="lc lck"><div class="lh"><span class="ln">LAAG 5</span><span class="lt">Uitvoerbare extensies</span><span class="lp">skills, agents, hooks</span></div>
-<p>Code die Claude niet alleen leest maar <em>uitvoert</em>. Van "de AI helpt mij" naar "het systeem werkt voor mij." Drie fundamenteel verschillende dingen — zie volgende delen.</p></div>
+<p>Code die Claude niet alleen leest maar <em>uitvoert</em>. Van "de AI helpt mij" naar "het systeem werkt voor mij." Vier bouwstenen:</p>
+<div class="dg">
+<div class="dr"><span class="nm"><a href="deel-04.html" style="color:var(--cyan)">Skills</a></span><span class="ct">Herbruikbare instructieset (recept). Claude volgt de stappen in je huidige sessie.</span><span class="ms">Taak 3x handmatig gedaan? Maak een skill.</span></div>
+<div class="dr"><span class="nm"><a href="deel-05.html" style="color:var(--cyan)">Agents</a></span><span class="ct">Zelfstandige Claude-instantie met eigen context. Draait parallel, eigen focus.</span><span class="ms">Werk isoleren, parallel reviewen, bulk taken.</span></div>
+<div class="dr"><span class="nm"><a href="deel-06.html" style="color:var(--cyan)">Hooks</a></span><span class="ct">Shell-script dat automatisch draait. Deterministisch -- kan niet genegeerd worden.</span><span class="ms">Alles wat kapot gaat als Claude het negeert.</span></div>
+<div class="dr"><span class="nm"><a href="deel-07.html" style="color:var(--cyan)">Tests</a></span><span class="ct">Bewijs dat code werkt. Vangt regressies op voor ze in productie komen.</span><span class="ms">Elke functie die fout mag gaan = een test.</span></div>
+</div>
+<p><strong>Kernonderscheid:</strong> Skills en agents zijn <em>probabilistisch</em> -- Claude kan afwijken. Hooks en tests zijn <em>deterministisch</em> -- ze blokkeren altijd. Gebruik beide lagen samen.</p></div>
 </section>
 
 </main>
