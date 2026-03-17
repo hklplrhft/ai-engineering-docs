@@ -94,6 +94,18 @@ Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
 - Lint: npm run lint
 - Build: npm run build
 - Dev: npm run dev</code></pre>
+<h4>Van gesprek naar regel</h4>
+<div class="co cw"><span class="cl">Gespreksinstructies zijn sessie-only</span><p>Zeg je in een gesprek: "Gebruik nooit de externe Geocoding API" -- dan geldt dat <strong>alleen in die sessie</strong>. Volgende sessie is het vergeten. Wil je het waarborgen? Zet het in je <strong>project</strong> CLAUDE.md.</p></div>
+<p><strong>Voorbeeld:</strong> Je ontdekt dat de externe Geocoding API onbetrouwbaar is en zegt tegen Claude: "Gebruik altijd onze interne location service, nooit de Geocoding API." Zo maak je het permanent:</p>
+<pre><code># ./CLAUDE.md in je project-root (voeg toe aan kritieke regels)
+- Gebruik ALTIJD de interne location service (/api/location)
+  Nooit de externe Geocoding API -- die is onbetrouwbaar en kost per request</code></pre>
+<p>Na deze toevoeging geldt de regel in <em>elke</em> toekomstige sessie, voor iedereen die het project cloned.</p>
+<div class="co ci"><span class="cl">Tip: laat Claude het onthouden</span><p>Voeg een meta-regel toe aan je CLAUDE.md zodat Claude zelf aanbiedt om gespreksregels permanent te maken:</p></div>
+<pre><code># ./CLAUDE.md
+## Werkwijze
+- Wanneer ik in een gesprek een regel geef die voor het hele project moet gelden,
+  bied dan aan om deze toe te voegen aan ./CLAUDE.md (of docs/refs/ als het uitgebreid is).</code></pre>
 <p>Quick start: draai <code>/init</code> om een starter CLAUDE.md te genereren.</p></div>
 
 <div class="lc lcc"><div class="lh"><span class="ln">LAAG 3</span><span class="lt">Taakspecifieke regels</span><span class="lp">docs/refs/</span></div>
