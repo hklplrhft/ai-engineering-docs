@@ -49,6 +49,15 @@
 <h2><span class="dn">DEEL 3</span>Het Instructiesysteem — De 5 Lagen</h2>
 <p>Het hart van AI-engineered development. Bouw op in deze volgorde.</p>
 
+<h3>Waar hoort wat? -- Snelgids</h3>
+<div class="dg">
+<div class="dr"><span class="nm"><code>~/.claude/CLAUDE.md</code></span><span class="ct">Persoonlijke regels voor <strong>al je projecten</strong>. Werkwijze, stijl, veiligheid.</span><span class="ms">"Werk altijd op een branch" · "Comments in het Nederlands" · werkwijze-signalen</span></div>
+<div class="dr"><span class="nm"><code>./CLAUDE.md</code></span><span class="ct">Projectspecifieke briefing. Tech stack, commando's, kritieke regels, verwijzingen.</span><span class="ms">"Gebruik Prisma migrate, nooit raw SQL" · "Zie docs/refs/db-schema.md"</span></div>
+<div class="dr"><span class="nm"><code>docs/refs/</code></span><span class="ct">Gedetailleerde "littekens" -- lessen uit fouten. Worden on-demand geladen.</span><span class="ms">"Kolom is is_answer_ready, NIET answer_ready" · API-valkuilen · deploy-stappen</span></div>
+<div class="dr"><span class="nm"><code>MEMORY.md</code> + auto memory</span><span class="ct">Persistent geheugen per project, overleeft sessies. Niet in je repo -- staat in <code>~/.claude/projects/</code>.</span><span class="ms">"Bug tracker staat in Linear project INGEST" · "Gebruiker prefereert korte antwoorden"</span></div>
+</div>
+<div class="co ci"><span class="cl">Vuistregel</span><p><strong>Geldt voor elk project?</strong> → globale CLAUDE.md. <strong>Specifiek voor dit project?</strong> → project CLAUDE.md. <strong>Gedetailleerde les uit een fout?</strong> → docs/refs/. <strong>Context die niet in code of git staat?</strong> → memory. Dupliceer niet tussen lagen -- verwijs.</p></div>
+
 <div class="lc lcp"><div class="lh"><span class="ln">LAAG 1</span><span class="lt">Globale regels</span><span class="lp">~/.claude/CLAUDE.md</span></div>
 <p>Persoonlijke voorkeuren voor <em>alle</em> projecten. "Schrijf comments in het Nederlands." · "Gebruik hyphens, nooit em-dashes." · "Vraag bevestiging voor verwijderen."</p>
 <p><strong>Vuistregel:</strong> Geldt voor elk project → hier. Projectspecifiek → niet.</p>
