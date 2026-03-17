@@ -161,6 +161,9 @@ toggle.addEventListener('click', () => {
 overlay.addEventListener('click', closeMenu);
 // Close menu on nav link click (mobile)
 nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+// Scroll nav to active item
+const active = document.querySelector('.nav a.active');
+if (active) active.scrollIntoView({block:'center', behavior:'instant'});
 </script>
 </body>
 </html>
