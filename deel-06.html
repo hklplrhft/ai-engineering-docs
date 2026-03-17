@@ -85,6 +85,16 @@
 <p><strong>Wat gebeurt er?</strong> Bij elke commit draait automatisch lint + typecheck. Falen ze? Commit geblokkeerd. Na elke bestandswijziging draaien de gerelateerde tests. Faalt een test? Claude ziet de foutmelding en fixt het zelf.</p>
 <p>Configureer via <code>/hooks</code> (interactief) of edit <code>.claude/settings.json</code> handmatig. Claude kan ook hooks voor je schrijven: "Maak een pre-commit hook die lint en types checkt."</p>
 
+<h3>Voorbeelden per stack</h3>
+<p>Het voorbeeld hierboven is voor een Node.js-project. Hier zijn de commando's voor andere stacks:</p>
+<div class="dg">
+<div class="dr"><span class="nm"><strong>Stack</strong></span><span class="ct"><strong>PreCommit</strong></span><span class="ms"><strong>PostToolUse</strong></span></div>
+<div class="dr"><span class="nm">Next.js / React</span><span class="ct"><code>npm run lint && npx tsc --noEmit</code></span><span class="ms"><code>npm test -- --related</code></span></div>
+<div class="dr"><span class="nm">Flutter</span><span class="ct"><code>flutter analyze && dart format --set-exit-if-changed .</code></span><span class="ms"><code>flutter test</code></span></div>
+<div class="dr"><span class="nm">Python</span><span class="ct"><code>ruff check . && mypy .</code></span><span class="ms"><code>pytest --last-failed</code></span></div>
+<div class="dr"><span class="nm">Go</span><span class="ct"><code>go vet ./... && staticcheck ./...</code></span><span class="ms"><code>go test ./...</code></span></div>
+</div>
+
 <h3>Bonus: desktop notificaties</h3>
 <p>Start een lange taak en wil je weten wanneer Claude klaar is? Stel een Notification hook in:</p>
 <pre><code>"Notification": [{
