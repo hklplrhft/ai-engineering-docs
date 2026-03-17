@@ -96,6 +96,35 @@ claude
 # - Verwijzingen naar docs/refs/ voor specifieke regels
 # - Test commando's (npm test, pytest, etc.)
 # - Kritieke project-regels</code></pre>
+
+<p>Hier zijn kant-en-klare voorbeeldzinnen die je direct in je project <code>CLAUDE.md</code> kunt plakken. Pas aan waar nodig:</p>
+<pre><code>## Werkwijze
+- Werk altijd op een feature branch, nooit direct op main of develop.
+- Lees bestaande code voordat je wijzigingen voorstelt -- begrijp de context.
+- Stel een regressietest voor bij elke bugfix.
+- Commit regelmatig met duidelijke, Engelstalige commit messages.
+- Push of deploy nooit zonder expliciete bevestiging.
+
+## Commando's
+- Tests draaien: `npm test` / `pytest` / `flutter test`
+- Linting: `npm run lint` / `ruff check .`
+- Build: `npm run build` / `flutter build`
+
+## Veiligheid
+- Geen secrets hardcoden -- gebruik environment variables of .env (met .gitignore).
+- Review gegenereerde code op OWASP top 10 kwetsbaarheden.
+- Wees extra voorzichtig met destructieve shell commando's (rm -rf, git push --force, DROP TABLE).
+
+## Projectregels
+- Volg de conventies in docs/refs/ voor architectuur- en codebeslissingen.
+- Gebruik bestaande utilities en patterns voordat je nieuwe maakt.
+- Voeg geen dependencies toe zonder overleg.
+
+## Stijl
+- Code, commits en comments in het Engels.
+- Wees beknopt in uitleg, gedetailleerd in code.
+- Geen emoji's tenzij expliciet gevraagd.</code></pre>
+
 <div class="co ci"><span class="cl">Tip</span><p>Oefen ook meteen met <code>/plan</code> (denken voor doen), <code>/clear</code> (context opschonen bij taakwissel) en <code>/compact</code> (lange sessies inkorten). Dit zijn de drie commando's die je het vaakst zult gebruiken.</p></div>
 
 <h3>Stap 4: Stel hooks in</h3>
