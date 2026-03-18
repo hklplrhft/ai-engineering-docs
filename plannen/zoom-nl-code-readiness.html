@@ -188,7 +188,7 @@ pre code{background:none;padding:0;color:inherit}
 <table class="gt">
 <thead><tr><th>Fase</th><th>Wat</th><th>Impact</th><th>Moeite</th><th>Week</th></tr></thead>
 <tbody>
-<tr><td>0</td><td>Guard rails (AGENTS.md, hooks, .env, skills)</td><td><span class="badge bi">ZEER HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1</span></td></tr>
+<tr><td>0</td><td>Guard rails (CLAUDE.md, AGENTS.md, hooks, .env, skills, context mgmt)</td><td><span class="badge bi">ZEER HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1</span></td></tr>
 <tr><td>1</td><td>Constanten centraliseren</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1</span></td></tr>
 <tr><td>2</td><td>XSS-risico's dichten</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1</span></td></tr>
 <tr><td>3</td><td>Grote bestanden opsplitsen</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bm">MEDIUM</span></td><td><span class="badge bl">2-3</span></td></tr>
@@ -200,7 +200,7 @@ pre code{background:none;padding:0;color:inherit}
 
 <h3>Timeline</h3>
 <div class="tl">
-<div class="ti"><div class="wk">WEEK 1</div><h4>Fase 0 + 1 + 2: Guard rails, constanten, XSS</h4><p>Iedereen leest de AI Engineering Gids. AGENTS.md, .env.example, hooks, skills, littekens-bestand, en samenwerkingsregels staan klaar. Constanten gecentraliseerd. XSS-risico's gedicht.</p></div>
+<div class="ti"><div class="wk">WEEK 1</div><h4>Fase 0 + 1 + 2: Guard rails, constanten, XSS</h4><p>Iedereen leest de AI Engineering Gids. CLAUDE.md, AGENTS.md, .env.example, hooks (.claude/settings.json), skills, littekens-bestand, context management regels, en samenwerkingsregels staan klaar. Constanten gecentraliseerd. XSS-risico's gedicht.</p></div>
 <div class="ti"><div class="wk">WEEK 2</div><h4>Fase 3.1-3.2: Foto detail + instellingen opsplitsen</h4><p>De twee grootste bestanden (675 + 420 regels) opgesplitst in pagina, hooks, en utils.</p></div>
 <div class="ti"><div class="wk">WEEK 3</div><h4>Fase 3.3-3.5 + 4.1-4.2: Overige bestanden + test setup</h4><p>Alle bestanden >300 regels opgesplitst. Jest geconfigureerd. Tests voor de 5 belangrijkste utils.</p></div>
 <div class="ti"><div class="wk">WEEK 4</div><h4>Fase 4.3-4.4 + 5.1-5.2: Service tests + TypeScript setup</h4><p>Tests voor services. <code>allowJs: true</code> in tsconfig. Type interfaces voor API responses.</p></div>
@@ -233,6 +233,28 @@ pre code{background:none;padding:0;color:inherit}
 <div class="step">
 <div class="step-num">0.1</div>
 <div>
+<div class="step-what">CLAUDE.md aanmaken voor zoom-nl</div>
+<p>De gids noemt CLAUDE.md als <strong>Laag 2 -- het eerste dat Claude leest</strong>. Het huidige project heeft alleen AGENTS.md. CLAUDE.md geeft de briefing: tech stack, kritieke regels, verwijzingen naar docs/refs/.</p>
+<div class="lc lcg">
+<div class="lh"><span class="ln">INHOUD</span><span class="lt">Compact -- max ~100 regels</span></div>
+<pre><code># Zoom.nl -- CLAUDE.md
+## Stack: Next.js (Pages Router), SCSS Modules, geen TypeScript (nog)
+## Lees ook: AGENTS.md, docs/refs/zoom-nl-littekens.md
+## Kritieke regels:
+- Geen dangerouslySetInnerHTML zonder sanitizeHtml()
+- Constanten in src/config/site.js, nooit hardcoden
+- Nieuwe bestanden: max 150 regels
+- Nieuwe utils/hooks: altijd met test
+## Test: npx jest --bail --findRelatedTests
+## Lint: npx next lint --quiet</code></pre>
+</div>
+<div class="step-cmd">"Maak apps/zoom-nl/CLAUDE.md aan. Houd het compact (~100 regels). Vermeld tech stack, kritieke regels, test/lint commando's, en verwijs naar AGENTS.md en docs/refs/zoom-nl-littekens.md."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">0.2</div>
+<div>
 <div class="step-what">AGENTS.md uitbreiden met off-limits en patronen</div>
 <p>Het huidige bestand is 25 regels en mist concrete regels. Voeg off-limits bestanden en patronen voor nieuwe code toe.</p>
 <div class="lc lcr">
@@ -257,7 +279,7 @@ pre code{background:none;padding:0;color:inherit}
 </div>
 
 <div class="step">
-<div class="step-num">0.2</div>
+<div class="step-num">0.3</div>
 <div>
 <div class="step-what">.env.example aanmaken</div>
 <p>Er is geen <code>.env.example</code>. Een AI weet niet welke variabelen beschikbaar zijn en gaat URLs hardcoden.</p>
@@ -272,7 +294,7 @@ NEXT_PUBLIC_DFP_NETWORK_ID=116488029</code></pre>
 </div>
 
 <div class="step">
-<div class="step-num">0.3</div>
+<div class="step-num">0.4</div>
 <div>
 <div class="step-what">Pagina template aanmaken</div>
 <p>Een minimaal voorbeeld dat een AI kan kopieren. Voorkomt dat patronen worden overgenomen uit de 675-regel foto detail pagina.</p>
@@ -281,7 +303,7 @@ NEXT_PUBLIC_DFP_NETWORK_ID=116488029</code></pre>
 </div>
 
 <div class="step">
-<div class="step-num">0.4</div>
+<div class="step-num">0.5</div>
 <div>
 <div class="step-what">Hooks instellen (lint, secrets, tests)</div>
 <div class="co cd"><span class="cl">Kernvraag bij elke regel</span><p>"Wat als Claude dit negeert?" <strong>Vervelend = regel in AGENTS.md.</strong> <strong>Kapot = hook.</strong></p></div>
@@ -290,15 +312,28 @@ NEXT_PUBLIC_DFP_NETWORK_ID=116488029</code></pre>
 <div class="dr"><span class="nm">Pre-commit: secrets</span><span class="ct">Scan op hardcoded API keys, tokens, wachtwoorden.</span><span class="ms"><span class="badge bh">DETERMINISTISCH</span></span></div>
 <div class="dr"><span class="nm">Post-write: tests</span><span class="ct">Tests draaien automatisch na elke file write. Claude past aan bij falen.</span><span class="ms"><span class="badge bh">DETERMINISTISCH</span></span></div>
 </div>
-<div class="step-cmd">Typ /hooks in Claude Code en configureer:
-- PreCommit: npx next lint --quiet
-- PreCommit: secret detection (grep op API keys)
-- PostWrite: npx jest --bail --findRelatedTests (na fase 4)</div>
+<div class="step-cmd">Configureer in <code>.claude/settings.json</code>:
+<pre><code>{
+  "hooks": {
+    "PreCommit": [{
+      "hooks": [{ "type": "command",
+        "command": "npx next lint --quiet" }]
+    }, {
+      "hooks": [{ "type": "command",
+        "command": "grep -rn 'API_KEY\\|SECRET\\|TOKEN.*=' --include='*.js' --include='*.ts' src/ | grep -v node_modules | grep -v '.env'" }]
+    }],
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{ "type": "command",
+        "command": "npx jest --bail --findRelatedTests" }]
+    }]
+  }
+}</code></pre></div>
 </div>
 </div>
 
 <div class="step">
-<div class="step-num">0.5</div>
+<div class="step-num">0.6</div>
 <div>
 <div class="step-what">Skills aanmaken voor herhaalde taken</div>
 <p>Taak 3x handmatig gedaan? Maak een skill in <code>.claude/skills/</code>.</p>
@@ -307,7 +342,7 @@ NEXT_PUBLIC_DFP_NETWORK_ID=116488029</code></pre>
 </div>
 
 <div class="step">
-<div class="step-num">0.6</div>
+<div class="step-num">0.7</div>
 <div>
 <div class="step-what">Feedback loop: littekens-bestand aanmaken</div>
 <p>Maak <code>docs/refs/zoom-nl-littekens.md</code> -- elke AI-fout wordt een regel die voorkomt dat het opnieuw gebeurt.</p>
@@ -319,10 +354,24 @@ NEXT_PUBLIC_DFP_NETWORK_ID=116488029</code></pre>
 </div>
 </div>
 
+<div class="step">
+<div class="step-num">0.8</div>
+<div>
+<div class="step-what">Context management & sessie-overdracht</div>
+<p>Context is het #1 faalfactor bij AI-development. Zonder deze regels raakt Claude "in de war" bij lange sessies.</p>
+<div class="dg">
+<div class="dr"><span class="nm">/clear tussen taken</span><span class="ct">Nieuwe taak = schone context. CLAUDE.md blijft, rommel verdwijnt.</span><span class="ms">Altijd</span></div>
+<div class="dr"><span class="nm">/compact na 30+ min</span><span class="ct">Comprimeert geschiedenis. Voorkomt kwaliteitsdaling bij 70%+ context.</span><span class="ms">Lange sessies</span></div>
+<div class="dr"><span class="nm">HANDOFF.md</span><span class="ct">Bij sessie-overdracht: doel, wat geprobeerd, volgende stappen. Collega start niet blanco.</span><span class="ms">Einde sessie</span></div>
+</div>
+<div class="step-cmd">"Voeg aan CLAUDE.md toe: herinner mij aan /clear bij taakwissel, /compact bij lange sessies, en HANDOFF.md bij einde sessie."</div>
+</div>
+</div>
+
 <div class="fase-meta">
 <div class="fase-meta-block verificatie">
 <span class="fase-meta-label">Verificatie</span>
-<p>AGENTS.md review door team, <code>.env.example</code> klopt met Vercel dashboard, hooks actief</p>
+<p>CLAUDE.md + AGENTS.md review door team, <code>.env.example</code> klopt met Vercel dashboard, hooks in <code>.claude/settings.json</code> actief</p>
 </div>
 <div class="fase-meta-block livegang">
 <span class="fase-meta-label">Livegang</span>
@@ -421,6 +470,8 @@ export const DFP_NETWORK_ID = process.env.NEXT_PUBLIC_DFP_NETWORK_ID || '1164880
 <div class="co ci"><span class="cl">Waarom dit de grootste verbetering is</span><p>Bij een 675-regel bestand moet een AI het hele bestand lezen om iets kleins te wijzigen. Hogere kans op fouten, meer tokens, hogere kosten. <strong>Vuistregel: max 150 regels per bestand.</strong></p></div>
 
 <div class="co cw"><span class="cl">Belangrijk</span><p>Gebruik <strong>/plan</strong> voor elke split. Laat Claude eerst analyseren welke state, hooks en functies er zijn, en hoe ze opgesplitst kunnen worden. Akkoord geven, dan pas uitvoeren.</p></div>
+
+<div class="co cw"><span class="cl">Git-discipline bij splits</span><p>Elke split = eigen branch + eigen PR (max ~300 regels). Commit na elke geslaagde stap met specifieke bestanden (<code>git add &lt;bestand&gt;</code>, nooit <code>git add .</code>).</p></div>
 
 <div class="step">
 <div class="step-num">3.1</div>
@@ -633,7 +684,35 @@ Herhaal voor: photolikes.js, hydrate.js, viewport.js, segments.js</div>
 
 <div class="co cd"><span class="cl">Vuistregel</span><p><strong>Spoor 1 en 2 raken nooit hetzelfde bestand tegelijk.</strong> Plan bestandsverdeling in het weekoverleg.</p></div>
 
-<div class="co ci"><span class="cl">Samenwerkingsregels</span><p>De complete set samenwerkingsregels en werkwijze staat in de <a href="../deel-14.html" style="color:var(--blue)">AI Engineering Gids -- Parallel Werken</a>. Inclusief de 9 regels, bestandsverdeling strategie, en commit-discipline.</p></div>
+<div class="co ci"><span class="cl">Samenwerkingsregels</span><p>De complete set samenwerkingsregels en werkwijze staat in de <a href="../deel-14.html" style="color:var(--blue)">AI Engineering Gids -- Parallel Werken</a>. Hieronder de kernregels inline.</p></div>
+
+<h3>De 9 regels (uit de AI Engineering Gids)</h3>
+<div class="dg">
+<div class="dr"><span class="nm">1. Branch</span><span class="ct">Altijd op branch, nooit op main/develop direct</span></div>
+<div class="dr"><span class="nm">2. Check collega's</span><span class="ct">Welke bestanden raakt een collega? Check voor je begint</span></div>
+<div class="dr"><span class="nm">3. Specifiek committen</span><span class="ct"><code>git add &lt;bestand&gt;</code>, nooit <code>git add .</code></span></div>
+<div class="dr"><span class="nm">4. Commit-ritme</span><span class="ct">Na elke geslaagde wijziging, niet aan het einde van de dag</span></div>
+<div class="dr"><span class="nm">5. Context schoon</span><span class="ct"><code>/clear</code> tussen taken, <code>/compact</code> bij lange sessies</span></div>
+<div class="dr"><span class="nm">6. Handoff</span><span class="ct">HANDOFF.md bij sessie-overdracht</span></div>
+<div class="dr"><span class="nm">7. Geen PR-overlap</span><span class="ct">Twee open PRs raken NOOIT hetzelfde bestand</span></div>
+<div class="dr"><span class="nm">8. Plan eerst</span><span class="ct"><code>/plan</code> voor alles dat meer dan 1 bestand raakt</span></div>
+<div class="dr"><span class="nm">9. Feedback loop</span><span class="ct">Elke AI-fout wordt een regel in docs/refs/zoom-nl-littekens.md</span></div>
+</div>
+
+<h3>Parallel werken met worktrees</h3>
+<div class="lc lcb">
+<div class="lh"><span class="ln">WORKTREES</span><span class="lt">Twee taken tegelijk zonder conflicten</span></div>
+<pre><code>claude --worktree feature-upload-split
+claude --worktree bugfix-image-loading</code></pre>
+<p>Elke worktree is een aparte branch + werkdirectory. Geen merge-conflicten zolang ze verschillende bestanden raken.</p>
+</div>
+
+<h3>Writer/Reviewer patroon</h3>
+<div class="dg">
+<div class="dr"><span class="nm">Sessie A (Writer)</span><span class="ct">Implementeert de feature of split</span><span class="ms">Focus op bouwen</span></div>
+<div class="dr"><span class="nm">Sessie B (Reviewer)</span><span class="ct">Reviewt met frisse context -- ziet fouten die de writer mist</span><span class="ms">Focus op kwaliteit</span></div>
+<div class="dr"><span class="nm">Sessie A</span><span class="ct">Verwerkt feedback en maakt PR klaar</span><span class="ms">Afronden</span></div>
+</div>
 </section>
 </div>
 
@@ -679,7 +758,7 @@ Herhaal voor: photolikes.js, hydrate.js, viewport.js, segments.js</div>
 </tbody>
 </table>
 
-<p>Het plan is nooit "klaar" als eenmalige migratie. Na week 4 is de codebase klaar voor veilig AI-assisted development. Daarna draait de <strong>feedback loop</strong> door: elke fout wordt een regel, elke herhaalde taak wordt een skill, nieuwe code is TypeScript.</p>
+<div class="co ca"><span class="cl">De feedback loop draait door</span><p>Na week 4 is de basis klaar. Daarna: <strong>elke fout → regel in littekens-bestand</strong>. Elke herhaalde taak → skill. Terugkerende controle → hook. Nieuwe code is TypeScript. De codebase wordt elke week een stukje veiliger.</p></div>
 </section>
 </div>
 
