@@ -54,6 +54,7 @@
 <div class="dg">
 <div class="dr"><span class="nm"><code>~/.claude/CLAUDE.md</code></span><span class="ct">Persoonlijke regels voor <strong>al je projecten</strong>. Werkwijze, stijl, veiligheid.</span><span class="ms">"Werk altijd op een branch" · "Comments in het Nederlands" · werkwijze-signalen</span></div>
 <div class="dr"><span class="nm"><code>./CLAUDE.md</code></span><span class="ct">Projectspecifieke briefing. Tech stack, commando's, kritieke regels, verwijzingen.</span><span class="ms">"Gebruik Prisma migrate, nooit raw SQL" · "Zie docs/refs/db-schema.md"</span></div>
+<div class="dr"><span class="nm"><code>AGENTS.md</code> (per map)</span><span class="ct">Gelaagde instructies per map in een <strong>monorepo</strong>. Elke submap erft de root en voegt eigen regels toe.</span><span class="ms">"Gebruik Astro, geen Next.js" · "Importeer uit api-v2, niet api" · SEO-checklist per app</span></div>
 <div class="dr"><span class="nm"><code>docs/refs/</code></span><span class="ct">Gedetailleerde "littekens" -- lessen uit fouten. Worden on-demand geladen.</span><span class="ms">"Kolom is is_answer_ready, NIET answer_ready" · API-valkuilen · deploy-stappen</span></div>
 <div class="dr"><span class="nm"><code>MEMORY.md</code> + auto memory</span><span class="ct">Persistent geheugen per project, overleeft sessies. Niet in je repo -- staat in <code>~/.claude/projects/</code>. <strong>Persoonlijk:</strong> elke ontwikkelaar bouwt eigen geheugen op, ook in dezelfde repo.</span><span class="ms">"Bug tracker staat in Linear project INGEST" · "Gebruiker prefereert korte antwoorden"</span></div>
 </div>
@@ -120,6 +121,22 @@ Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
 - Gebruik ALTIJD de interne location service (/api/location)
   Nooit de externe Geocoding API -- die is onbetrouwbaar en kost per request</code></pre>
 <p>Na deze toevoeging geldt de regel in <em>elke</em> toekomstige sessie, voor iedereen die het project cloned.</p>
+
+<h4>AGENTS.md -- instructies per map (monorepo's)</h4>
+<p>In een monorepo heb je regels die voor de <em>hele repo</em> gelden en regels per app of package. <code>AGENTS.md</code> lost dit op met <strong>overerving</strong>: elke submap erft de root-AGENTS.md en voegt specifieke regels toe.</p>
+<pre><code>mijn-monorepo/
+├── CLAUDE.md              ← projectbriefing (compact, altijd geladen)
+├── AGENTS.md              ← repo-brede regels (import conventies, SEO, cost awareness)
+├── apps/
+│   ├── web/
+│   │   └── AGENTS.md      ← erft root + voegt toe: "Next.js, Tailwind, zie docs/refs/"
+│   └── api/
+│       └── AGENTS.md      ← erft root + voegt toe: "Express, Prisma, geen raw SQL"
+└── packages/
+    └── ui/
+        └── AGENTS.md      ← erft root + voegt toe: "Storybook story verplicht"</code></pre>
+<div class="co ci"><span class="cl">CLAUDE.md vs AGENTS.md</span><p><strong>CLAUDE.md</strong> = briefing voor het hele project (stack, commando's, kritieke regels). Eén bestand, altijd geladen. <strong>AGENTS.md</strong> = gelaagde, map-specifieke instructies. Meerdere bestanden, geladen wanneer Claude in die map werkt. Gebruik CLAUDE.md voor elk project. Voeg AGENTS.md toe wanneer je een monorepo hebt met verschillende regels per map.</p></div>
+
 <div class="co ci"><span class="cl">Tip: laat Claude het onthouden</span><p>Voeg een meta-regel toe aan je CLAUDE.md zodat Claude zelf aanbiedt om gespreksregels permanent te maken:</p></div>
 <pre><code># ./CLAUDE.md
 ## Werkwijze
