@@ -457,9 +457,10 @@ KEVEL_API_KEY=your-api-key</code></pre>
 <div class="step">
 <div class="step-num">1.5</div>
 <div>
-<div class="step-what">Dode Universal Analytics code verwijderen</div>
-<p>In <code>pages/_app.js:75-77,180-192</code> staan <code>ga()</code> calls. Universal Analytics is uitgezet door Google. Deze code geeft <strong>runtime errors bij elke route change</strong> omdat <code>ga</code> undefined is.</p>
-<div class="step-cmd">"Verwijder alle Universal Analytics code uit pages/_app.js: de ga() calls op regels 75-77 en 180-192. Google Analytics UA is deprecated en deze code geeft runtime errors."</div>
+<div class="step-what">_app.js: UA code verwijderen + class component migreren</div>
+<p>In <code>pages/_app.js:75-77,180-192</code> staan <code>ga()</code> calls die runtime errors geven (UA is uitgezet door Google). Daarnaast is <code>_app.js</code> een <strong>class component</strong> (<code>class ZoomApp extends React.Component</code>) -- het enige class component in de app. Dit blokkeert het gebruik van hooks en modern React.</p>
+<div class="co ci"><span class="cl">Uit haalbaarheidsanalyse</span><p>De haalbaarheidsanalyse (jan 2026) noemt class components in _app.js als een van de 5 complexiteitsfactoren. Migratie naar functional component maakt hooks mogelijk en is voorwaarde voor toekomstige modernisering.</p></div>
+<div class="step-cmd">"Verwijder alle Universal Analytics code uit pages/_app.js (ga() calls op regels 75-77 en 180-192). Migreer daarna de class component naar een functional component met hooks. Behoud alle bestaande functionaliteit."</div>
 </div>
 </div>
 
@@ -508,9 +509,10 @@ KEVEL_API_KEY=your-api-key</code></pre>
 <div class="step">
 <div class="step-num">1.10</div>
 <div>
-<div class="step-what">ESLint config aanmaken</div>
+<div class="step-what">ESLint config aanmaken (incl. max-lines regel)</div>
 <p>Er is geen <code>.eslintrc</code> in zoom-nl. De monorepo heeft een shared config in <code>packages/eslint-config-custom/</code> die niet wordt gebruikt. Zonder ESLint config werkt de lint-hook uit stap 0.5 niet.</p>
-<div class="step-cmd">"Maak .eslintrc.js aan die extends van eslint-config-custom/next.js. Voeg een lint script toe aan package.json."</div>
+<div class="co ci"><span class="cl">Uit refactoring plan</span><p>Het refactoring plan beveelt een <code>max-lines</code> ESLint regel aan die de 200 LOC limiet afdwingt. Dit voorkomt dat nieuwe bestanden te groot worden na fase 3 (splits).</p></div>
+<div class="step-cmd">"Maak .eslintrc.js aan die extends van eslint-config-custom/next.js. Voeg een lint script toe aan package.json. Voeg de regel max-lines toe: ['warn', { max: 200, skipBlankLines: true, skipComments: true }]."</div>
 </div>
 </div>
 
@@ -606,11 +608,21 @@ KEVEL_API_KEY=your-api-key</code></pre>
 </div>
 </div>
 
+<div class="step">
+<div class="step-num">2.5</div>
+<div>
+<div class="step-what">styled-components inventariseren</div>
+<p>De haalbaarheidsanalyse identificeert <strong>mixed styling</strong> als complexiteitsfactor: SCSS modules, Tailwind CSS en styled-components (v6.1.0) worden door elkaar gebruikt. Dit is verwarrend voor AI-assistenten en maakt consistente styling moeilijk.</p>
+<div class="co ci"><span class="cl">Scope</span><p>Volledige SCSS -> Tailwind consolidatie is een apart project. In deze fase alleen: inventariseer welke componenten styled-components gebruiken en documenteer dit in AGENTS.md zodat AI's weten welk patroon ze moeten volgen per component.</p></div>
+<div class="step-cmd">"Zoek alle bestanden die styled-components importeren in apps/zoom-nl/. Documenteer de lijst in AGENTS.md onder een 'Styling' sectie: welke bestanden gebruiken styled-components, welke SCSS, en welke Tailwind. Nieuwe code moet Tailwind gebruiken."</div>
+</div>
+</div>
+
 <div class="fase-meta">
 <div class="fase-meta-block verificatie">
 <span class="fase-meta-label">Verificatie</span>
 <p><strong>XSS:</strong> Alle user-content <code>dangerouslySetInnerHTML</code> instances gebruiken sanitizer. Geen <code>innerHTML =</code> in components.<br>
-<strong>Opschonen:</strong> <code>grep -rn "#fb001c\|#191919\|#dcdcdc" src/components/</code> geeft 0 resultaten. DFP ID komt alleen in config voor.</p>
+<strong>Opschonen:</strong> <code>grep -rn "#fb001c\|#191919\|#dcdcdc" src/components/</code> geeft 0 resultaten. DFP ID komt alleen in config voor. Styling-inventarisatie in AGENTS.md.</p>
 </div>
 <div class="fase-meta-block livegang">
 <span class="fase-meta-label">Livegang</span>
@@ -628,6 +640,8 @@ KEVEL_API_KEY=your-api-key</code></pre>
 <div class="co ci"><span class="cl">Waarom dit de grootste verbetering is</span><p>Bij een 675-regel bestand moet een AI het hele bestand lezen om iets kleins te wijzigen. Hogere kans op fouten, meer tokens, hogere kosten. <strong>Vuistregel: max 150 regels per bestand.</strong></p></div>
 
 <div class="co cw"><span class="cl">Belangrijk</span><p>Gebruik <strong>/plan</strong> voor elke split. Laat Claude eerst analyseren welke state, hooks en functies er zijn, en hoe ze opgesplitst kunnen worden. Akkoord geven, dan pas uitvoeren.</p></div>
+
+<div class="co ca"><span class="cl">Strangler fig pattern (uit refactoring plan)</span><p>Per bestand: (a) analyseer dependencies, (b) <strong>schrijf tests voor bestaand gedrag eerst</strong>, (c) extract naar nieuwe modules met tests, (d) verwijder oude code. Tests VOOR de split schrijven is veiliger -- je vangt regressies direct op.</p></div>
 
 <div class="co cw"><span class="cl">Git-discipline bij splits</span><p>Elke split = eigen branch + eigen PR (max ~300 regels). Commit na elke geslaagde stap met specifieke bestanden (<code>git add &lt;bestand&gt;</code>, nooit <code>git add .</code>).</p></div>
 
@@ -683,18 +697,24 @@ src/utils/exif.js                           -- helper functies</code></pre>
 <div class="step">
 <div class="step-num">3.4</div>
 <div>
-<div class="step-what">Overige 5 bestanden >300 regels</div>
+<div class="step-what">Overige bestanden >250 regels</div>
 <div class="dg">
-<div class="dr"><span class="nm">services/resources.js</span><span class="ct">Extract token refresh naar <code>services/token.js</code></span><span class="ms">Kritiek pad</span></div>
-<div class="dr"><span class="nm">services/helpers.js</span><span class="ct">Split: <code>helpers/auth.js</code>, <code>helpers/user.js</code>, <code>helpers/url.js</code></span><span class="ms">Per domein</span></div>
-<div class="dr"><span class="nm">profile-header.js</span><span class="ct">Extract <code>useProfileFollow</code>, <code>useProfileActions</code></span><span class="ms">Hooks eruit</span></div>
-<div class="dr"><span class="nm">menu-bar/index.js</span><span class="ct">Extract <code>useMenuState</code> hook</span><span class="ms">State logica</span></div>
+<div class="dr"><span class="nm">services/resources.js</span><span class="ct">Extract token refresh naar <code>services/token.js</code></span><span class="ms">376 LOC -- kritiek pad</span></div>
+<div class="dr"><span class="nm">services/helpers.js</span><span class="ct">Split: <code>helpers/auth.js</code>, <code>helpers/user.js</code>, <code>helpers/url.js</code></span><span class="ms">338 LOC -- per domein</span></div>
+<div class="dr"><span class="nm">profile-header.js</span><span class="ct">Extract <code>useProfileFollow</code>, <code>useProfileActions</code></span><span class="ms">346 LOC -- hooks eruit</span></div>
+<div class="dr"><span class="nm">photo-detail-header.js</span><span class="ct">Extract weergave-logica naar subcomponents</span><span class="ms">328 LOC</span></div>
+<div class="dr"><span class="nm">menu-bar/index.js</span><span class="ct">Extract <code>useMenuState</code> hook</span><span class="ms">315 LOC -- state logica</span></div>
+<div class="dr"><span class="nm">comment-list-item.js</span><span class="ct">Extract <code>useCommentActions</code> hook</span><span class="ms">299 LOC</span></div>
+<div class="dr"><span class="nm">challenges/[...slug].js</span><span class="ct">Extract hooks en data-fetching</span><span class="ms">288 LOC</span></div>
 </div>
 <div class="step-cmd">Per bestand apart:
 "Extract token refresh logica uit services/resources.js naar services/token.js"
 "Split services/helpers.js per domein: helpers/auth.js, helpers/user.js, helpers/url.js"
 "Extract useProfileFollow en useProfileActions hooks uit profile-header.js"
-"Extract useMenuState hook uit menu-bar/components/index.js"</div>
+"Extract weergave-subcomponents uit photo-detail-header.js"
+"Extract useMenuState hook uit menu-bar/components/index.js"
+"Extract useCommentActions hook uit comment-list-item.js"
+"Extract hooks en data-fetching uit challenges/[...slug].js"</div>
 </div>
 </div>
 
