@@ -945,6 +945,13 @@ claude --worktree bugfix-image-loading</code></pre>
 </table>
 
 <div class="co ca"><span class="cl">De feedback loop draait door</span><p>Na week 4 is de basis klaar. Daarna: <strong>elke fout -> regel in littekens-bestand</strong>. Elke herhaalde taak -> skill. Terugkerende controle -> hook. Nieuwe code is TypeScript. De codebase wordt elke week een stukje veiliger.</p></div>
+
+<h3>Buiten scope: toekomstige consolidatie</h3>
+<div class="co ci"><span class="cl">Styling consolidatie (SCSS -> Tailwind)</span>
+<p>Zoom.nl gebruikt drie styling-systemen door elkaar: <strong>SCSS modules</strong>, <strong>Tailwind CSS</strong> en <strong>styled-components</strong> (v6.1.0). De rest van de monorepo gebruikt Tailwind. Deze mix is verwarrend voor AI-assistenten en maakt consistente styling moeilijk.</p>
+<p>Volledige SCSS -> Tailwind migratie is een apart project dat buiten dit plan valt. <strong>Aanpak voor nu:</strong> nieuwe code schrijft Tailwind. Bij het aanraken van een bestaand component (bugfix, feature, split) migreer je de styling mee. Geen big bang -- geleidelijk, per component.</p>
+<p>Stap 2.5 in dit plan inventariseert welke componenten welk systeem gebruiken, zodat AI's weten welk patroon ze moeten volgen.</p>
+</div>
 </section>
 </div>
 
