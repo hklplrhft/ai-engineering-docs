@@ -140,13 +140,14 @@ pre code{background:none;padding:0;color:inherit}
 <a data-slide="3">Bouwblokken</a>
 <div class="ng">Fasen</div>
 <a data-slide="4">Fase 0: Guard Rails</a>
-<a data-slide="5">Fase 1+2: Constanten &amp; XSS</a>
-<a data-slide="6">Fase 3: Opsplitsen</a>
-<a data-slide="7">Fase 4+5: Tests &amp; TypeScript</a>
-<a data-slide="8">Fase 6: Accessibility</a>
+<a data-slide="5">Fase 1: Actieve Problemen</a>
+<a data-slide="6">Fase 2: XSS &amp; Opschonen</a>
+<a data-slide="7">Fase 3: Opsplitsen</a>
+<a data-slide="8">Fase 4+5: Tests &amp; TypeScript</a>
+<a data-slide="9">Fase 6: Accessibility</a>
 <div class="ng">Uitvoering</div>
-<a data-slide="9">Samenwerken</a>
-<a data-slide="10">Migratie &amp; Livegang</a>
+<a data-slide="10">Samenwerken</a>
+<a data-slide="11">Migratie &amp; Livegang</a>
 </nav>
 
 <main class="main">
@@ -158,6 +159,7 @@ pre code{background:none;padding:0;color:inherit}
 <h1>Van Vibe Coding naar<br><span>Veilig Samenwerken met AI</span></h1>
 <p>Hoe we de zoom-nl codebase klaarmaken zodat het hele team veilig en efficient kan bouwen met Claude Code. Van guard rails tot samenwerkingsafspraken.</p>
 <div class="co ci"><span class="cl">Methodiek</span><p>Dit plan is gebaseerd op de <a href="../index.html" style="color:var(--blue)">AI Engineering Gids</a> -- alle principes, werkwijzen en samenwerkingsregels staan daar uitgelegd.</p></div>
+<div class="co cw"><span class="cl">Bijgewerkt na codebase-analyse</span><p>Dit plan is bijgewerkt op basis van een grondige analyse van de zoom-nl codebase. Fouten in env vars, ontbrekende security issues en verkeerde prioriteiten zijn gecorrigeerd. Nieuwe fase 1 (Actieve Problemen) toegevoegd voor kritieke issues die direct aandacht nodig hebben.</p></div>
 </div>
 </div>
 
@@ -171,7 +173,7 @@ pre code{background:none;padding:0;color:inherit}
 <div class="sc"><h4>598 JavaScript bestanden</h4><p>Terwijl alle andere apps TypeScript-first zijn. Geen type safety, geen compiler die fouten vangt.</p></div>
 <div class="sc"><h4>0 tests</h4><p>Geen vangnet. Elke AI-wijziging is een gok -- je weet pas in productie of het werkt.</p></div>
 <div class="sc"><h4>10 bestanden >300 regels</h4><p>De foto detail pagina is 675 regels. Mixed concerns: data, logica, rendering in een bestand.</p></div>
-<div class="sc"><h4>60+ hardcoded URLs</h4><p>Geen Single Source of Truth. AI gaat URLs opnieuw hardcoden omdat er geen config is.</p></div>
+<div class="sc"><h4>Actieve security issues</h4><p>Gelekte reCAPTCHA secret key, onbeveiligde API route, cookies zonder <code>secure</code>/<code>httpOnly</code> flags.</p></div>
 </div>
 
 <div class="lc lcg">
@@ -189,8 +191,8 @@ pre code{background:none;padding:0;color:inherit}
 <thead><tr><th>Fase</th><th>Wat</th><th>Impact</th><th>Moeite</th><th>Week</th></tr></thead>
 <tbody>
 <tr><td>0</td><td>Guard rails (CLAUDE.md, AGENTS.md, hooks, .env, skills, context mgmt)</td><td><span class="badge bi">ZEER HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1</span></td></tr>
-<tr><td>1</td><td>Constanten centraliseren</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1</span></td></tr>
-<tr><td>2</td><td>XSS-risico's dichten</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1</span></td></tr>
+<tr><td>1</td><td>Actieve problemen: security, runtime errors, kosten</td><td><span class="badge bi">KRITIEK</span></td><td><span class="badge bm">MEDIUM</span></td><td><span class="badge bl">1</span></td></tr>
+<tr><td>2</td><td>XSS dichten & hardcoded kleuren opschonen</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bh">LAAG</span></td><td><span class="badge bl">1-2</span></td></tr>
 <tr><td>3</td><td>Grote bestanden opsplitsen</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bm">MEDIUM</span></td><td><span class="badge bl">2-3</span></td></tr>
 <tr><td>4</td><td>Tests voor kritieke utils en hooks</td><td><span class="badge bi">HOOG</span></td><td><span class="badge bm">MEDIUM</span></td><td><span class="badge bl">3-4</span></td></tr>
 <tr><td>5</td><td>TypeScript migratie (geleidelijk)</td><td><span class="badge bi">ZEER HOOG</span></td><td><span class="badge bl">HOOG</span></td><td><span class="badge bl">4+</span></td></tr>
@@ -200,10 +202,10 @@ pre code{background:none;padding:0;color:inherit}
 
 <h3>Timeline</h3>
 <div class="tl">
-<div class="ti"><div class="wk">WEEK 1</div><h4>Fase 0 + 1 + 2: Guard rails, constanten, XSS</h4><p>Iedereen leest de AI Engineering Gids. CLAUDE.md, AGENTS.md, .env.example, hooks (.claude/settings.json), skills, littekens-bestand, context management regels, en samenwerkingsregels staan klaar. Constanten gecentraliseerd. XSS-risico's gedicht.</p></div>
-<div class="ti"><div class="wk">WEEK 2</div><h4>Fase 3.1-3.2: Foto detail + instellingen opsplitsen</h4><p>De twee grootste bestanden (675 + 420 regels) opgesplitst in pagina, hooks, en utils.</p></div>
+<div class="ti"><div class="wk">WEEK 1</div><h4>Fase 0 + 1: Guard rails + actieve problemen</h4><p>Guard rails staan klaar (CLAUDE.md, AGENTS.md, .env.example, hooks, skills). Kritieke security fixes (reCAPTCHA secret, Kevel API, cookie flags), runtime errors (UA code weg, App Router conflict), en middleware-caching live.</p></div>
+<div class="ti"><div class="wk">WEEK 2</div><h4>Fase 2 + 3.1-3.2: XSS/opschonen + eerste splits</h4><p>XSS-risico's gedicht. Hardcoded kleuren naar CSS vars. De twee grootste bestanden (675 + 758 regels) opgesplitst.</p></div>
 <div class="ti"><div class="wk">WEEK 3</div><h4>Fase 3.3-3.5 + 4.1-4.2: Overige bestanden + test setup</h4><p>Alle bestanden >300 regels opgesplitst. Jest geconfigureerd. Tests voor de 5 belangrijkste utils.</p></div>
-<div class="ti"><div class="wk">WEEK 4</div><h4>Fase 4.3-4.4 + 5.1-5.2: Service tests + TypeScript setup</h4><p>Tests voor services. <code>allowJs: true</code> in tsconfig. Type interfaces voor API responses.</p></div>
+<div class="ti"><div class="wk">WEEK 4</div><h4>Fase 4.3-4.4 + 5.1-5.2: Service tests + TypeScript setup</h4><p>Tests voor services. tsconfig.json extend <code>tsconfig/nextjs.json</code>. Type interfaces voor API responses.</p></div>
 <div class="ti"><div class="wk">DOORLOPEND</div><h4>Fase 5.3 + 6 + feedback loop</h4><p>TypeScript per feature. Accessibility. Elke fout wordt een regel. Elke herhaalde taak wordt een skill.</p></div>
 </div>
 </section>
@@ -283,12 +285,37 @@ pre code{background:none;padding:0;color:inherit}
 <div>
 <div class="step-what">.env.example aanmaken</div>
 <p>Er is geen <code>.env.example</code>. Een AI weet niet welke variabelen beschikbaar zijn en gaat URLs hardcoden.</p>
-<pre><code>NEXT_PUBLIC_SITE_URL=https://www.zoom.nl
-NEXT_PUBLIC_IMAGE_HOST_DEV=https://mp-tst.reshift.nl/zoom/
-NEXT_PUBLIC_IMAGE_HOST_PROD=https://mp.reshift.nl/zoom/
-NEXT_PUBLIC_GTM_ID=GTM-P7PBC3
-NEXT_PUBLIC_DFP_NETWORK_ID=116488029</code></pre>
-<div class="step-cmd">"Maak een .env.example aan voor zoom-nl op basis van alle environment variabelen die in de code gebruikt worden. Zoek naar process.env in de hele app."</div>
+<div class="co cd"><span class="cl">Gecorrigeerd na codebase-analyse</span><p>De oorspronkelijke versie noemde variabelen die niet bestaan (<code>NEXT_PUBLIC_SITE_URL</code>, <code>NEXT_PUBLIC_IMAGE_HOST_DEV</code>, <code>NEXT_PUBLIC_GTM_ID</code>). Onderstaande lijst is gebaseerd op <code>grep -r "process.env" apps/zoom-nl/</code>.</p></div>
+<pre><code># Zoom.nl -- .env.example
+# API
+NEXT_PUBLIC_BLOX_API=https://api.example.com
+BLOX_API=https://api.example.com
+NEXT_PUBLIC_APP_API_HOST=https://api.example.com
+NEXT_PUBLIC_APP_HOST=https://www.zoom.nl
+
+# Environment
+NEXT_PUBLIC_ENV=development
+
+# Auth
+NEXTAUTH_SECRET=your-secret-here
+NEXT_PUBLIC_RESHIFT_REDIRECT_URI=https://www.zoom.nl/auth/callback
+
+# reCAPTCHA
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your-site-key
+RECAPTCHA_SECRET_KEY=your-secret-key
+
+# Ads (Adhese)
+NEXT_PUBLIC_ADHESE_ACCOUNT=your-account
+NEXT_PUBLIC_ADHESE_HOST=https://ads.example.com
+NEXT_PUBLIC_ADHESE_POOL_HOST=https://pool.example.com
+NEXT_PUBLIC_ADHESE_REQUEST_HOST=https://req.example.com
+NEXT_PUBLIC_ADHESE_LOCATION=your-location
+NEXT_PUBLIC_ADHESE_PREVIEW=false
+NEXT_PUBLIC_DISABLE_ADS=false
+
+# Kevel
+KEVEL_API_KEY=your-api-key</code></pre>
+<div class="step-cmd">"Maak een .env.example aan voor zoom-nl met bovenstaande variabelen. Verifieer met grep -r 'process.env' apps/zoom-nl/ dat de lijst compleet is."</div>
 <div class="step-need">DevOps -- kloppen de variabelen met het Vercel dashboard?</div>
 </div>
 </div>
@@ -305,12 +332,13 @@ NEXT_PUBLIC_DFP_NETWORK_ID=116488029</code></pre>
 <div class="step">
 <div class="step-num">0.5</div>
 <div>
-<div class="step-what">Hooks instellen (lint, secrets, tests)</div>
+<div class="step-what">Hooks instellen (lint, secrets)</div>
 <div class="co cd"><span class="cl">Kernvraag bij elke regel</span><p>"Wat als Claude dit negeert?" <strong>Vervelend = regel in AGENTS.md.</strong> <strong>Kapot = hook.</strong></p></div>
+<div class="co cw"><span class="cl">Gecorrigeerd na codebase-analyse</span><p>De test-hook (<code>PostToolUse</code> met <code>jest --findRelatedTests</code>) werkt niet zolang er nog geen tests zijn (fase 4). Activeer die hook pas na fase 4. Het secret-scan grep patroon is versmald om false positives te voorkomen.</p></div>
 <div class="dg">
 <div class="dr"><span class="nm">Pre-commit: lint</span><span class="ct">Fouten = commit geblokkeerd. Claude ziet fout en fixt zelf.</span><span class="ms"><span class="badge bh">DETERMINISTISCH</span></span></div>
 <div class="dr"><span class="nm">Pre-commit: secrets</span><span class="ct">Scan op hardcoded API keys, tokens, wachtwoorden.</span><span class="ms"><span class="badge bh">DETERMINISTISCH</span></span></div>
-<div class="dr"><span class="nm">Post-write: tests</span><span class="ct">Tests draaien automatisch na elke file write. Claude past aan bij falen.</span><span class="ms"><span class="badge bh">DETERMINISTISCH</span></span></div>
+<div class="dr"><span class="nm">Post-write: tests</span><span class="ct">Pas activeren na fase 4 (Jest setup). Tot die tijd: regel in AGENTS.md.</span><span class="ms"><span class="badge bm">LATER</span></span></div>
 </div>
 <div class="step-cmd">Configureer in <code>.claude/settings.json</code>:
 <pre><code>{
@@ -320,15 +348,11 @@ NEXT_PUBLIC_DFP_NETWORK_ID=116488029</code></pre>
         "command": "npx next lint --quiet" }]
     }, {
       "hooks": [{ "type": "command",
-        "command": "grep -rn 'API_KEY\\|SECRET\\|TOKEN.*=' --include='*.js' --include='*.ts' src/ | grep -v node_modules | grep -v '.env'" }]
-    }],
-    "PostToolUse": [{
-      "matcher": "Edit|Write",
-      "hooks": [{ "type": "command",
-        "command": "npx jest --bail --findRelatedTests" }]
+        "command": "grep -rn 'PRIVATE_KEY\\|PASSWORD.*=.*[^$]' --include='*.js' --include='*.ts' src/ pages/ | grep -v node_modules | grep -v '.env'" }]
     }]
   }
-}</code></pre></div>
+}</code></pre>
+<p style="color:var(--yellow);font-size:12px;margin-top:8px"><strong>Let op:</strong> ESLint config (<code>.eslintrc</code>) ontbreekt nog -- moet in fase 1 worden aangemaakt voordat deze hook werkt. De PostToolUse test-hook wordt pas toegevoegd na fase 4.</p></div>
 </div>
 </div>
 
@@ -381,43 +405,157 @@ NEXT_PUBLIC_DFP_NETWORK_ID=116488029</code></pre>
 </section>
 </div>
 
-<!-- SLIDE 5: Fase 1+2 -- Constanten & XSS -->
-<div class="slide" data-slide-id="5" data-hash="fase1-2">
-<section id="fase1-2">
-<h2><span class="dn">FASE 1+2</span>Constanten & XSS Dichten <span class="badge bh">2-3 DAGEN</span></h2>
+<!-- SLIDE 5: Fase 1 -- Actieve Problemen (NIEUW) -->
+<div class="slide" data-slide-id="5" data-hash="fase1">
+<section id="fase1">
+<h2><span class="dn">FASE 1</span>Actieve Problemen Oplossen <span class="badge bi">2-3 DAGEN</span></h2>
 
-<h3>Fase 1: Constanten centraliseren</h3>
-<p>60+ hardcoded URLs, 14 hardcoded kleuren in JS. Maak een Single Source of Truth.</p>
+<div class="co cd"><span class="cl">Waarom dit eerst</span><p>Deze issues zijn <strong>nu actief</strong>: een gelekte secret key, onbeveiligde API routes, runtime errors op elke pagina, en onnodige kosten per request. Dit heeft prioriteit boven constanten centraliseren of bestanden splitsen.</p></div>
+
+<h3>Security -- KRITIEK</h3>
 
 <div class="step">
 <div class="step-num">1.1</div>
 <div>
-<div class="step-what">Site configuratie centraliseren</div>
-<pre><code>// src/config/site.js
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zoom.nl';
-export const SITE_NAME = 'Zoom.nl';
-export const IMAGE_HOST = process.env.NEXT_PUBLIC_ENV === 'development'
-  ? process.env.NEXT_PUBLIC_IMAGE_HOST_DEV
-  : process.env.NEXT_PUBLIC_IMAGE_HOST_PROD;
-export const DFP_NETWORK_ID = process.env.NEXT_PUBLIC_DFP_NETWORK_ID || '116488029';</code></pre>
-<div class="step-cmd">"Maak src/config/site.js aan met SITE_URL, SITE_NAME, IMAGE_HOST, en DFP_NETWORK_ID. Gebruik environment variabelen. Migreer daarna src/utils/images.js en de display-ad component om deze config te gebruiken in plaats van hardcoded URLs."</div>
+<div class="step-what">reCAPTCHA secret key lekt naar client bundle</div>
+<p>In <code>src/services/captcha.js:4</code> wordt <code>process.env.NEXT_PUBLIC_RECAPTCHA_SECRET_KEY</code> gebruikt. De <code>NEXT_PUBLIC_</code> prefix zorgt ervoor dat Next.js deze variabele in de client bundle stopt. <strong>Iedereen kan de secret key uit de browser halen.</strong></p>
+<div class="step-cmd">"Hernoem NEXT_PUBLIC_RECAPTCHA_SECRET_KEY naar RECAPTCHA_SECRET_KEY (zonder NEXT_PUBLIC_ prefix). Verplaats de reCAPTCHA verificatie naar een API route (server-side only). Update .env.example."</div>
+<div class="step-need">Vercel env vars aanpassen na deploy</div>
 </div>
 </div>
 
 <div class="step">
 <div class="step-num">1.2</div>
 <div>
-<div class="step-what">Analytics IDs + hardcoded kleuren migreren</div>
-<div class="dg">
-<div class="dr"><span class="nm">app/layout.js</span><span class="ct">GTM en GA IDs naar environment variables</span><span class="ms">Analytics</span></div>
-<div class="dr"><span class="nm">display-ad/</span><span class="ct">Vervang <code>dfpNetworkId="116488029"</code> door config</span><span class="ms">2 instances</span></div>
-<div class="dr"><span class="nm">6 component files</span><span class="ct">Hardcoded kleuren (#fb001c, #191919, #dcdcdc) naar CSS vars</span><span class="ms">14 instances</span></div>
-</div>
-<div class="step-cmd">"Verplaats de hardcoded GTM ID en GA IDs in app/layout.js naar environment variabelen. Definieer ze in src/config/site.js."</div>
+<div class="step-what">Kevel API route beveiligen</div>
+<p><code>pages/api/tasks/kevel.js</code> voert code uit zonder authenticatie. Voeg een auth check toe.</p>
+<div class="step-cmd">"Voeg authenticatie toe aan pages/api/tasks/kevel.js. Minimaal: check op een API key header of session token. Geen ongeauthenticeerde requests."</div>
+<div class="step-need">Security review</div>
 </div>
 </div>
 
-<h3>Fase 2: XSS-risico's dichten</h3>
+<div class="step">
+<div class="step-num">1.3</div>
+<div>
+<div class="step-what">Cookie security flags toevoegen</div>
+<p>In <code>src/services/helpers.js</code> (regels 193, 199, 209, 215) worden auth cookies gezet met <code>httpOnly: false</code> en zonder <code>secure: true</code>. XSS-aanvallen kunnen tokens stelen, en tokens kunnen over HTTP worden onderschept.</p>
+<div class="step-cmd">"Voeg secure: true en httpOnly: true toe aan alle setCookie calls in src/services/helpers.js. Zorg dat SameSite ook goed staat (Lax of Strict)."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">1.4</div>
+<div>
+<div class="step-what">Security headers toevoegen</div>
+<p>CSP, Referrer-Policy en Permissions-Policy ontbreken in <code>next.config.js</code>. Dit is een standaard security baseline.</p>
+<div class="step-cmd">"Voeg security headers toe aan next.config.js via de headers() config: Content-Security-Policy, Referrer-Policy (strict-origin-when-cross-origin), Permissions-Policy, X-Content-Type-Options (nosniff), X-Frame-Options (DENY)."</div>
+</div>
+</div>
+
+<h3>Runtime bugs -- KAPOT</h3>
+
+<div class="step">
+<div class="step-num">1.5</div>
+<div>
+<div class="step-what">Dode Universal Analytics code verwijderen</div>
+<p>In <code>pages/_app.js:75-77,180-192</code> staan <code>ga()</code> calls. Universal Analytics is uitgezet door Google. Deze code geeft <strong>runtime errors bij elke route change</strong> omdat <code>ga</code> undefined is.</p>
+<div class="step-cmd">"Verwijder alle Universal Analytics code uit pages/_app.js: de ga() calls op regels 75-77 en 180-192. Google Analytics UA is deprecated en deze code geeft runtime errors."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">1.6</div>
+<div>
+<div class="step-what">App Router conflict oplossen</div>
+<p>De <code>app/</code> directory en <code>pages/</code> directory zijn tegelijk actief. <code>app/layout.js</code> dupliceert functionaliteit uit <code>pages/_app.js</code> (metadata, analytics) en bevat dode UA code die runtime errors geeft.</p>
+<div class="co cw"><span class="cl">Let op</span><p>De oorspronkelijke versie van dit plan stelde voor om GA/GTM IDs in <code>app/layout.js</code> naar env vars te verplaatsen. Maar dit bestand moet <strong>weg</strong> -- het is een conflict met de Pages Router die de app daadwerkelijk gebruikt.</p></div>
+<div class="step-cmd">"Verplaats eventuele unieke routes uit app/ naar pages/. Verwijder daarna de app/ directory. Zoom.nl gebruikt de Pages Router -- app/layout.js dupliceert _app.js en veroorzaakt inconsistenties."</div>
+<div class="step-need">Check of er routes in app/ zitten die niet in pages/ bestaan</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">1.7</div>
+<div>
+<div class="step-what"><code>process.browser</code> vervangen (21 locaties)</div>
+<p><code>process.browser</code> is deprecated in Next.js en kan breken bij een upgrade. Vervang door <code>typeof window !== 'undefined'</code>.</p>
+<div class="step-cmd">"Vervang alle 21 voorkomens van process.browser in 17 bestanden door typeof window !== 'undefined'. Gebruik zoek-en-vervang, niet handmatig."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">1.8</div>
+<div>
+<div class="step-what"><code>getInitialProps</code> vervangen</div>
+<p><code>pages/artikel/[[...slug]]/index.js:20-44</code> gebruikt <code>getInitialProps</code> (deprecated). Migreer naar <code>getServerSideProps</code>.</p>
+<div class="step-cmd">"Vervang getInitialProps in pages/artikel/[[...slug]]/index.js door getServerSideProps. Behoud dezelfde data-fetching logica."</div>
+</div>
+</div>
+
+<h3>Kosten -- RISICO</h3>
+
+<div class="step">
+<div class="step-num">1.9</div>
+<div>
+<div class="step-what">Middleware redirect-caching</div>
+<p><code>middleware.js:57</code> doet een GraphQL-call bij <strong>elke request</strong>. De TTL-parameter in <code>src/lib/apollo.js:10</code> wordt nooit gebruikt. Dit is het grootste Vercel-kostenrisico.</p>
+<div class="step-cmd">"Voeg per-URL caching toe aan de middleware redirect-lookup. Gebruik een in-memory cache met TTL (bijv. 5 minuten). De huidige code doet een GraphQL-call bij elke request zonder caching."</div>
+</div>
+</div>
+
+<h3>Configuratie opschonen</h3>
+
+<div class="step">
+<div class="step-num">1.10</div>
+<div>
+<div class="step-what">ESLint config aanmaken</div>
+<p>Er is geen <code>.eslintrc</code> in zoom-nl. De monorepo heeft een shared config in <code>packages/eslint-config-custom/</code> die niet wordt gebruikt. Zonder ESLint config werkt de lint-hook uit stap 0.5 niet.</p>
+<div class="step-cmd">"Maak .eslintrc.js aan die extends van eslint-config-custom/next.js. Voeg een lint script toe aan package.json."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">1.11</div>
+<div>
+<div class="step-what">Tailwind content-paths fixen</div>
+<p><code>tailwind.config.js</code> mist <code>./src/**/*</code> in de content-array. Tailwind classes in <code>src/</code> worden niet opgepikt.</p>
+<div class="step-cmd">"Voeg './src/**/*.{js,ts,jsx,tsx}' toe aan de content-array in tailwind.config.js."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">1.12</div>
+<div>
+<div class="step-what">tsconfig.json extend shared config</div>
+<p>De huidige <code>tsconfig.json</code> definieert alles zelf, terwijl de monorepo een shared <code>tsconfig/nextjs.json</code> heeft. <code>allowJs: true</code> en <code>strict: true</code> staan al aan -- die hoeven niet meer gezet te worden.</p>
+<div class="co cw"><span class="cl">Correctie</span><p>De oorspronkelijke versie van dit plan (fase 5.1) stelde voor om <code>allowJs: true</code> aan te zetten. Dit staat al aan in <code>tsconfig.json:14</code>. De actie is: extend de shared config en verwijder duplicate opties.</p></div>
+<div class="step-cmd">"Pas tsconfig.json aan: extend tsconfig/nextjs.json (de shared monorepo config). Verwijder opties die al in de shared config staan. Behoud alleen zoom-nl-specifieke overrides."</div>
+</div>
+</div>
+
+<div class="fase-meta">
+<div class="fase-meta-block verificatie">
+<span class="fase-meta-label">Verificatie</span>
+<p><strong>Security:</strong> <code>grep -r "NEXT_PUBLIC_RECAPTCHA_SECRET" src/</code> geeft 0 resultaten. Cookies hebben <code>secure</code> + <code>httpOnly</code>. Security headers in response.<br>
+<strong>Runtime:</strong> Geen <code>ga()</code> calls, geen <code>app/</code> directory, <code>process.browser</code> grep geeft 0 resultaten.<br>
+<strong>Config:</strong> <code>npx next lint</code> werkt, Tailwind classes in src/ worden opgepikt, tsconfig extend shared.</p>
+</div>
+<div class="fase-meta-block livegang">
+<span class="fase-meta-label">Livegang</span>
+<p><strong>Hoog risico bij security fixes</strong> -- test auth flows, reCAPTCHA, en cookie-gebaseerde sessies grondig op staging. Middleware-caching apart deployen en monitoren op Vercel. Runtime fixes (UA code, process.browser) zijn laag risico.</p>
+</div>
+</div>
+</section>
+</div>
+
+<!-- SLIDE 6: Fase 2 -- XSS & Opschonen -->
+<div class="slide" data-slide-id="6" data-hash="fase2">
+<section id="fase2">
+<h2><span class="dn">FASE 2</span>XSS Dichten & Opschonen <span class="badge bh">1-2 DAGEN</span></h2>
+
+<div class="co ci"><span class="cl">Wat is veranderd t.o.v. het oude plan</span><p>De oude "Fase 1: Constanten centraliseren" is grotendeels geschrapt. Na codebase-analyse bleek dat de meeste "60+ hardcoded URLs" API-endpoints in <code>navigation.json</code> zijn die daar horen. <code>SITE_URL</code> is al <code>process.env.NEXT_PUBLIC_APP_HOST</code>, en images gaan via de API (niet via een aparte image host). Wat overblijft: hardcoded kleuren naar CSS vars en DFP network ID naar config.</p></div>
+
+<h3>XSS-risico's dichten</h3>
 
 <div class="step">
 <div class="step-num">2.1</div>
@@ -443,28 +581,48 @@ export const DFP_NETWORK_ID = process.env.NEXT_PUBLIC_DFP_NETWORK_ID || '1164880
 <div class="step-num">2.2</div>
 <div>
 <div class="step-what">innerHTML assignments vervangen</div>
-<p>2 bestanden gebruiken <code>innerHTML = tag</code> -- XSS als tags user input bevatten. Vervang door React state of <code>textContent</code>.</p>
+<p>Bestanden in <code>src/components/field/tags/</code> gebruiken <code>innerHTML = tag</code> -- XSS als tags user input bevatten. Vervang door React state of <code>textContent</code>.</p>
 <div class="step-cmd">"Zoek alle innerHTML assignments in src/components/field/tags/ en vervang ze door textContent of React state. innerHTML met user input is een XSS-risico."</div>
+</div>
+</div>
+
+<h3>Opschonen</h3>
+
+<div class="step">
+<div class="step-num">2.3</div>
+<div>
+<div class="step-what">Hardcoded kleuren naar CSS variabelen</div>
+<p>14 instances van hardcoded kleuren (<code>#fb001c</code>, <code>#191919</code>, <code>#dcdcdc</code>) in 6 component bestanden. Verplaats naar CSS custom properties in het theme.</p>
+<div class="step-cmd">"Vervang de 14 hardcoded kleurwaarden in component bestanden door CSS custom properties. Definieer de kleuren in het SCSS theme bestand."</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">2.4</div>
+<div>
+<div class="step-what">DFP network ID naar config</div>
+<p>Het DFP network ID (<code>116488029</code>) staat hardcoded in display-ad components. Verplaats naar <code>src/config/site.js</code>.</p>
+<div class="step-cmd">"Verplaats het hardcoded DFP network ID naar src/config/site.js en importeer het in de display-ad components."</div>
 </div>
 </div>
 
 <div class="fase-meta">
 <div class="fase-meta-block verificatie">
 <span class="fase-meta-label">Verificatie</span>
-<p><strong>Fase 1:</strong> <code>grep -r "https://www.zoom.nl" src/</code> geeft 0 resultaten (behalve config). Build slaagt + steekproef op images en ads.<br>
-<strong>Fase 2:</strong> Alle user-content <code>dangerouslySetInnerHTML</code> instances gebruiken sanitizer.</p>
+<p><strong>XSS:</strong> Alle user-content <code>dangerouslySetInnerHTML</code> instances gebruiken sanitizer. Geen <code>innerHTML =</code> in components.<br>
+<strong>Opschonen:</strong> <code>grep -rn "#fb001c\|#191919\|#dcdcdc" src/components/</code> geeft 0 resultaten. DFP ID komt alleen in config voor.</p>
 </div>
 <div class="fase-meta-block livegang">
 <span class="fase-meta-label">Livegang</span>
-<p><strong>Fase 1:</strong> Laag risico. Functionaliteit verandert niet.<br>
-<strong>Fase 2:</strong> Medium risico. DOMPurify kan in theorie HTML-content anders renderen. Check artikelpagina's, profielpagina's en foto-beschrijvingen op missende content.</p>
+<p><strong>XSS:</strong> Medium risico. DOMPurify kan in theorie HTML-content anders renderen. Check artikelpagina's, profielpagina's en foto-beschrijvingen op missende content.<br>
+<strong>Opschonen:</strong> Laag risico. Functioneel identiek.</p>
 </div>
 </div>
 </section>
 </div>
 
-<!-- SLIDE 6: Fase 3 -- Bestanden Splitsen -->
-<div class="slide" data-slide-id="6" data-hash="fase3">
+<!-- SLIDE 7: Fase 3 -- Bestanden Splitsen -->
+<div class="slide" data-slide-id="7" data-hash="fase3">
 <section id="fase3">
 <h2><span class="dn">FASE 3</span>Grote Bestanden Opsplitsen <span class="badge bm">3-5 DAGEN</span></h2>
 <div class="co ci"><span class="cl">Waarom dit de grootste verbetering is</span><p>Bij een 675-regel bestand moet een AI het hele bestand lezen om iets kleins te wijzigen. Hogere kans op fouten, meer tokens, hogere kosten. <strong>Vuistregel: max 150 regels per bestand.</strong></p></div>
@@ -553,8 +711,8 @@ src/utils/exif.js                           -- helper functies</code></pre>
 </section>
 </div>
 
-<!-- SLIDE 7: Fase 4+5 -- Tests & TypeScript -->
-<div class="slide" data-slide-id="7" data-hash="fase4-5">
+<!-- SLIDE 8: Fase 4+5 -- Tests & TypeScript -->
+<div class="slide" data-slide-id="8" data-hash="fase4-5">
 <section id="fase4-5">
 <h2><span class="dn">FASE 4+5</span>Tests & TypeScript <span class="badge bm">3-5 DAGEN</span> + <span class="badge bl">DOORLOPEND</span></h2>
 
@@ -565,7 +723,14 @@ src/utils/exif.js                           -- helper functies</code></pre>
 <div class="step-num">4.1</div>
 <div>
 <div class="step-what">Jest opzetten voor zoom-nl</div>
-<div class="step-cmd">"Configureer Jest voor zoom-nl. Er is al een packages/jestconfig. Voeg een test script toe aan package.json en maak jest.config.js aan. Zorg dat turbo run test --filter=zoom-nl werkt."</div>
+<div class="step-cmd">"Configureer Jest voor zoom-nl. Er is al een packages/jestconfig. Voeg een test script toe aan package.json en maak jest.config.js aan. Zorg dat turbo run test --filter=zoom-nl werkt."
+
+Na Jest setup: activeer de PostToolUse test-hook uit stap 0.5:
+<pre><code>"PostToolUse": [{
+  "matcher": "Edit|Write",
+  "hooks": [{ "type": "command",
+    "command": "npx jest --bail --findRelatedTests" }]
+}]</code></pre></div>
 </div>
 </div>
 
@@ -592,12 +757,13 @@ Herhaal voor: photolikes.js, hydrate.js, viewport.js, segments.js</div>
 <div class="step">
 <div class="step-num">5.1</div>
 <div>
-<div class="step-what">TypeScript configuratie aanzetten</div>
+<div class="step-what">TypeScript configuratie afstemmen op monorepo</div>
+<div class="co cw"><span class="cl">Correctie</span><p>De oorspronkelijke versie stelde voor om <code>allowJs: true</code> aan te zetten, maar dit staat <strong>al aan</strong> in <code>tsconfig.json:14</code>. Ook <code>strict: true</code> staat al aan. De actie is: extend de shared <code>tsconfig/nextjs.json</code> config en verwijder duplicate opties.</p></div>
 <div class="lc lcb">
-<div class="lh"><span class="ln">STAP 1</span><span class="lt">allowJs: true</span></div>
-<p>TS en JS bestaan naast elkaar. Geen big bang.</p>
+<div class="lh"><span class="ln">ACTIE</span><span class="lt">Extend shared config, verwijder duplicaten</span></div>
+<p>De monorepo heeft een shared <code>tsconfig/nextjs.json</code>. Zoom.nl definieert alles zelf. Extend de shared config zodat toekomstige TS-upgrades monorepo-breed doorwerken.</p>
 </div>
-<div class="step-cmd">"Zet allowJs: true in de tsconfig.json van zoom-nl zodat TypeScript en JavaScript naast elkaar kunnen bestaan. Zorg dat de build nog werkt."</div>
+<div class="step-cmd">"Pas tsconfig.json aan: voeg 'extends': 'tsconfig/nextjs.json' toe. Verwijder opties die al in de shared config staan. Behoud alleen zoom-nl-specifieke overrides. Verifieer dat de build nog werkt."</div>
 </div>
 </div>
 
@@ -623,18 +789,18 @@ Herhaal voor: photolikes.js, hydrate.js, viewport.js, segments.js</div>
 <div class="fase-meta-block verificatie">
 <span class="fase-meta-label">Verificatie</span>
 <p><strong>Tests:</strong> <code>turbo run test --filter=zoom-nl</code> slaagt, coverage >80% voor <code>src/utils/</code><br>
-<strong>TypeScript:</strong> <code>tsconfig.json</code> actief, nieuwe bestanden zijn <code>.ts</code>/<code>.tsx</code></p>
+<strong>TypeScript:</strong> <code>tsconfig.json</code> extend shared config, nieuwe bestanden zijn <code>.ts</code>/<code>.tsx</code></p>
 </div>
 <div class="fase-meta-block livegang">
 <span class="fase-meta-label">Livegang</span>
-<p>Geen risico. Tests voegen alleen bestanden toe. <code>allowJs: true</code> en type-bestanden veranderen niets aan runtime gedrag. Kan altijd live.</p>
+<p>Geen risico. Tests voegen alleen bestanden toe. tsconfig en type-bestanden veranderen niets aan runtime gedrag. Kan altijd live.</p>
 </div>
 </div>
 </section>
 </div>
 
-<!-- SLIDE 8: Fase 6 -- Accessibility -->
-<div class="slide" data-slide-id="8" data-hash="fase6">
+<!-- SLIDE 9: Fase 6 -- Accessibility -->
+<div class="slide" data-slide-id="9" data-hash="fase6">
 <section id="fase6">
 <h2><span class="dn">FASE 6</span>Accessibility Baseline <span class="badge bm">2-3 DAGEN</span></h2>
 <p>De hele app heeft <strong>slechts 14 accessibility attributen</strong>. Root AGENTS.md: "Accessibility improvements are treated as SEO & LLM improvements."</p>
@@ -666,8 +832,8 @@ Herhaal voor: photolikes.js, hydrate.js, viewport.js, segments.js</div>
 </section>
 </div>
 
-<!-- SLIDE 9: Samenwerken bij Zoom.nl (merged from old slides 10+11) -->
-<div class="slide" data-slide-id="9" data-hash="samenwerken">
+<!-- SLIDE 10: Samenwerken bij Zoom.nl -->
+<div class="slide" data-slide-id="10" data-hash="samenwerken">
 <section id="samenwerken">
 <h2><span class="dn">SAMENWERKEN</span>Samenwerken bij Zoom.nl</h2>
 
@@ -716,8 +882,8 @@ claude --worktree bugfix-image-loading</code></pre>
 </section>
 </div>
 
-<!-- SLIDE 10: Migratie & Livegang -->
-<div class="slide" data-slide-id="10" data-hash="migratie">
+<!-- SLIDE 11: Migratie & Livegang -->
+<div class="slide" data-slide-id="11" data-hash="migratie">
 <section id="migratie">
 <h2><span class="dn">MIGRATIE</span>Migratie & Livegang</h2>
 
@@ -741,7 +907,7 @@ claude --worktree bugfix-image-loading</code></pre>
 <div class="dr"><span class="nm">Nieuwe features</span><span class="ct">Ja -- schrijf nieuwe code volgens de nieuwe patronen</span><span class="ms">Direct toepassen</span></div>
 <div class="dr"><span class="nm">Bugfixes</span><span class="ct">Ja -- fix de bug, schrijf een regressietest als het kan</span><span class="ms">Business as usual</span></div>
 <div class="dr"><span class="nm">Grote refactors >300 regels</span><span class="ct">Wacht tot fase 3 -- dan splitsen we ze gestructureerd</span><span class="ms">Week 2-3</span></div>
-<div class="dr"><span class="nm">Nieuwe hardcoded URLs</span><span class="ct">Wacht op site.js config (fase 1) of gebruik alvast env vars</span><span class="ms">Week 1</span></div>
+<div class="dr"><span class="nm">Security fixes</span><span class="ct">Fase 1 items direct oppakken -- niet wachten</span><span class="ms">Week 1</span></div>
 </div>
 
 <h3>Livegang per fase</h3>
@@ -749,16 +915,16 @@ claude --worktree bugfix-image-loading</code></pre>
 <thead><tr><th>Fase</th><th>Risico</th><th>Verificatie</th><th>Strategie</th></tr></thead>
 <tbody>
 <tr><td>0</td><td><span class="badge bh">GEEN</span></td><td>AGENTS.md review, .env.example klopt, hooks actief</td><td>Merge naar develop, geen deploy nodig</td></tr>
-<tr><td>1</td><td><span class="badge bh">LAAG</span></td><td>Geen hardcoded URLs meer (behalve config), images + ads laden</td><td>Build check + steekproef</td></tr>
-<tr><td>2</td><td><span class="badge bm">MEDIUM</span></td><td>Alle user-content via sanitizer</td><td>Check artikelen, profielen en foto-beschrijvingen</td></tr>
+<tr><td>1</td><td><span class="badge bi">HOOG</span></td><td>Security fixes getest, geen runtime errors, middleware gecached</td><td>Security fixes apart deployen + monitoren. Auth flows testen op staging.</td></tr>
+<tr><td>2</td><td><span class="badge bm">MEDIUM</span></td><td>Alle user-content via sanitizer, geen hardcoded kleuren</td><td>Check artikelen, profielen en foto-beschrijvingen op missende content</td></tr>
 <tr><td>3</td><td><span class="badge bm">MEDIUM</span></td><td>Geen bestanden >200 regels in pages/</td><td>Per bestand deployen + testen. Elke split is aparte PR.</td></tr>
 <tr><td>4</td><td><span class="badge bh">GEEN</span></td><td>Tests slagen, coverage >80% voor utils</td><td>Voegt alleen bestanden toe</td></tr>
-<tr><td>5</td><td><span class="badge bh">GEEN</span></td><td>tsconfig actief, nieuwe bestanden zijn .ts/.tsx</td><td>Geen runtime wijzigingen</td></tr>
+<tr><td>5</td><td><span class="badge bh">GEEN</span></td><td>tsconfig extend shared, nieuwe bestanden zijn .ts/.tsx</td><td>Geen runtime wijzigingen</td></tr>
 <tr><td>6</td><td><span class="badge bh">LAAG</span></td><td>Lighthouse score >80</td><td>Alleen aria-labels, geen functionele wijzigingen</td></tr>
 </tbody>
 </table>
 
-<div class="co ca"><span class="cl">De feedback loop draait door</span><p>Na week 4 is de basis klaar. Daarna: <strong>elke fout → regel in littekens-bestand</strong>. Elke herhaalde taak → skill. Terugkerende controle → hook. Nieuwe code is TypeScript. De codebase wordt elke week een stukje veiliger.</p></div>
+<div class="co ca"><span class="cl">De feedback loop draait door</span><p>Na week 4 is de basis klaar. Daarna: <strong>elke fout -> regel in littekens-bestand</strong>. Elke herhaalde taak -> skill. Terugkerende controle -> hook. Nieuwe code is TypeScript. De codebase wordt elke week een stukje veiliger.</p></div>
 </section>
 </div>
 
@@ -767,7 +933,7 @@ claude --worktree bugfix-image-loading</code></pre>
 <!-- Slide navigation bar -->
 <div class="slide-nav">
 <button class="slide-nav-btn" id="prevBtn"><span class="slide-nav-arrow">&larr;</span> Vorige</button>
-<span class="slide-counter" id="slideCounter">1 / 11</span>
+<span class="slide-counter" id="slideCounter">1 / 12</span>
 <button class="slide-nav-btn" id="nextBtn">Volgende <span class="slide-nav-arrow">&rarr;</span></button>
 </div>
 
