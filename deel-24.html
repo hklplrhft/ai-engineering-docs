@@ -237,6 +237,61 @@ claude mcp add --scope project database -- npx -y @mcp/postgres-server</code></p
 </tbody>
 </table>
 
+<h3>Aanbevolen MCP-servers voor ontwikkelaars</h3>
+<p>Naast de basis-servers hierboven zijn er tientallen community- en vendor-MCP-servers beschikbaar. Hieronder een gecureerde selectie, gegroepeerd per categorie.</p>
+
+<h4>Browser & debugging</h4>
+<table class="gt">
+<thead><tr><th>Server</th><th>Wat het doet</th><th>Installatie</th></tr></thead>
+<tbody>
+<tr><td><strong>Chrome DevTools</strong></td><td>Chrome debuggen: network, performance, console, screenshots</td><td><code>chrome-devtools-mcp</code></td></tr>
+<tr><td><strong>Playwright</strong></td><td>Browser automatiseren en testen (Microsoft)</td><td><code>@playwright/mcp</code></td></tr>
+</tbody>
+</table>
+
+<h4>Documentatie & kennis</h4>
+<table class="gt">
+<thead><tr><th>Server</th><th>Wat het doet</th><th>Installatie</th></tr></thead>
+<tbody>
+<tr><td><strong>Context7</strong></td><td>Actuele, versie-specifieke library documentatie ophalen</td><td><code>@upstash/context7-mcp</code></td></tr>
+<tr><td><strong>Sequential Thinking</strong></td><td>Gestructureerd stap-voor-stap redeneren</td><td><code>@modelcontextprotocol/server-sequential-thinking</code></td></tr>
+</tbody>
+</table>
+
+<h4>Infrastructuur & DevOps</h4>
+<table class="gt">
+<thead><tr><th>Server</th><th>Wat het doet</th><th>Installatie</th></tr></thead>
+<tbody>
+<tr><td><strong>Cloudflare</strong></td><td>Volledige Cloudflare API (DNS, Workers, R2, Zero Trust)</td><td><code>@cloudflare/mcp-server-cloudflare</code></td></tr>
+<tr><td><strong>Supabase</strong></td><td>Database, auth en storage beheren</td><td><code>@supabase/mcp-server-supabase</code></td></tr>
+<tr><td><strong>Sentry</strong></td><td>Error tracking, issues en Seer AI-analyse</td><td><code>@sentry/mcp-server</code></td></tr>
+<tr><td><strong>Kubernetes</strong></td><td>Cluster beheer, pods, deployments</td><td><code>kubernetes-mcp-server</code></td></tr>
+</tbody>
+</table>
+
+<h4>Productiviteit & projectmanagement</h4>
+<table class="gt">
+<thead><tr><th>Server</th><th>Wat het doet</th><th>Installatie</th></tr></thead>
+<tbody>
+<tr><td><strong>Notion</strong></td><td>Workspaces, databases en pages lezen/schrijven</td><td><code>@notionhq/notion-mcp-server</code></td></tr>
+<tr><td><strong>Linear</strong></td><td>Issues en sprints beheren (remote MCP)</td><td><code>https://mcp.linear.app/mcp</code></td></tr>
+<tr><td><strong>Figma</strong></td><td>Design data, componenten en tokens uitlezen</td><td><code>figma-developer-mcp</code></td></tr>
+<tr><td><strong>Todoist</strong></td><td>Taken en projecten beheren</td><td><code>@doist/todoist-ai</code></td></tr>
+</tbody>
+</table>
+
+<h4>Web & data</h4>
+<table class="gt">
+<thead><tr><th>Server</th><th>Wat het doet</th><th>Installatie</th></tr></thead>
+<tbody>
+<tr><td><strong>Firecrawl</strong></td><td>Websites scrapen en omzetten naar gestructureerde data</td><td><code>firecrawl-mcp</code></td></tr>
+</tbody>
+</table>
+
+<div class="callout tip">
+<strong>Tip:</strong> Begin met <code>Context7</code> (altijd actuele docs), <code>@playwright/mcp</code> (browser debugging) en <code>Chrome DevTools</code> (network/performance). Deze drie dekken de meest voorkomende developer-workflows en zijn snel te installeren.
+</div>
+
 <h3>Voorbeeld: Playwright in actie</h3>
 <p>Met de Playwright MCP-server kan Claude je browser besturen. Handig voor frontend-debugging, visual testing, of data ophalen van websites.</p>
 <pre><code># Na installatie kun je in je gesprek zeggen:
