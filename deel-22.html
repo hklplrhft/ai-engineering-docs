@@ -168,9 +168,9 @@ de situatie zich voordoet:
 <p><strong>Project-inrichting check</strong> verwijst naar <code>~/.claude/docs/project-setup.md</code> voor de volledige setup-procedure -- details staan op een plek, niet gekopieerd. De minimale check zorgt dat bestaande projecten ook gecontroleerd worden.</p>
 <p><strong>Signalen "wanneer ingrijpen"</strong> voorkomen de <a href="deel-18.html" style="color:var(--yellow)">veelgemaakte fouten</a>: eindeloos herhalen, vage prompts, code zonder tests.</p>
 <p><strong>Signalen "wanneer uitbreiden"</strong> implementeren de <a href="deel-03.html" style="color:var(--yellow)">5-lagen feedback loop</a>: elke fout wordt een regel, elke herhaling een skill, en je project groeit organisch mee.</p>
-<p>Combineer dit met een <a href="deel-06.html" style="color:var(--yellow)">SessionStart hook</a> (stap 4b) voor deterministische controle van de basis.</p></div>
+<p>Combineer dit met een <a href="deel-06.html" style="color:var(--yellow)">SessionStart hook</a> (stap 6) voor deterministische controle van de basis.</p></div>
 
-<h3 id="project-setup-checklist">Stap 2b: Maak ~/.claude/docs/project-setup.md</h3>
+<h3 id="project-setup-checklist">Stap 3: Maak ~/.claude/docs/project-setup.md</h3>
 <p>De globale CLAUDE.md uit stap 2 verwijst naar dit bestand voor de volledige setup-procedure. Maak <code>~/.claude/docs/project-setup.md</code> aan met de volgende inhoud:</p>
 <pre><code># Project Setup Checklist
 
@@ -256,9 +256,9 @@ Na het doorlopen van alle stappen, controleer:
 - [ ] docs/refs/ directory aanwezig
 - [ ] Pre-commit hook geinstalleerd en werkend
 - [ ] Eerste commit geslaagd</code></pre>
-<div class="co ci"><span class="cl">Compact overzicht vs. uitgebreide stappen</span><p>Dit bestand is het <strong>compacte overzicht</strong> dat Claude volgt bij project-inrichting. De uitgebreide versies van elke stap -- met copy-paste configuraties en voorbeelden -- vind je verderop: <a href="#stap4" style="color:var(--yellow)">hooks</a> (stap 4), <a href="#stap7" style="color:var(--yellow)">docs/refs/</a> (stap 7) en <a href="#stap8" style="color:var(--yellow)">.gitignore</a> (stap 8).</p></div>
+<div class="co ci"><span class="cl">Compact overzicht vs. uitgebreide stappen</span><p>Dit bestand is het <strong>compacte overzicht</strong> dat Claude volgt bij project-inrichting. De uitgebreide versies van elke stap -- met copy-paste configuraties en voorbeelden -- vind je verderop: <a href="#stap5" style="color:var(--yellow)">hooks</a> (stap 5), <a href="#stap9" style="color:var(--yellow)">docs/refs/</a> (stap 9) en <a href="#stap10" style="color:var(--yellow)">.gitignore</a> (stap 10).</p></div>
 
-<h3>Stap 3: Genereer project CLAUDE.md</h3>
+<h3>Stap 4: Genereer project CLAUDE.md</h3>
 <pre><code># In je project directory
 claude
 /init
@@ -284,7 +284,7 @@ claude
 
 <div class="co ci"><span class="cl">Tip</span><p>Oefen ook meteen met <code>/plan</code> (denken voor doen), <code>/clear</code> (context opschonen bij taakwissel) en <code>/compact</code> (lange sessies inkorten). Dit zijn de drie commando's die je het vaakst zult gebruiken.</p></div>
 
-<h3 id="stap4">Stap 4: Stel hooks in</h3>
+<h3 id="stap5">Stap 5: Stel hooks in</h3>
 <p>Dit is het belangrijkste deel -- hooks zijn <strong>onmogelijk te omzeilen</strong>. Maak <code>.claude/settings.json</code> aan in je project:</p>
 <pre><code>{
   "hooks": {
@@ -332,7 +332,7 @@ claude
 <strong>Notification:</strong> Desktop-melding als Claude klaar is of op je wacht.</p>
 <p>Dit voorbeeld gebruikt Node.js-commando's. Werk je met Flutter, Python of Go? Zie <a href="deel-06.html#hooks">Hooks -- Voorbeelden per stack</a> voor de juiste commando's.</p></div>
 
-<h3>Stap 4b: SessionStart hook -- deterministische project-check</h3>
+<h3>Stap 6: SessionStart hook -- deterministische project-check</h3>
 <p>De signalen in je globale CLAUDE.md zijn probabilistisch -- Claude <em>kan</em> ze vergeten. Voeg een SessionStart hook toe die bij elke sessie <strong>deterministisch</strong> controleert of de basis aanwezig is.</p>
 <p>Maak <code>~/.claude/hooks/project-check.sh</code> aan:</p>
 <pre><code>#!/bin/bash
@@ -373,7 +373,7 @@ fi</code></pre>
 <div class="co ca"><span class="cl">Probabilistisch + deterministisch</span>
 <p>De SessionStart hook garandeert het <strong>fundament</strong> (CLAUDE.md, .git, .gitignore, docs/refs/). De signalen in je globale CLAUDE.md laten de rest <strong>organisch groeien</strong> (tests, skills, agents, hooks). Samen vormen ze een systeem dat niet vergeet en niet overwelmt. Zie <a href="deel-06.html" style="color:var(--yellow)">Hooks -- SessionStart</a> voor de uitgebreide versie.</p></div>
 
-<h3>Stap 5: Maak een start-feature skill</h3>
+<h3>Stap 7: Maak een start-feature skill</h3>
 <p>Maak <code>.claude/skills/start-feature/SKILL.md</code> aan. Dit dwingt het juiste proces af bij elke nieuwe feature.</p>
 <p><strong>Vuistregel:</strong> heb je een taak al 3x handmatig gedaan? Maak er een skill van.</p>
 <pre><code>---
@@ -400,7 +400,7 @@ Start een nieuwe feature: $ARGUMENTS
 - Elke publieke functie krijgt minimaal 1 test</code></pre>
 <p>Gebruik: <code>/start-feature login pagina met e-mail en wachtwoord</code></p>
 
-<h3>Stap 6: Maak een fix-bug skill</h3>
+<h3>Stap 8: Maak een fix-bug skill</h3>
 <p>Maak <code>.claude/skills/fix-bug/SKILL.md</code> aan:</p>
 <pre><code>---
 name: fix-bug
@@ -426,10 +426,10 @@ Fix de volgende bug: $ARGUMENTS
 - Fix de root cause, niet het symptoom
 - Elke bugfix MOET een regressietest hebben
 - Bij onduidelijke oorzaak: gebruik /plan eerst
-- Stap 8-9 sluiten de feedback loop (zie deel 3: CLAUDE.md)</code></pre>
+- Stap 10-11 sluiten de feedback loop (zie deel 3: CLAUDE.md)</code></pre>
 <p>Gebruik: <code>/fix-bug users krijgen een 500 error bij het inloggen na session timeout</code></p>
 
-<h3 id="stap7">Stap 7: Maak een docs/refs/ map</h3>
+<h3 id="stap9">Stap 9: Maak een docs/refs/ map</h3>
 <pre><code>mkdir -p docs/refs</code></pre>
 <p>Begin met lege bestanden per categorie. Vul ze aan zodra Claude een fout maakt -- elke regel komt uit een echte les.</p>
 
@@ -444,7 +444,7 @@ Fix de volgende bug: $ARGUMENTS
 
 <div class="co ca"><span class="cl">Belangrijk</span><p>Kopieer deze voorbeelden niet klakkeloos. De kracht van <code>docs/refs/</code> zit in regels die uit jouw projectfouten komen. Een lege tabel met de juiste categorieën is waardevoller dan tien gekopieerde regels.</p></div>
 
-<h3 id="stap8">Stap 8: Stel .gitignore in</h3>
+<h3 id="stap10">Stap 10: Stel .gitignore in</h3>
 <pre><code># Voeg toe aan .gitignore
 .env
 .env.local
@@ -468,7 +468,7 @@ STRIPE_SECRET_KEY=</code></pre>
 <p>Een secret dat ooit in git heeft gestaan is <strong>gecompromitteerd</strong>, ook als je het daarna verwijdert. Bots scannen publieke repo's continu op gelekte keys.</p></div>
 
 <div class="co ca"><span class="cl">Verder groeien</span>
-<p>Na deze 8 stappen heb je een solide basis. De volgende niveaus:</p>
+<p>Na deze 10 stappen heb je een solide basis. De volgende niveaus:</p>
 <ul>
 <li><strong>Agents:</strong> Bouw een gespecialiseerde agent voor terugkerende controles -- denk aan link-checks, SEO-audits, of content freshness.</li>
 <li><strong>Feedback loop:</strong> Fout → regel in <code>docs/refs/</code>. Herhaalde taak → skill. Terugkerende controle → agent. Snoei je CLAUDE.md regelmatig en experimenteer met modellen en parallel werk.</li>
@@ -477,24 +477,24 @@ STRIPE_SECRET_KEY=</code></pre>
 <h3>De complete mapstructuur</h3>
 <pre><code>~/.claude/
 ├── CLAUDE.md                    ← globale regels (stap 2)
-├── settings.json                ← SessionStart hook (stap 4b)
+├── settings.json                ← SessionStart hook (stap 6)
 ├── hooks/
 │   └── project-check.sh         ← deterministische project-check
 └── docs/
     └── project-setup.md          ← gedetailleerde setup-stappen
 
 mijn-project/
-├── CLAUDE.md                    ← project regels (stap 3)
+├── CLAUDE.md                    ← project regels (stap 4)
 ├── .claude/
-│   ├── settings.json            ← hooks (stap 4)
+│   ├── settings.json            ← hooks (stap 5)
 │   └── skills/
 │       ├── start-feature/
-│       │   └── SKILL.md         ← feature workflow (stap 5)
+│       │   └── SKILL.md         ← feature workflow (stap 7)
 │       └── fix-bug/
-│           └── SKILL.md         ← bugfix workflow (stap 6)
+│           └── SKILL.md         ← bugfix workflow (stap 8)
 ├── docs/
-│   └── refs/                    ← littekens/regels (stap 7)
-├── .gitignore                   ← bescherming (stap 8)
+│   └── refs/                    ← littekens/regels (stap 9)
+├── .gitignore                   ← bescherming (stap 10)
 └── src/                         ← je code</code></pre>
 
 <h3>Wat is nu automatisch?</h3>
