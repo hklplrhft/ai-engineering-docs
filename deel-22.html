@@ -52,9 +52,11 @@
 
 
 <div class="co ca"><span class="cl">Wat wordt afgedwongen vs. wat vereist discipline?</span>
-<p><strong>Automatisch (hooks):</strong> lint, typecheck, tests, secret detection -- Claude kan niet committen zonder.<br>
+<p><strong>Automatisch (hooks):</strong> lint, typecheck, tests, secret detection, project-check bij sessiestart -- Claude kan niet committen zonder, en vergeet de basis niet.<br>
 <strong>Sterk gestuurd (CLAUDE.md + skills):</strong> branches, plan mode, commit-messages, werkwijze.<br>
 <strong>Vereist discipline:</strong> code reviewen, goede prompts schrijven, /clear gebruiken.</p></div>
+
+<div class="co ci"><span class="cl">SSOT-principe</span><p>Elke regel heeft een <strong>autoritieve bron</strong>. Globale werkwijze → <code>~/.claude/CLAUDE.md</code>. Projectregels → <code>./CLAUDE.md</code>. Valkuilen → <code>docs/refs/</code>. Andere lagen <strong>verwijzen</strong> naar de bron, kopieren niet. Bij conflict wint de bron. Zie <a href="deel-03.html" style="color:var(--yellow)">De 5 Lagen -- SSOT</a> voor details.</p></div>
 
 <h3>Stap 1: Installeer Claude Code</h3>
 <pre><code># macOS / Linux
@@ -68,47 +70,95 @@ cd mijn-project && claude</code></pre>
 
 <h3>Stap 2: Maak de globale CLAUDE.md</h3>
 <p>Maak <code>~/.claude/CLAUDE.md</code> aan. Dit geldt voor <strong>al je projecten</strong>.</p>
-<pre><code># ~/.claude/CLAUDE.md -- Persoonlijke regels
+<pre><code># ~/.claude/CLAUDE.md -- Globale regels
 
-## Werkwijze
-- Werk ALTIJD op een branch, nooit direct op main
-- Gebruik /plan bij taken die meer dan 1 bestand raken
-- Commit na elke voltooide taak met een beschrijvende message
-- Herinner me aan /clear bij wisseling van onderwerp
-- Herinner me aan /compact bij lange sessies
-- Geef bij elke implementatie verificatiecriteria mee (tests)
+## Taal
+- Communiceer in het Nederlands
+- Code, commits en comments in het Engels
+
+## Werkwijze -- plan, verifieer, commit
+
+### Altijd plannen voor doen
+- /plan bij taken die meer dan 1 bestand raken of langer dan 5 minuten duren
+- Geef verificatiecriteria mee: welke tests moeten slagen, welke output wordt verwacht
+- Wacht op goedkeuring voordat je begint met implementeren
+
+### Context schoon houden
+- Stel /clear voor bij taakwissel (andere feature, ander onderwerp)
+- Stel /compact voor na 30+ minuten of wanneer context vol raakt
+- Bij sessie-overdracht: maak een HANDOFF.md (doel, status, wat geprobeerd, volgende stappen)
+
+### Git-discipline
+- Werk op branches, niet direct op main
+- Commit na elke voltooide wijziging -- herinner als er nog niet gecommit is
+- Selectief committen: specifieke bestanden, niet git add .
+- Nooit pushen, deployen of berichten sturen zonder expliciete bevestiging
+
+### Verificatie
+- Waarschuw bij hallucinaties (onbekende packages, API's, functies) -- verifieer eerst
+- Stel git diff voor bij grotere wijzigingen zodat de gebruiker kan reviewen
+- Commit nooit code die de gebruiker niet begrijpt -- bied uitleg aan
+
+## Code kwaliteit
+
+### Test-first bij bugs
+- Bij bugfixes: schrijf eerst een falende regressietest, dan pas de fix
+- Test na elke wijziging -- herinner aan testen/lint/analyze na code changes
+- Zonder test is een fix alleen voor vandaag
+
+### Feedback loop -- van fout naar regel
+- Fout gevonden -> fix + regressietest
+- Terugkerend probleem -> regel toevoegen aan docs/refs/ of CLAUDE.md
+- Kritieke fout -> stel een hook voor die het afdwingt
+- Doel: elke fout kan maar een keer voorkomen
+
+### Kwaliteitscontroles
+- Geen secrets hardcoden -- gebruik environment variables of .env + .gitignore
+- Review gegenereerde code op OWASP top 10 (SQL injection, XSS, command injection)
+- Stel linters/typecheck voor als die ontbreken in het project
+
+## Project-inrichting check
+Bij het begin van een taak in een nieuw project, doorloop de volledige setup:
+- Lees ~/.claude/docs/project-setup.md en doorloop alle stappen
+- Stel elke stap voor aan de gebruiker voordat je begint met de eigenlijke taak
+
+Minimale check bij bestaande projecten:
+- CLAUDE.md van het actieve project (zo niet: stel /init voor)
+- Hooks voor lint/typecheck (zo niet: stel voor om in te richten)
+- docs/refs/ map voor littekens-documenten (zo niet: vermeld het bij terugkerende fouten)
+- .gitignore met .env en secrets (zo niet: waarschuw)
+
+## Signalen -- wanneer ingrijpen
+- Na 2 mislukte pogingen voor dezelfde taak: stel voor om te stoppen, /clear, en een
+  betere prompt te formuleren
+- Bij herhaling van eerder gemaakte fouten: stel voor om een regel/hook toe te voegen
+- Bij vage opdrachten: vraag om specifieke bestanden, error output, of verwacht gedrag
+- Bij grote wijzigingen zonder tests: weiger door te gaan totdat er verificatiecriteria zijn
+
+## Signalen -- wanneer uitbreiden (5-lagen systeem)
+Stel de volgende uitbreidingen voor wanneer het moment er is. Niet vooraf, maar zodra
+de situatie zich voordoet:
+- Bug gefixt zonder test? -> "Zal ik een test-framework opzetten?"
+- Zelfde fout 2x? -> "Zal ik een hook instellen?"
+- Valkuil ontdekt? -> "Zal ik dit in docs/refs/ vastleggen?"
+- Handeling 3x herhaald? -> "Zal ik hier een skill van maken?"
+- Parallelle controle nodig? -> "Zal ik een custom agent maken?"
+- Sessie-einde met onafgemaakt werk? -> "Zal ik een HANDOFF.md maken?"
 
 ## Veiligheid
-- Commit NOOIT .env, API keys, of wachtwoorden
-- Vraag bevestiging voor: rm -rf, git push --force, drop table
-- Review shell-commando's op veiligheid
+- Review shell commando's kritisch, vooral: rm -rf, git push --force, drop table
+- Geen gevoelige data (API keys, wachtwoorden) in prompts of CLAUDE.md
+- Stel nooit voor om hooks te skippen (--no-verify) of checks uit te schakelen
 
 ## Stijl
-- Comments in het Nederlands
-- Code in het Engels
-- Wees beknopt in uitleg, gedetailleerd in code
+- Geen em-dashes of en-dashes in code of tekst, gebruik --
+- Wees beknopt in uitleg, gedetailleerd in code</code></pre>
 
-## Project-inrichting
-Bij de start van een taak, check of het project het volgende heeft:
-- CLAUDE.md in de project root -- zo niet, bied /init aan
-- .claude/settings.json met hooks -- zo niet, bied aan om in te richten
-- docs/refs/ map -- zo niet, bied aan bij eerste bugfix
-- .env in .gitignore -- zo niet, waarschuw direct
-
-## Werkwijze-signalen
-- Na een bugfix: bied aan om een regel in docs/refs/ toe te voegen
-- Na 3x dezelfde instructie: bied aan om een skill te maken (.claude/skills/)
-- Na 2 mislukte pogingen: stop, analyseer, stel /clear + nieuwe aanpak voor
-- Bij taakwissel: herinner aan /clear
-- Bij complexe lopende taken aan het einde: bied HANDOFF.md aan
-- Als project CLAUDE.md > 150 regels: waarschuw en stel snoeien voor
-- Na een terugkerende controle (3x handmatig): bied aan om een agent te maken (.claude/agents/)
-- Bij een kritieke fout (productie kapot, data verloren): stel een hook voor die dit blokkeert (.claude/settings.json)
-- Bij elke bugfix of nieuwe feature: herinner aan regressietest / test schrijven</code></pre>
-
-<div class="co ca"><span class="cl">Wat doen deze twee secties?</span>
-<p><strong>Project-inrichting checks</strong> zorgen dat elk project de basis heeft -- Claude controleert dit automatisch bij de start van een sessie en biedt aan om ontbrekende onderdelen op te zetten.</p>
-<p><strong>Werkwijze-signalen</strong> implementeren de <a href="deel-03.html" style="color:var(--yellow)">littekens-workflow</a> (Laag 3) en voorkomen de <a href="deel-18.html" style="color:var(--yellow)">veelgemaakte fouten</a> automatisch. Elke fout wordt een regel, elke herhaling een skill, en je project wordt slimmer met elke sessie.</p></div>
+<div class="co ca"><span class="cl">Hoe werken deze secties samen?</span>
+<p><strong>Project-inrichting check</strong> verwijst naar <code>~/.claude/docs/project-setup.md</code> voor de volledige setup-procedure (SSOT -- details staan op een plek). De minimale check zorgt dat bestaande projecten ook gecontroleerd worden.</p>
+<p><strong>Signalen "wanneer ingrijpen"</strong> voorkomen de <a href="deel-18.html" style="color:var(--yellow)">veelgemaakte fouten</a>: eindeloos herhalen, vage prompts, code zonder tests.</p>
+<p><strong>Signalen "wanneer uitbreiden"</strong> implementeren de <a href="deel-03.html" style="color:var(--yellow)">5-lagen feedback loop</a>: elke fout wordt een regel, elke herhaling een skill, en je project groeit organisch mee.</p>
+<p>Combineer dit met een <a href="deel-06.html" style="color:var(--yellow)">SessionStart hook</a> (stap 4b) voor deterministische controle van de basis.</p></div>
 
 <h3>Stap 3: Genereer project CLAUDE.md</h3>
 <pre><code># In je project directory
@@ -201,6 +251,47 @@ claude
 <strong>PostToolUse:</strong> Na elke bestandswijziging draaien automatisch de gerelateerde tests. Claude ziet fouten en fixt ze zelf.<br>
 <strong>Notification:</strong> Desktop-melding als Claude klaar is of op je wacht.</p>
 <p>Dit voorbeeld gebruikt Node.js-commando's. Werk je met Flutter, Python of Go? Zie <a href="deel-06.html#hooks">Hooks -- Voorbeelden per stack</a> voor de juiste commando's.</p></div>
+
+<h3>Stap 4b: SessionStart hook -- deterministische project-check</h3>
+<p>De signalen in je globale CLAUDE.md zijn probabilistisch -- Claude <em>kan</em> ze vergeten. Voeg een SessionStart hook toe die bij elke sessie <strong>deterministisch</strong> controleert of de basis aanwezig is.</p>
+<p>Maak <code>~/.claude/hooks/project-check.sh</code> aan:</p>
+<pre><code>#!/bin/bash
+# Checkt of de basis project-inrichting aanwezig is
+warnings=""
+
+[ ! -d ".git" ] && warnings="${warnings}\n- Geen git repo. Overweeg: git init"
+[ ! -f "CLAUDE.md" ] && warnings="${warnings}\n- Geen CLAUDE.md. Stel voor: /init"
+[ ! -d "docs/refs" ] && warnings="${warnings}\n- Geen docs/refs/ map"
+if [ -f ".gitignore" ]; then
+  grep -q "^\.env" .gitignore 2>/dev/null || \
+    warnings="${warnings}\n- .env staat niet in .gitignore!"
+else
+  warnings="${warnings}\n- Geen .gitignore gevonden"
+fi
+
+if [ -n "$warnings" ]; then
+  echo "PROJECT-CHECK: Ontbrekende onderdelen:"
+  echo -e "$warnings"
+  echo ""
+  echo "Bied aan om ontbrekende onderdelen op te zetten."
+fi</code></pre>
+<p>Voeg toe aan je <strong>globale</strong> <code>~/.claude/settings.json</code>:</p>
+<pre><code>{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/project-check.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+<div class="co ca"><span class="cl">Probabilistisch + deterministisch</span>
+<p>De SessionStart hook garandeert het <strong>fundament</strong> (CLAUDE.md, .git, .gitignore, docs/refs/). De signalen in je globale CLAUDE.md laten de rest <strong>organisch groeien</strong> (tests, skills, agents, hooks). Samen vormen ze een systeem dat niet vergeet en niet overwelmt. Zie <a href="deel-06.html" style="color:var(--yellow)">Hooks -- SessionStart</a> voor de uitgebreide versie.</p></div>
 
 <h3>Stap 5: Maak een start-feature skill</h3>
 <p>Maak <code>.claude/skills/start-feature/SKILL.md</code> aan. Dit dwingt het juiste proces af bij elke nieuwe feature.</p>
@@ -303,9 +394,99 @@ STRIPE_SECRET_KEY=</code></pre>
 <li><strong>Feedback loop:</strong> Fout → regel in <code>docs/refs/</code>. Herhaalde taak → skill. Terugkerende controle → agent. Snoei je CLAUDE.md regelmatig en experimenteer met modellen en parallel werk.</li>
 </ul></div>
 
+<h3 id="project-setup-checklist">De volledige project-setup checklist</h3>
+<p>Dit is de inhoud van <code>~/.claude/docs/project-setup.md</code> -- het document waar je globale CLAUDE.md naar verwijst (SSOT). Doorloop deze stappen bij een nieuw project of wanneer een project geen CLAUDE.md heeft.</p>
+<div class="co ci"><span class="cl">SSOT</span><p>Dit document is de <strong>autoritieve bron</strong> voor project-inrichting. De globale CLAUDE.md verwijst ernaar, kopieert het niet. Wijzigingen hoef je maar op een plek te doen.</p></div>
+
+<h4>Checklist stap 1: Project CLAUDE.md aanmaken</h4>
+<p>Stel <code>/init</code> voor als er geen CLAUDE.md in de projectroot staat. De CLAUDE.md moet bevatten (compact, max ~100-150 regels):</p>
+<div class="dg">
+<div class="dr"><span class="nm">Project</span><span class="ct">Wat doet het project, voor wie</span><span class="ms">Verplicht</span></div>
+<div class="dr"><span class="nm">Tech stack</span><span class="ct">Framework, taal, database, hosting</span><span class="ms">Verplicht</span></div>
+<div class="dr"><span class="nm">Commando's</span><span class="ct">build, dev, test, lint -- exact zoals ze gedraaid worden</span><span class="ms">Verplicht</span></div>
+<div class="dr"><span class="nm">Architectuur</span><span class="ct">Mappenstructuur, belangrijke patronen, routing</span><span class="ms">Aanbevolen</span></div>
+<div class="dr"><span class="nm">Kritieke regels</span><span class="ct">Dingen die NOOIT mogen (bijv. "verwijder geen content", "geen secrets")</span><span class="ms">Verplicht</span></div>
+<div class="dr"><span class="nm">Referenties</span><span class="ct">Verwijzingen naar docs/refs/ bestanden voor details</span><span class="ms">Aanbevolen</span></div>
+</div>
+<p><strong>Wat er NIET in hoort:</strong> code style (dat doet de linter), code voorbeelden (verouderen), info die uit de code afgeleid kan worden.</p>
+
+<h4>Checklist stap 2: .gitignore controleren</h4>
+<p>Check of <code>.gitignore</code> aanwezig is met minimaal:</p>
+<pre><code>.env
+.env.*
+node_modules/          # of equivalent (venv/, vendor/)
+dist/                  # build output (.astro/, .next/, build/)
+.DS_Store
+.vscode/settings.json
+.idea/</code></pre>
+<p>Waarschuw als <code>.gitignore</code> ontbreekt of <code>.env</code> niet erin staat.</p>
+
+<h4>Checklist stap 3: Git initialiseren</h4>
+<p>Als er nog geen <code>.git/</code> is:</p>
+<pre><code>git init
+git checkout -b feature/&lt;beschrijvend&gt;
+# Werk NOOIT direct op main</code></pre>
+
+<h4>Checklist stap 4: docs/refs/ aanmaken</h4>
+<p>Maak <code>docs/refs/</code> directory aan (leeg is OK bij start). Dit is de plek voor "littekens" -- lessen uit fouten:</p>
+<table class="tc">
+<tr><th>Bestand</th><th>Wanneer aanmaken</th></tr>
+<tr><td><code>api-regels.md</code></td><td>API conventies en valkuilen</td></tr>
+<tr><td><code>deploy.md</code></td><td>Deployment procedures</td></tr>
+<tr><td><code>routing.md</code></td><td>Hoe routing werkt</td></tr>
+<tr><td><code>data-structuur.md</code></td><td>Data model uitleg</td></tr>
+</table>
+
+<h4>Checklist stap 5: Hooks instellen</h4>
+<p>Detecteer de tech stack en stel de juiste pre-commit hook voor:</p>
+<table class="tc">
+<tr><th>Stack</th><th>Pre-commit hook commando</th></tr>
+<tr><td>Astro</td><td><code>npx astro build</code></td></tr>
+<tr><td>Next.js / React</td><td><code>npm run lint && npx tsc --noEmit</code></td></tr>
+<tr><td>Python</td><td><code>ruff check . && mypy .</code></td></tr>
+<tr><td>Go</td><td><code>go vet ./... && staticcheck ./...</code></td></tr>
+<tr><td>Flutter</td><td><code>flutter analyze && dart format --set-exit-if-changed .</code></td></tr>
+<tr><td>Generiek</td><td><code>npm run build</code> of <code>npm test</code></td></tr>
+</table>
+<p>Installeer als git hook:</p>
+<pre><code>mkdir -p .git/hooks
+cat > .git/hooks/pre-commit << 'HOOK'
+#!/bin/sh
+echo "Running pre-commit checks..."
+# COMMANDO HIER (zie tabel hierboven)
+if [ $? -ne 0 ]; then
+  echo "Pre-commit check failed! Commit blocked."
+  exit 1
+fi
+HOOK
+chmod +x .git/hooks/pre-commit</code></pre>
+
+<h4>Checklist stap 6: Eerste commit</h4>
+<p>Na het inrichten: selectief stagen (specifieke bestanden, niet <code>git add .</code>), duidelijk commit bericht, verifieer dat de pre-commit hook werkt.</p>
+
+<h4>Automatische check: SessionStart hook</h4>
+<p>De globale settings (<code>~/.claude/settings.json</code>) bevat een SessionStart hook die bij elke sessie automatisch checkt of CLAUDE.md, docs/refs/, .gitignore en .git aanwezig zijn. Dit is deterministisch -- het draait altijd. Zie <a href="deel-06.html" style="color:var(--yellow)">Hooks -- SessionStart</a> voor de configuratie en het script.</p>
+
+<h4>Verificatie</h4>
+<p>Na het doorlopen van alle stappen, controleer:</p>
+<ul>
+<li>CLAUDE.md aanwezig en compact</li>
+<li>.gitignore met .env en secrets</li>
+<li>Git repo met feature branch (niet main)</li>
+<li>docs/refs/ directory aanwezig</li>
+<li>Pre-commit hook geinstalleerd en werkend</li>
+<li>SessionStart hook actief (check via <code>/hooks</code>)</li>
+<li>Eerste commit geslaagd</li>
+</ul>
+
 <h3>De complete mapstructuur</h3>
 <pre><code>~/.claude/
-└── CLAUDE.md                    ← globale regels (stap 2)
+├── CLAUDE.md                    ← globale regels (stap 2)
+├── settings.json                ← SessionStart hook (stap 4b)
+├── hooks/
+│   └── project-check.sh         ← deterministische project-check
+└── docs/
+    └── project-setup.md          ← gedetailleerde setup-stappen (SSOT)
 
 mijn-project/
 ├── CLAUDE.md                    ← project regels (stap 3)
@@ -323,6 +504,7 @@ mijn-project/
 
 <h3>Wat is nu automatisch?</h3>
 <div class="dg">
+<div class="dr"><span class="nm">Project-check bij sessiestart</span><span class="ct">SessionStart hook controleert CLAUDE.md, .git, .gitignore, docs/refs/</span><span class="ms">Afgedwongen</span></div>
 <div class="dr"><span class="nm">Lint + typecheck</span><span class="ct">Hook blokkeert commit bij fouten</span><span class="ms">Afgedwongen</span></div>
 <div class="dr"><span class="nm">Tests na wijziging</span><span class="ct">Hook draait tests, Claude fixt fouten zelf</span><span class="ms">Afgedwongen</span></div>
 <div class="dr"><span class="nm">Geen secrets in git</span><span class="ct">.gitignore + hook + CLAUDE.md regel</span><span class="ms">Afgedwongen + gestuurd</span></div>
