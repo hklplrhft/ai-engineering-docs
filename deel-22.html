@@ -56,7 +56,17 @@
 <strong>Sterk gestuurd (CLAUDE.md + skills):</strong> branches, plan mode, commit-messages, werkwijze.<br>
 <strong>Vereist discipline:</strong> code reviewen, goede prompts schrijven, /clear gebruiken.</p></div>
 
-<div class="co ci"><span class="cl">SSOT-principe</span><p>Single Source of Truth: elke waarde, functie of constante heeft <strong>een canonieke plek</strong>. Configuratie in <code>.env</code>, niet hardcoded in 3 bestanden. Validatielogica in een utility, niet gekopieerd in elk formulier. Hetzelfde geldt voor je instructielagen: dupliceer niet tussen globale en project CLAUDE.md -- verwijs. Zie <a href="deel-03.html" style="color:var(--yellow)">De 5 Lagen -- SSOT</a>.</p></div>
+<div class="co ci"><span class="cl">SSOT -- Single Source of Truth</span>
+<p>Elke waarde, functie of constante heeft <strong>een canonieke plek</strong>. Andere plekken lezen daaruit -- ze kopieren niet. Dit voorkomt "stille drift": iemand wijzigt een waarde op plek A, vergeet plek B, en je hebt een bug die pas na uren opvalt.</p>
+<p><strong>In de praktijk:</strong></p>
+<ul>
+<li><strong>Configuratie</strong> -- API-URL in <code>.env</code>, niet hardcoded in 3 bestanden</li>
+<li><strong>Functies</strong> -- validatielogica in <code>utils/validate.js</code>, geimporteerd waar nodig, niet gekopieerd per formulier</li>
+<li><strong>Constanten</strong> -- waarden die op 3+ plekken voorkomen horen in <code>src/config/</code></li>
+<li><strong>Database</strong> -- de database is de waarheid, lokale kopieën (cache, state) zijn tijdelijk</li>
+<li><strong>Instructielagen</strong> -- globale regels in <code>~/.claude/CLAUDE.md</code>, niet herhaald in project CLAUDE.md. Dupliceer niet tussen lagen -- verwijs</li>
+</ul>
+</div>
 
 <h3>Stap 1: Installeer Claude Code</h3>
 <pre><code># macOS / Linux
