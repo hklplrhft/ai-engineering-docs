@@ -106,6 +106,69 @@
   }]
 }]</code></pre>
 
+<h3>SessionStart: project-check bij elke sessie</h3>
+<p>De signalen in je <a href="deel-03.html" style="color:var(--cyan)">globale CLAUDE.md</a> zijn probabilistisch -- Claude <em>kan</em> ze vergeten. Een SessionStart hook is <strong>deterministisch</strong>: het draait bij elke sessie, zonder uitzondering.</p>
+
+<h4>Het shell-script</h4>
+<p>Maak <code>~/.claude/hooks/project-check.sh</code> aan:</p>
+<pre><code>#!/bin/bash
+# ~/.claude/hooks/project-check.sh
+# Checkt of de basis project-inrichting aanwezig is
+
+warnings=""
+
+# Check: is dit een git repository?
+if [ ! -d ".git" ]; then
+  warnings="${warnings}\n- Geen git repository gevonden. Overweeg: git init"
+fi
+
+# Check: heeft het project een CLAUDE.md?
+if [ ! -f "CLAUDE.md" ]; then
+  warnings="${warnings}\n- Geen CLAUDE.md gevonden. Stel voor: /init"
+fi
+
+# Check: is er een docs/refs/ map?
+if [ ! -d "docs/refs" ]; then
+  warnings="${warnings}\n- Geen docs/refs/ map. Maak aan bij eerste bugfix."
+fi
+
+# Check: staat .env in .gitignore?
+if [ -f ".gitignore" ]; then
+  if ! grep -q "^\.env" .gitignore 2>/dev/null; then
+    warnings="${warnings}\n- .env staat niet in .gitignore -- secrets gevaar!"
+  fi
+else
+  warnings="${warnings}\n- Geen .gitignore gevonden. Maak er een aan."
+fi
+
+# Output als systemMessage (alleen bij warnings)
+if [ -n "$warnings" ]; then
+  echo "PROJECT-CHECK: De volgende onderdelen ontbreken:"
+  echo -e "$warnings"
+  echo ""
+  echo "Bied aan om ontbrekende onderdelen op te zetten."
+fi</code></pre>
+
+<h4>Configuratie in settings.json</h4>
+<p>Voeg toe aan je <strong>globale</strong> <code>~/.claude/settings.json</code> (niet per project -- dit geldt voor alle projecten):</p>
+<pre><code>{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/project-check.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+<div class="co ca"><span class="cl">Wat gebeurt er?</span>
+<p>Bij elke nieuwe Claude Code sessie draait het script automatisch. Als er iets ontbreekt, krijgt Claude een waarschuwing als <code>systemMessage</code> en biedt aan om het op te zetten. Als alles in orde is, geen output -- geen ruis.</p>
+<p>Dit maakt de basis-inrichting uit de <a href="deel-22.html" style="color:var(--cyan)">Starter Kit</a> <strong>onmogelijk te vergeten</strong>. De probabilistische signalen in je globale CLAUDE.md (tests, skills, agents) groeien organisch -- de SessionStart hook garandeert het fundament.</p></div>
+
 <h3>Plugins</h3>
 <p>Plugins bundelen skills, hooks, agents en MCP servers in een installeerbaar pakket. Bekijk de marketplace via <code>/plugin</code>. Tip: installeer een <strong>code intelligence plugin</strong> voor je taal -- geeft Claude "go to definition" en automatische foutdetectie na edits.</p>
 </section>
