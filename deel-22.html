@@ -48,25 +48,22 @@
 
 <section id="starterkit">
 <h2><span class="dn">DEEL 22</span>Starter Kit -- Direct Goed Beginnen</h2>
-<p>Je hoeft niet alles uit deze gids te onthouden. Met de juiste inrichting dwingt Claude Code de werkwijze grotendeels <em>automatisch</em> af. Volg de stappen hieronder om je eigen setup op te bouwen, en iedereen in je team werkt meteen volgens best practices.</p>
+<p>Je hoeft niet alles uit deze gids te onthouden. Met de juiste inrichting dwingt Claude Code de werkwijze grotendeels <em>automatisch</em> af.</p>
 
-
-<div class="co ca"><span class="cl">Wat wordt afgedwongen vs. wat vereist discipline?</span>
-<p><strong>Automatisch (hooks):</strong> lint, typecheck, tests, secret detection, project-check bij sessiestart -- Claude kan niet committen zonder, en vergeet de basis niet.<br>
-<strong>Sterk gestuurd (CLAUDE.md + skills):</strong> branches, plan mode, commit-messages, werkwijze.<br>
-<strong>Vereist discipline:</strong> code reviewen, goede prompts schrijven, /clear gebruiken.</p></div>
-
-<div class="co ci"><span class="cl">SSOT -- Single Source of Truth</span>
-<p>Elke waarde, functie of constante heeft <strong>een canonieke plek</strong>. Andere plekken lezen daaruit -- ze kopieren niet. Dit voorkomt "stille drift": iemand wijzigt een waarde op plek A, vergeet plek B, en je hebt een bug die pas na uren opvalt.</p>
-<p><strong>In de praktijk:</strong></p>
-<ul>
-<li><strong>Configuratie</strong> -- API-URL in <code>.env</code>, niet hardcoded in 3 bestanden</li>
-<li><strong>Functies</strong> -- validatielogica in <code>utils/validate.js</code>, geimporteerd waar nodig, niet gekopieerd per formulier</li>
-<li><strong>Constanten</strong> -- waarden die op 3+ plekken voorkomen horen in <code>src/config/</code></li>
-<li><strong>Database</strong> -- de database is de waarheid, lokale kopieën (cache, state) zijn tijdelijk</li>
-<li><strong>Instructielagen</strong> -- globale regels in <code>~/.claude/CLAUDE.md</code>, niet herhaald in project CLAUDE.md. Dupliceer niet tussen lagen -- verwijs</li>
-</ul>
+<div class="co ca"><span class="cl">Eenmalig vs. per project</span>
+<p>De setup bestaat uit twee delen:</p>
+<p><strong>Eenmalige setup (stap 1-4):</strong> installeer Claude Code en maak 4 bestanden aan in <code>~/.claude/</code>. Dit doe je een keer -- daarna werkt het bij elk project automatisch.</p>
+<pre><code>~/.claude/
+├── CLAUDE.md                 ← jouw globale regels en werkwijze
+├── settings.json             ← SessionStart hook configuratie
+├── docs/
+│   └── project-setup.md      ← setup checklist die Claude volgt
+└── hooks/
+    └── project-check.sh      ← controleert of een project is ingericht</code></pre>
+<p><strong>Per project (stap 5-8):</strong> dit wordt <em>automatisch aangeboden</em> door Claude dankzij de eenmalige setup. Je hoeft het niet te onthouden -- bij elk nieuw project detecteert de SessionStart hook wat ontbreekt en biedt Claude aan om het in te richten.</p>
 </div>
+
+<h2>Eenmalige setup</h2>
 
 <h3>Stap 1: Installeer Claude Code</h3>
 <pre><code># macOS / Linux
@@ -256,9 +253,53 @@ Na het doorlopen van alle stappen, controleer:
 - [ ] docs/refs/ directory aanwezig
 - [ ] Pre-commit hook geinstalleerd en werkend
 - [ ] Eerste commit geslaagd</code></pre>
-<div class="co ci"><span class="cl">Compact overzicht vs. uitgebreide stappen</span><p>Dit bestand is het <strong>compacte overzicht</strong> dat Claude volgt bij project-inrichting. De uitgebreide versies van elke stap -- met copy-paste configuraties en voorbeelden -- vind je verderop: <a href="#stap5" style="color:var(--yellow)">hooks</a> (stap 5), <a href="#stap7" style="color:var(--yellow)">docs/refs/</a> (stap 7) en <a href="#stap8" style="color:var(--yellow)">.gitignore</a> (stap 8).</p></div>
+<div class="co ci"><span class="cl">Compact overzicht vs. uitgebreide stappen</span><p>Dit bestand is het <strong>compacte overzicht</strong> dat Claude volgt bij project-inrichting. De uitgebreide versies van elke stap -- met copy-paste configuraties en voorbeelden -- vind je verderop bij de per-project stappen.</p></div>
 
-<h3>Stap 4: Genereer project CLAUDE.md</h3>
+<h3>Stap 4: SessionStart hook -- deterministische project-check</h3>
+<p>Maak <code>~/.claude/hooks/project-check.sh</code> aan. Dit script draait bij <strong>elke sessiestart</strong> en controleert of een project is ingericht:</p>
+<pre><code>#!/bin/bash
+# ~/.claude/hooks/project-check.sh
+warnings=""
+
+[ ! -d ".git" ] && warnings="${warnings}\n- Geen git repo. Overweeg: git init"
+[ ! -f "CLAUDE.md" ] && warnings="${warnings}\n- Geen CLAUDE.md. Stel voor: /init"
+[ ! -d "docs/refs" ] && warnings="${warnings}\n- Geen docs/refs/ map"
+if [ -f ".gitignore" ]; then
+  grep -q "^\.env" .gitignore 2>/dev/null || \
+    warnings="${warnings}\n- .env staat niet in .gitignore!"
+else
+  warnings="${warnings}\n- Geen .gitignore gevonden"
+fi
+
+if [ -n "$warnings" ]; then
+  echo "PROJECT-CHECK: Ontbrekende onderdelen:"
+  echo -e "$warnings"
+  echo ""
+  echo "Bied aan om ontbrekende onderdelen op te zetten."
+fi</code></pre>
+<p>Activeer het script in <code>~/.claude/settings.json</code>:</p>
+<pre><code>{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/project-check.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+<div class="co ca"><span class="cl">Klaar -- de eenmalige setup is af</span>
+<p>Je hebt nu 4 bestanden in <code>~/.claude/</code>. Vanaf nu hoef je <strong>niets meer te onthouden</strong>: start <code>claude</code> in een willekeurig project en de SessionStart hook detecteert wat ontbreekt. Claude biedt aan om het in te richten via de stappen in <code>project-setup.md</code>. De werkwijze-signalen in je globale CLAUDE.md zorgen dat het systeem organisch meegroeit.</p></div>
+
+<h2>Per project -- wordt automatisch aangeboden</h2>
+<p>De volgende stappen hoef je niet te onthouden. Dankzij de eenmalige setup hierboven detecteert Claude automatisch wat ontbreekt en biedt aan om het op te zetten. Hieronder staat wat er per project wordt ingericht, met de uitgebreide uitleg en copy-paste configuraties.</p>
+
+<h3>Stap 5: Genereer project CLAUDE.md</h3>
 <pre><code># In je project directory
 claude
 /init
@@ -284,7 +325,7 @@ claude
 
 <div class="co ci"><span class="cl">Tip</span><p>Oefen ook meteen met <code>/plan</code> (denken voor doen), <code>/clear</code> (context opschonen bij taakwissel) en <code>/compact</code> (lange sessies inkorten). Dit zijn de drie commando's die je het vaakst zult gebruiken.</p></div>
 
-<h3 id="stap5">Stap 5: Stel hooks in</h3>
+<h3 id="stap6">Stap 6: Stel project hooks in</h3>
 <p>Dit is het belangrijkste deel -- hooks zijn <strong>onmogelijk te omzeilen</strong>. Maak <code>.claude/settings.json</code> aan in je project:</p>
 <pre><code>{
   "hooks": {
@@ -332,48 +373,8 @@ claude
 <strong>Notification:</strong> Desktop-melding als Claude klaar is of op je wacht.</p>
 <p>Dit voorbeeld gebruikt Node.js-commando's. Werk je met Flutter, Python of Go? Zie <a href="deel-06.html#hooks">Hooks -- Voorbeelden per stack</a> voor de juiste commando's.</p></div>
 
-<h3>Stap 6: SessionStart hook -- deterministische project-check</h3>
-<p>De signalen in je globale CLAUDE.md zijn probabilistisch -- Claude <em>kan</em> ze vergeten. Voeg een SessionStart hook toe die bij elke sessie <strong>deterministisch</strong> controleert of de basis aanwezig is.</p>
-<p>Maak <code>~/.claude/hooks/project-check.sh</code> aan:</p>
-<pre><code>#!/bin/bash
-# Checkt of de basis project-inrichting aanwezig is
-warnings=""
-
-[ ! -d ".git" ] && warnings="${warnings}\n- Geen git repo. Overweeg: git init"
-[ ! -f "CLAUDE.md" ] && warnings="${warnings}\n- Geen CLAUDE.md. Stel voor: /init"
-[ ! -d "docs/refs" ] && warnings="${warnings}\n- Geen docs/refs/ map"
-if [ -f ".gitignore" ]; then
-  grep -q "^\.env" .gitignore 2>/dev/null || \
-    warnings="${warnings}\n- .env staat niet in .gitignore!"
-else
-  warnings="${warnings}\n- Geen .gitignore gevonden"
-fi
-
-if [ -n "$warnings" ]; then
-  echo "PROJECT-CHECK: Ontbrekende onderdelen:"
-  echo -e "$warnings"
-  echo ""
-  echo "Bied aan om ontbrekende onderdelen op te zetten."
-fi</code></pre>
-<p>Voeg toe aan je <strong>globale</strong> <code>~/.claude/settings.json</code>:</p>
-<pre><code>{
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/project-check.sh"
-          }
-        ]
-      }
-    ]
-  }
-}</code></pre>
-<div class="co ca"><span class="cl">Probabilistisch + deterministisch</span>
-<p>De SessionStart hook garandeert het <strong>fundament</strong> (CLAUDE.md, .git, .gitignore, docs/refs/). De signalen in je globale CLAUDE.md laten de rest <strong>organisch groeien</strong> (tests, skills, agents, hooks). Samen vormen ze een systeem dat niet vergeet en niet overwelmt. Zie <a href="deel-06.html" style="color:var(--yellow)">Hooks -- SessionStart</a> voor de uitgebreide versie.</p></div>
-
 <h3 id="stap7">Stap 7: Maak een docs/refs/ map</h3>
+
 <pre><code>mkdir -p docs/refs</code></pre>
 <p>Begin met lege bestanden per categorie. Vul ze aan zodra Claude een fout maakt -- elke regel komt uit een echte les.</p>
 
@@ -412,7 +413,7 @@ STRIPE_SECRET_KEY=</code></pre>
 <p>Een secret dat ooit in git heeft gestaan is <strong>gecompromitteerd</strong>, ook als je het daarna verwijdert. Bots scannen publieke repo's continu op gelekte keys.</p></div>
 
 <h3>Verder groeien</h3>
-<p>Na deze 8 stappen heb je een solide basis. De globale CLAUDE.md signaleert wanneer uitbreidingen nuttig zijn. Hieronder de belangrijkste:</p>
+<p>Na de eenmalige setup (stap 1-4) en je eerste project-inrichting (stap 5-8) heb je een solide basis. De globale CLAUDE.md signaleert wanneer uitbreidingen nuttig zijn. Hieronder de belangrijkste:</p>
 
 <h4>Skills: herbruikbare workflows</h4>
 <p><strong>Vuistregel:</strong> heb je een taak al 3x handmatig gedaan? Maak er een skill van. Maak <code>.claude/skills/start-feature/SKILL.md</code> aan:</p>
@@ -475,16 +476,16 @@ Fix de volgende bug: $ARGUMENTS
 <h3>De complete mapstructuur</h3>
 <pre><code>~/.claude/
 ├── CLAUDE.md                    ← globale regels (stap 2)
-├── settings.json                ← SessionStart hook (stap 6)
+├── settings.json                ← SessionStart hook (stap 4)
 ├── hooks/
 │   └── project-check.sh         ← deterministische project-check
 └── docs/
     └── project-setup.md          ← gedetailleerde setup-stappen
 
 mijn-project/
-├── CLAUDE.md                    ← project regels (stap 4)
+├── CLAUDE.md                    ← project regels (stap 5)
 ├── .claude/
-│   ├── settings.json            ← hooks (stap 5)
+│   ├── settings.json            ← hooks (stap 6)
 │   └── skills/
 │       ├── start-feature/
 │       │   └── SKILL.md         ← feature workflow (optioneel)
