@@ -65,63 +65,6 @@
 <div class="lc lcp"><div class="lh"><span class="ln">LAAG 1</span><span class="lt">Globale regels</span><span class="lp">~/.claude/CLAUDE.md</span></div>
 <p>Persoonlijke voorkeuren voor <em>alle</em> projecten. "Schrijf comments in het Nederlands." · "Gebruik hyphens, nooit em-dashes." · "Vraag bevestiging voor verwijderen."</p>
 <p><strong>Vuistregel:</strong> Geldt voor elk project → hier. Projectspecifiek → niet.</p>
-
-<h3>De globale CLAUDE.md als poortwachter</h3>
-<p>Laag 1 is meer dan stijlvoorkeuren -- het is het mechanisme om je <strong>hele werkwijze</strong> af te dwingen. Door drie onderdelen toe te voegen aan je globale CLAUDE.md, transformeer je het van passief naar actief:</p>
-<div class="co ca"><span class="cl">Drie onderdelen die alles veranderen</span>
-<p><strong>1. Project-inrichting check</strong> -- Claude controleert bij elke sessie of de basis aanwezig is: CLAUDE.md, hooks, docs/refs/ en .gitignore. Ontbreekt er iets? Claude biedt aan om het op te zetten. De details staan in een apart document (<code>~/.claude/docs/project-setup.md</code>) -- de globale CLAUDE.md verwijst ernaar, niet kopieert.</p>
-<p><strong>2. Werkwijze-signalen (probabilistisch)</strong> -- Claude signaleert automatisch op cruciale momenten: bugfix → regel aanbieden, herhaling → skill voorstellen, terugkerende controle → agent aanbieden, vastlopen → reset suggereren, taakwissel → /clear herinneren, einde → handoff aanbieden.</p>
-<p><strong>3. SessionStart hook (deterministisch)</strong> -- Een shell-script dat bij elke sessie checkt of CLAUDE.md, docs/refs/, .gitignore en .git aanwezig zijn. Dit maakt de basis-inrichting <em>onmogelijk te vergeten</em>, terwijl de uitbreidingen (tests, skills, agents) organisch worden gesignaleerd. Zie <a href="deel-06.html" style="color:var(--yellow)">Hooks</a> voor de configuratie.</p>
-<p>Dit implementeert de <a href="#feedback-loop" style="color:var(--yellow)">feedback loop</a> (Laag 3) en de <a href="deel-18.html" style="color:var(--yellow)">anti-patronen</a> automatisch. De concrete copy-paste configuratie vind je in de <a href="deel-22.html" style="color:var(--yellow)">Starter Kit</a> (stap 2).</p>
-</div>
-
-<h4>Signalen voor organische uitbreiding (5-lagen systeem)</h4>
-<p>In plaats van alles vooraf op te tuigen, signaleert Claude <strong>wanneer uitbreidingen nodig zijn</strong>. Zo groeit het systeem organisch mee met de complexiteit van je project:</p>
-<div class="dg">
-<div class="dr"><span class="nm">Tests (Laag 5)</span><span class="ct">Bug gefixt zonder test? Er is logica maar geen test-framework?</span><span class="ms">"Zal ik een test-framework opzetten en een eerste test schrijven?"</span></div>
-<div class="dr"><span class="nm">Hooks (Laag 5)</span><span class="ct">Dezelfde fout 2x? Stijlfouten sluipen erin? Secrets in code?</span><span class="ms">"Zal ik een hook instellen die dit automatisch checkt?"</span></div>
-<div class="dr"><span class="nm">Littekens (Laag 3)</span><span class="ct">Niet-vanzelfsprekende fout opgelost? API met valkuilen?</span><span class="ms">"Zal ik dit vastleggen in docs/refs/?"</span></div>
-<div class="dr"><span class="nm">Skills (Laag 5)</span><span class="ct">Handeling 3x herhaald? Complex proces met vaste stappen?</span><span class="ms">"Zal ik hier een skill van maken?"</span></div>
-<div class="dr"><span class="nm">Agents (Laag 5)</span><span class="ct">Taak die parallel kan? Terugkerende controle bij elke wijziging?</span><span class="ms">"Zal ik hier een custom agent voor maken?"</span></div>
-<div class="dr"><span class="nm">HANDOFF.md (Laag 4)</span><span class="ct">Sessie met onafgemaakt werk? Context vol?</span><span class="ms">"Zal ik een HANDOFF.md maken voor de volgende sessie?"</span></div>
-</div>
-<div class="co ci"><span class="cl">Probabilistisch + deterministisch</span><p>De signalen hierboven zijn <em>probabilistisch</em> -- Claude kan ze vergeten. Combineer ze daarom met een <a href="deel-06.html" style="color:var(--yellow)">SessionStart hook</a> die <em>deterministisch</em> de basis controleert. Zo is de fundament gegarandeerd, en groeit de rest organisch.</p></div>
-
-<h4>Voorbeeld: globale CLAUDE.md met project-setup</h4>
-<p>De globale CLAUDE.md verwijst naar een gedetailleerd stappen-document. Zo blijft het bestand compact terwijl de volledige setup-procedure beschikbaar is:</p>
-<pre><code># ~/.claude/CLAUDE.md -- Globale regels
-
-## Werkwijze -- plan, verifieer, commit
-- /plan bij taken die meer dan 1 bestand raken
-- Geef verificatiecriteria mee (tests, verwachte output)
-- Commit na elke voltooide wijziging
-- /clear bij taakwissel, /compact na 30+ minuten
-- Nooit pushen zonder expliciete bevestiging
-
-## Project-inrichting check
-Bij het begin van een taak in een nieuw project, doorloop de volledige setup:
-- Lees ~/.claude/docs/project-setup.md en doorloop alle stappen
-- Stel elke stap voor aan de gebruiker voordat je begint
-
-Minimale check bij bestaande projecten:
-- CLAUDE.md van het actieve project (zo niet: stel /init voor)
-- Hooks voor lint/typecheck (zo niet: stel voor om in te richten)
-- docs/refs/ map (zo niet: vermeld het bij terugkerende fouten)
-- .gitignore met .env en secrets (zo niet: waarschuw)
-
-## Signalen -- wanneer ingrijpen
-- Na 2 mislukte pogingen: stop, /clear, betere prompt
-- Bij vage opdrachten: vraag om specifieke bestanden of error output
-- Bij grote wijzigingen zonder tests: weiger door te gaan
-
-## Signalen -- wanneer uitbreiden
-- Bug gefixt zonder test? -> "Zal ik een test-framework opzetten?"
-- Zelfde fout 2x? -> "Zal ik een hook instellen?"
-- Valkuil ontdekt? -> "Zal ik dit in docs/refs/ vastleggen?"
-- Handeling 3x herhaald? -> "Zal ik hier een skill van maken?"
-- Parallelle controle nodig? -> "Zal ik een custom agent maken?"
-- Sessie-einde met onafgemaakt werk? -> "Zal ik een HANDOFF.md maken?"</code></pre>
-<p>Het bijbehorende <code>~/.claude/docs/project-setup.md</code> bevat de gedetailleerde stappen per stack. Bekijk de <a href="deel-22.html#project-setup-checklist" style="color:var(--yellow)">volledige project-setup checklist</a> in de Starter Kit.</p>
 </div>
 
 <div class="lc lcb"><div class="lh"><span class="ln">LAAG 2</span><span class="lt">Projectregels</span><span class="lp">./CLAUDE.md</span></div>
@@ -280,6 +223,56 @@ Upload-form component is klaar en getest. Preview-stap nog niet begonnen.
 <div class="dr"><span class="nm"><a href="deel-07.html" style="color:var(--cyan)">Tests</a></span><span class="ct">Bewijs dat code werkt. Vangt regressies op voor ze in productie komen.</span><span class="ms">Elke functie die fout mag gaan = een test.</span></div>
 </div>
 <p><strong>Kernonderscheid:</strong> Skills en agents zijn <em>probabilistisch</em> -- Claude kan afwijken. Hooks en tests zijn <em>deterministisch</em> -- ze blokkeren altijd. Gebruik beide lagen samen.</p></div>
+
+<h3>Hoe de lagen samenwerken</h3>
+<p>Nu je alle 5 lagen kent, hier het grotere plaatje: hoe de globale CLAUDE.md (Laag 1) de hele werkwijze afdwingt door de andere lagen aan te sturen.</p>
+
+<h4>De globale CLAUDE.md als poortwachter</h4>
+<p>Laag 1 is meer dan stijlvoorkeuren -- het is het mechanisme om je <strong>hele werkwijze</strong> af te dwingen. Door drie onderdelen toe te voegen, transformeer je het van passief naar actief:</p>
+<div class="co ca"><span class="cl">Drie onderdelen die alles veranderen</span>
+<p><strong>1. Project-inrichting check</strong> -- Claude controleert bij elke sessie of de basis aanwezig is: CLAUDE.md (Laag 2), hooks (Laag 5), docs/refs/ (Laag 3) en .gitignore. Ontbreekt er iets? Claude biedt aan om het op te zetten. De details staan in een apart document (<code>~/.claude/docs/project-setup.md</code>) -- de globale CLAUDE.md verwijst ernaar.</p>
+<p><strong>2. Werkwijze-signalen (probabilistisch)</strong> -- Claude signaleert automatisch op cruciale momenten: bugfix → regel aanbieden (Laag 3), herhaling → skill voorstellen (Laag 5), terugkerende controle → agent aanbieden (Laag 5), vastlopen → reset suggereren, taakwissel → /clear herinneren, einde → handoff aanbieden (Laag 4).</p>
+<p><strong>3. SessionStart hook (deterministisch)</strong> -- Een shell-script (Laag 5) dat bij elke sessie checkt of de basis aanwezig is. Dit maakt de inrichting <em>onmogelijk te vergeten</em>. Zie <a href="deel-06.html" style="color:var(--yellow)">Hooks</a> voor de configuratie.</p>
+<p>Dit implementeert de <a href="#feedback-loop">feedback loop</a> (Laag 3) en de <a href="deel-18.html">anti-patronen</a> automatisch. De concrete copy-paste configuratie vind je in de <a href="deel-22.html" style="color:var(--yellow)">Starter Kit</a> (stap 2).</p>
+</div>
+
+<h4>Signalen voor organische uitbreiding</h4>
+<p>In plaats van alles vooraf op te tuigen, signaleert Claude <strong>wanneer uitbreidingen nodig zijn</strong>. Zo groeit het systeem organisch mee met de complexiteit van je project:</p>
+<div class="dg">
+<div class="dr"><span class="nm">Tests (Laag 5)</span><span class="ct">Bug gefixt zonder test? Er is logica maar geen test-framework?</span><span class="ms">"Zal ik een test-framework opzetten?"</span></div>
+<div class="dr"><span class="nm">Hooks (Laag 5)</span><span class="ct">Dezelfde fout 2x? Stijlfouten sluipen erin? Secrets in code?</span><span class="ms">"Zal ik een hook instellen?"</span></div>
+<div class="dr"><span class="nm">Littekens (Laag 3)</span><span class="ct">Niet-vanzelfsprekende fout opgelost? API met valkuilen?</span><span class="ms">"Zal ik dit vastleggen in docs/refs/?"</span></div>
+<div class="dr"><span class="nm">Skills (Laag 5)</span><span class="ct">Handeling 3x herhaald? Complex proces met vaste stappen?</span><span class="ms">"Zal ik hier een skill van maken?"</span></div>
+<div class="dr"><span class="nm">Agents (Laag 5)</span><span class="ct">Taak die parallel kan? Terugkerende controle bij elke wijziging?</span><span class="ms">"Zal ik een custom agent maken?"</span></div>
+<div class="dr"><span class="nm">HANDOFF.md (Laag 4)</span><span class="ct">Sessie met onafgemaakt werk? Context vol?</span><span class="ms">"Zal ik een HANDOFF.md maken?"</span></div>
+</div>
+<div class="co ci"><span class="cl">Probabilistisch + deterministisch</span><p>De signalen hierboven zijn <em>probabilistisch</em> -- Claude kan ze vergeten. Combineer ze daarom met een <a href="deel-06.html" style="color:var(--yellow)">SessionStart hook</a> (Laag 5) die <em>deterministisch</em> de basis controleert. Zo is het fundament gegarandeerd, en groeit de rest organisch.</p></div>
+
+<h4>Voorbeeld: globale CLAUDE.md</h4>
+<p>Dit voorbeeld toont hoe Laag 1 de andere lagen aanstuurt. De volledige copy-paste versie staat in de <a href="deel-22.html" style="color:var(--yellow)">Starter Kit</a> (stap 2):</p>
+<pre><code># ~/.claude/CLAUDE.md -- Globale regels
+
+## Werkwijze -- plan, verifieer, commit
+- /plan bij taken die meer dan 1 bestand raken
+- Geef verificatiecriteria mee (tests, verwachte output)
+- Commit na elke voltooide wijziging
+- /clear bij taakwissel, /compact na 30+ minuten
+
+## Project-inrichting check
+Bij een nieuw project, doorloop ~/.claude/docs/project-setup.md
+Minimale check bij bestaande projecten:
+- CLAUDE.md, hooks, docs/refs/, .gitignore
+
+## Signalen -- wanneer ingrijpen
+- Na 2 mislukte pogingen: stop, /clear, betere prompt
+- Bij vage opdrachten: vraag om specifieke bestanden of error output
+
+## Signalen -- wanneer uitbreiden
+- Bug gefixt zonder test? -> "Zal ik een test-framework opzetten?"
+- Zelfde fout 2x? -> "Zal ik een hook instellen?"
+- Valkuil ontdekt? -> "Zal ik dit in docs/refs/ vastleggen?"</code></pre>
+<p>Bekijk de <a href="deel-22.html#project-setup-checklist" style="color:var(--yellow)">volledige project-setup checklist</a> in de Starter Kit.</p>
+
 </section>
 
 </main>
