@@ -227,7 +227,7 @@ Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
 <tr><td>5. Hook</td><td>Blokkeer bij kritieke fouten</td><td><code>npm run build && git diff --exit-code public/js/</code></td></tr>
 </table>
 
-<div class="co ci"><span class="cl">In de praktijk</span><p>De <code>/fix-bug</code> skill (<a href="deel-22.html">Starter Kit, stap 6</a>) automatiseert dit patroon. Eén commando doorloopt alle stappen -- van branch aanmaken tot regressietest, regel in <code>docs/refs/</code>, en commit.</p></div>
+<div class="co ci"><span class="cl">In de praktijk</span><p>De <code>/fix-bug</code> skill (<a href="deel-22.html">Starter Kit, stap 8</a>) automatiseert dit patroon. Eén commando doorloopt alle stappen -- van branch aanmaken tot regressietest, regel in <code>docs/refs/</code>, en commit.</p></div>
 
 <div class="co ca"><span class="cl">Het patroon</span><p><strong>Fout → fix → test → regel → (hook)</strong>. Hoe kritischer de fout, hoe harder de garantie. Vervelend? Regel. Productie kapot? Hook. Dit is hoe je systeem steeds slimmer wordt.</p></div>
 </div>
