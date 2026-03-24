@@ -392,10 +392,37 @@ KEVEL_API_KEY=your-api-key</code></pre>
 </div>
 </div>
 
+<div class="co ci" style="margin-top:24px"><span class="cl">Onboarding -- gedeeld vs. persoonlijk</span>
+<p style="margin-bottom:12px">Na fase 0 is onboarding voor een nieuw teamlid ~5 minuten. Dit is het verschil tussen wat de repo levert en wat je zelf doet:</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">
+<div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:12px">
+<strong style="color:var(--green);font-size:13px">Uit de repo (automatisch bij clone)</strong>
+<ul style="font-size:12px;margin-top:8px;padding-left:16px;color:var(--text-muted)">
+<li><code>CLAUDE.md</code> + <code>AGENTS.md</code> -- Claude weet hoe het project werkt</li>
+<li><code>.claude/settings.json</code> -- hooks draaien automatisch (lint, secrets)</li>
+<li><code>.claude/skills/</code> -- herbruikbare taken</li>
+<li><code>.env.example</code> -- template voor env vars</li>
+<li><code>docs/refs/zoom-nl-littekens.md</code> -- geleerde lessen</li>
+</ul>
+</div>
+<div style="background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:8px;padding:12px">
+<strong style="color:var(--orange);font-size:13px">Zelf doen (eenmalig, ~5 min)</strong>
+<ol style="font-size:12px;margin-top:8px;padding-left:16px;color:var(--text-muted)">
+<li><code>cp .env.example .env.local</code> en vul waarden in (via Vercel dashboard of collega)</li>
+<li>(Aanbevolen) Maak <code>~/.claude/CLAUDE.md</code> met je taal- en stijlvoorkeuren</li>
+<li>Klaar -- begin met werken</li>
+</ol>
+</div>
+</div>
+
+<p style="font-size:12px;color:var(--text-dim)"><strong>Let op:</strong> <code>.claude/settings.local.json</code> (je persoonlijke permissions) staat in <code>.gitignore</code> en wordt niet gedeeld. <code>.claude/settings.json</code> (hooks) is wel gedeeld.</p>
+</div>
+
 <div class="fase-meta">
 <div class="fase-meta-block verificatie">
 <span class="fase-meta-label">Verificatie</span>
-<p>CLAUDE.md + AGENTS.md review door team, <code>.env.example</code> klopt met Vercel dashboard, hooks in <code>.claude/settings.json</code> actief</p>
+<p>CLAUDE.md + AGENTS.md review door team, <code>.env.example</code> klopt met Vercel dashboard, hooks in <code>.claude/settings.json</code> actief, <code>.claude/settings.local.json</code> in <code>.gitignore</code></p>
 </div>
 <div class="fase-meta-block livegang">
 <span class="fase-meta-label">Livegang</span>
