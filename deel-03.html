@@ -54,11 +54,11 @@
 
 <h3>Waar hoort wat? -- Snelgids</h3>
 <div class="dg">
-<div class="dr"><span class="nm"><code>~/.claude/CLAUDE.md</code></span><span class="ct">Persoonlijke regels voor <strong>al je projecten</strong>. Werkwijze, stijl, veiligheid.</span><span class="ms">"Werk altijd op een branch" · "Comments in het Nederlands" · werkwijze-signalen</span></div>
-<div class="dr"><span class="nm"><code>./CLAUDE.md</code></span><span class="ct">Projectspecifieke briefing. Tech stack, commando's, kritieke regels, verwijzingen.</span><span class="ms">"Gebruik Prisma migrate, nooit raw SQL" · "Zie docs/refs/db-schema.md"</span></div>
-<div class="dr"><span class="nm"><code>AGENTS.md</code> (per map)</span><span class="ct">Gelaagde instructies per map in een <strong>monorepo</strong>. Elke submap erft de root en voegt eigen regels toe.</span><span class="ms">"Gebruik Astro, geen Next.js" · "Importeer uit api-v2, niet api" · SEO-checklist per app</span></div>
-<div class="dr"><span class="nm"><code>docs/refs/</code></span><span class="ct">Gedetailleerde "littekens" -- lessen uit fouten. Worden on-demand geladen.</span><span class="ms">"Kolom is is_answer_ready, NIET answer_ready" · API-valkuilen · deploy-stappen</span></div>
-<div class="dr"><span class="nm"><code>MEMORY.md</code> + auto memory</span><span class="ct">Persistent geheugen per project, overleeft sessies. Niet in je repo -- staat in <code>~/.claude/projects/</code>. <strong>Persoonlijk:</strong> elke ontwikkelaar bouwt eigen geheugen op, ook in dezelfde repo.</span><span class="ms">"Bug tracker staat in Linear project INGEST" · "Gebruiker prefereert korte antwoorden"</span></div>
+<div class="dr"><span class="nm"><strong>Laag 1</strong> · <code>~/.claude/CLAUDE.md</code></span><span class="ct">Persoonlijke regels voor <strong>al je projecten</strong>. Werkwijze, stijl, veiligheid.</span><span class="ms">"Werk altijd op een branch" · "Comments in het Nederlands"</span></div>
+<div class="dr"><span class="nm"><strong>Laag 2</strong> · <code>./CLAUDE.md</code> + <code>AGENTS.md</code></span><span class="ct">Projectspecifieke briefing. Tech stack, commando's, kritieke regels. <code>AGENTS.md</code> voegt per-map regels toe in monorepo's.</span><span class="ms">"Gebruik Prisma migrate, nooit raw SQL" · "Zie docs/refs/"</span></div>
+<div class="dr"><span class="nm"><strong>Laag 3</strong> · <code>docs/refs/</code></span><span class="ct">Gedetailleerde "littekens" -- lessen uit fouten. Worden on-demand geladen.</span><span class="ms">"Kolom is is_answer_ready, NIET answer_ready" · API-valkuilen</span></div>
+<div class="dr"><span class="nm"><strong>Laag 4</strong> · <code>MEMORY.md</code> + auto memory</span><span class="ct">Persistent geheugen per project, overleeft sessies. Staat in <code>~/.claude/projects/</code>, niet in je repo.</span><span class="ms">"Bug tracker staat in Linear" · "Gebruiker prefereert kort"</span></div>
+<div class="dr"><span class="nm"><strong>Laag 5</strong> · skills, agents, hooks, tests</span><span class="ct">Code die Claude <em>uitvoert</em>. Skills en agents zijn probabilistisch, hooks en tests zijn deterministisch.</span><span class="ms">Herbruikbare workflows · parallel werk · harde garanties</span></div>
 </div>
 <div class="co ci"><span class="cl">Vuistregel</span><p><strong>Geldt voor elk project?</strong> → globale CLAUDE.md. <strong>Specifiek voor dit project?</strong> → project CLAUDE.md. <strong>Gedetailleerde les uit een fout?</strong> → docs/refs/. <strong>Context die niet in code of git staat?</strong> → memory. Dupliceer niet tussen lagen -- verwijs.</p></div>
 
@@ -151,30 +151,6 @@ Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
 - Tabellen: meervoud, snake_case (users, order_items)
 - Kolommen: snake_case (created_at, is_active)</code></pre>
 <div class="co ca"><span class="cl">Hoe het werkt</span><p>CLAUDE.md zegt: "Zie docs/refs/db-schema.md voor database valkuilen." Claude leest dat bestand alleen wanneer hij met de database werkt. Zo blijft je hoofdbestand klein en je context schoon.</p></div>
-
-<h3>De Feedback Loop</h3>
-<div class="lv2">
-<div class="ls">Fout gevonden</div><div class="la">→</div>
-<div class="ls">Regel toegevoegd</div><div class="la">→</div>
-<div class="ls">Nooit meer herhaald</div><div class="la">↩</div>
-</div>
-<p>Elke fout wordt een regel. Na een maand: tientallen regels. Na drie maanden: het systeem kent jouw project beter dan welke nieuwe developer ook.</p>
-
-<h4>Concreet voorbeeld: van fout naar regel</h4>
-<p><strong>Situatie:</strong> Claude verwijdert een bestand uit <code>public/js/</code>. Blijkt: dat bestand wordt automatisch gegenereerd door een build-stap. Productie breekt.</p>
-
-<table class="tc">
-<tr><th>Stap</th><th>Actie</th><th>Voorbeeld</th></tr>
-<tr><td>1. Fix</td><td>Los het probleem op</td><td><code>Herstel het bestand, draai de build opnieuw</code></td></tr>
-<tr><td>2. Test</td><td>Schrijf een regressietest</td><td><code>Test dat public/js/ compleet is na build</code></td></tr>
-<tr><td>3. Regel</td><td>Voeg toe aan <code>docs/refs/</code></td><td><code>Verwijder NOOIT bestanden uit public/js/</code></td></tr>
-<tr><td>4. CLAUDE.md</td><td>Verwijs naar de regel</td><td><code>Zie docs/refs/build-regels.md</code></td></tr>
-<tr><td>5. Hook</td><td>Blokkeer bij kritieke fouten</td><td><code>npm run build && git diff --exit-code public/js/</code></td></tr>
-</table>
-
-<div class="co ci"><span class="cl">In de praktijk</span><p>De <code>/fix-bug</code> skill (<a href="deel-22.html">Starter Kit, "Verder groeien"</a>) automatiseert dit patroon. Eén commando doorloopt alle stappen -- van branch aanmaken tot regressietest, regel in <code>docs/refs/</code>, en commit.</p></div>
-
-<div class="co ca"><span class="cl">Het patroon</span><p><strong>Fout → fix → test → regel → (hook)</strong>. Hoe kritischer de fout, hoe harder de garantie. Vervelend? Regel. Productie kapot? Hook. Dit is hoe je systeem steeds slimmer wordt.</p></div>
 </div>
 
 <div class="lc lcy"><div class="lh"><span class="ln">LAAG 4</span><span class="lt">Persistent geheugen</span><span class="lp">MEMORY.md + auto memory</span></div>
@@ -225,7 +201,28 @@ Upload-form component is klaar en getest. Preview-stap nog niet begonnen.
 <p><strong>Kernonderscheid:</strong> Skills en agents zijn <em>probabilistisch</em> -- Claude kan afwijken. Hooks en tests zijn <em>deterministisch</em> -- ze blokkeren altijd. Gebruik beide lagen samen.</p></div>
 
 <h3>Hoe de lagen samenwerken</h3>
-<p>Nu je alle 5 lagen kent, hier het grotere plaatje: hoe de globale CLAUDE.md (Laag 1) de hele werkwijze afdwingt door de andere lagen aan te sturen.</p>
+<p>Nu je alle 5 lagen kent, hier het grotere plaatje: hoe ze samen een zelfversterkend systeem vormen.</p>
+
+<h4>De Feedback Loop</h4>
+<p>Het kernmechanisme dat alle lagen verbindt: elke fout wordt een regel, elke regel maakt het systeem slimmer.</p>
+<div class="lv2">
+<div class="ls">Fout gevonden</div><div class="la">→</div>
+<div class="ls">Regel toegevoegd</div><div class="la">→</div>
+<div class="ls">Nooit meer herhaald</div><div class="la">↩</div>
+</div>
+<p>Na een maand: tientallen regels. Na drie maanden: het systeem kent jouw project beter dan welke nieuwe developer ook.</p>
+
+<h4>Concreet voorbeeld: van fout naar regel</h4>
+<p><strong>Situatie:</strong> Claude verwijdert een bestand uit <code>public/js/</code>. Blijkt: dat bestand wordt automatisch gegenereerd door een build-stap. Productie breekt.</p>
+<table class="tc">
+<tr><th>Stap</th><th>Actie</th><th>Laag</th><th>Voorbeeld</th></tr>
+<tr><td>1. Fix</td><td>Los het probleem op</td><td>--</td><td><code>Herstel het bestand, draai de build opnieuw</code></td></tr>
+<tr><td>2. Test</td><td>Schrijf een regressietest</td><td>Laag 5</td><td><code>Test dat public/js/ compleet is na build</code></td></tr>
+<tr><td>3. Regel</td><td>Voeg toe aan <code>docs/refs/</code></td><td>Laag 3</td><td><code>Verwijder NOOIT bestanden uit public/js/</code></td></tr>
+<tr><td>4. CLAUDE.md</td><td>Verwijs naar de regel</td><td>Laag 2</td><td><code>Zie docs/refs/build-regels.md</code></td></tr>
+<tr><td>5. Hook</td><td>Blokkeer bij kritieke fouten</td><td>Laag 5</td><td><code>npm run build && git diff --exit-code public/js/</code></td></tr>
+</table>
+<div class="co ca"><span class="cl">Het patroon</span><p><strong>Fout → fix → test → regel → (hook)</strong>. Hoe kritischer de fout, hoe harder de garantie. Vervelend? Regel (Laag 3). Productie kapot? Hook (Laag 5). Dit is hoe je systeem steeds slimmer wordt.</p></div>
 
 <h4>De globale CLAUDE.md als poortwachter</h4>
 <p>Laag 1 is meer dan stijlvoorkeuren -- het is het mechanisme om je <strong>hele werkwijze</strong> af te dwingen. Door drie onderdelen toe te voegen, transformeer je het van passief naar actief:</p>
