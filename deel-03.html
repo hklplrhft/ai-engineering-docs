@@ -61,14 +61,14 @@
 <div class="co ci"><span class="cl">Vuistregel</span><p><strong>Geldt voor elk project?</strong> → globale CLAUDE.md. <strong>Specifiek voor dit project?</strong> → project CLAUDE.md. <strong>Gedetailleerde les uit een fout?</strong> → docs/refs/. <strong>Context die niet in code of git staat?</strong> → memory. Dupliceer niet tussen lagen -- verwijs.</p></div>
 
 <h3>Ontwerpprincipe: Single Source of Truth (SSOT)</h3>
-<p>Het 5-lagen systeem werkt alleen als elke regel <strong>een autoritieve bron</strong> heeft. Andere lagen verwijzen ernaar -- ze kopieren niet. Dit is het SSOT-principe (Single Source of Truth).</p>
+<p>Elke waarde, functie of constante heeft <strong>een canonieke plek</strong>. Andere plekken lezen daaruit -- ze kopieren niet. Dit voorkomt dat dezelfde informatie op meerdere plekken uit sync loopt.</p>
 <div class="dg">
-<div class="dr"><span class="nm">Elke regel heeft een eigenaar</span><span class="ct">Globale werkwijze → <code>~/.claude/CLAUDE.md</code>. Projectregels → <code>./CLAUDE.md</code>. Valkuilen → <code>docs/refs/</code>.</span><span class="ms">Eén bron per regel</span></div>
-<div class="dr"><span class="nm">Verwijs, kopieer niet</span><span class="ct">CLAUDE.md zegt "Zie docs/refs/db-schema.md" -- niet de inhoud ervan herhalen.</span><span class="ms">Voorkomt drift</span></div>
-<div class="dr"><span class="nm">Bij conflict wint de bron</span><span class="ct">Als een kopie afwijkt van de bron, geldt de bron. Daarom: niet kopieren.</span><span class="ms">Eenduidig</span></div>
-<div class="dr"><span class="nm">Globaal vs. project</span><span class="ct">Globale regels staan in <code>~/.claude/CLAUDE.md</code>, niet herhaald in project CLAUDE.md.</span><span class="ms">Geen duplicaten</span></div>
+<div class="dr"><span class="nm">Configuratie op 1 plek</span><span class="ct">API-URL in <code>.env</code>, niet hardcoded in 3 bestanden. Wijzigen? Eén plek.</span><span class="ms"><code>SITE_URL=</code> in .env</span></div>
+<div class="dr"><span class="nm">Functies importeren, niet kopieren</span><span class="ct">Validatielogica in <code>utils/validate.js</code>, niet gekopieerd in elk formulier.</span><span class="ms"><code>import { validate }</code></span></div>
+<div class="dr"><span class="nm">Database als bron</span><span class="ct">De database is de waarheid. Lokale kopieën (cache, state) zijn tijdelijk.</span><span class="ms">Bij conflict wint de DB</span></div>
+<div class="dr"><span class="nm">Constanten centraal</span><span class="ct">Waarden die op 3+ plekken voorkomen horen in <code>src/config/</code>.</span><span class="ms">Niet overal hardcoden</span></div>
 </div>
-<div class="co cw"><span class="cl">Veelgemaakte fout</span><p>Dezelfde regel in zowel de globale als de project CLAUDE.md zetten. Resultaat: ze lopen uit sync, Claude krijgt tegenstrijdige instructies, en je weet niet welke geldt. Kies een bron, verwijs vanaf de rest.</p></div>
+<div class="co cw"><span class="cl">Anti-patroon: stille drift</span><p>Dezelfde waarde op meerdere plekken hardcoden. Iemand wijzigt er een, vergeet de andere, en je hebt een bug die pas na uren opvalt. Hoe meer kopieën, hoe groter het risico. Eén bron, de rest importeert of verwijst.</p></div>
 
 <div class="lc lcp"><div class="lh"><span class="ln">LAAG 1</span><span class="lt">Globale regels</span><span class="lp">~/.claude/CLAUDE.md</span></div>
 <p>Persoonlijke voorkeuren voor <em>alle</em> projecten. "Schrijf comments in het Nederlands." · "Gebruik hyphens, nooit em-dashes." · "Vraag bevestiging voor verwijderen."</p>
@@ -77,7 +77,7 @@
 <h3>De globale CLAUDE.md als poortwachter</h3>
 <p>Laag 1 is meer dan stijlvoorkeuren -- het is het mechanisme om je <strong>hele werkwijze</strong> af te dwingen. Door drie onderdelen toe te voegen aan je globale CLAUDE.md, transformeer je het van passief naar actief:</p>
 <div class="co ca"><span class="cl">Drie onderdelen die alles veranderen</span>
-<p><strong>1. Project-inrichting check</strong> -- Claude controleert bij elke sessie of de basis aanwezig is: CLAUDE.md, hooks, docs/refs/ en .gitignore. Ontbreekt er iets? Claude biedt aan om het op te zetten. De details staan in een apart document (<code>~/.claude/docs/project-setup.md</code>) -- de globale CLAUDE.md verwijst ernaar (SSOT).</p>
+<p><strong>1. Project-inrichting check</strong> -- Claude controleert bij elke sessie of de basis aanwezig is: CLAUDE.md, hooks, docs/refs/ en .gitignore. Ontbreekt er iets? Claude biedt aan om het op te zetten. De details staan in een apart document (<code>~/.claude/docs/project-setup.md</code>) -- de globale CLAUDE.md verwijst ernaar, niet kopieert.</p>
 <p><strong>2. Werkwijze-signalen (probabilistisch)</strong> -- Claude signaleert automatisch op cruciale momenten: bugfix → regel aanbieden, herhaling → skill voorstellen, terugkerende controle → agent aanbieden, vastlopen → reset suggereren, taakwissel → /clear herinneren, einde → handoff aanbieden.</p>
 <p><strong>3. SessionStart hook (deterministisch)</strong> -- Een shell-script dat bij elke sessie checkt of CLAUDE.md, docs/refs/, .gitignore en .git aanwezig zijn. Dit maakt de basis-inrichting <em>onmogelijk te vergeten</em>, terwijl de uitbreidingen (tests, skills, agents) organisch worden gesignaleerd. Zie <a href="deel-06.html" style="color:var(--yellow)">Hooks</a> voor de configuratie.</p>
 <p>Dit implementeert de <a href="#feedback-loop" style="color:var(--yellow)">feedback loop</a> (Laag 3) en de <a href="deel-18.html" style="color:var(--yellow)">anti-patronen</a> automatisch. De concrete copy-paste configuratie vind je in de <a href="deel-22.html" style="color:var(--yellow)">Starter Kit</a> (stap 2).</p>
@@ -96,7 +96,7 @@
 <div class="co ci"><span class="cl">Probabilistisch + deterministisch</span><p>De signalen hierboven zijn <em>probabilistisch</em> -- Claude kan ze vergeten. Combineer ze daarom met een <a href="deel-06.html" style="color:var(--yellow)">SessionStart hook</a> die <em>deterministisch</em> de basis controleert. Zo is de fundament gegarandeerd, en groeit de rest organisch.</p></div>
 
 <h4>Voorbeeld: globale CLAUDE.md met project-setup</h4>
-<p>De globale CLAUDE.md verwijst naar een gedetailleerd stappen-document. Zo blijft het bestand compact (SSOT) terwijl de volledige setup-procedure beschikbaar is:</p>
+<p>De globale CLAUDE.md verwijst naar een gedetailleerd stappen-document. Zo blijft het bestand compact terwijl de volledige setup-procedure beschikbaar is:</p>
 <pre><code># ~/.claude/CLAUDE.md -- Globale regels
 
 ## Werkwijze -- plan, verifieer, commit

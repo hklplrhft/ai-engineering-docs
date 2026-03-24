@@ -56,7 +56,7 @@
 <strong>Sterk gestuurd (CLAUDE.md + skills):</strong> branches, plan mode, commit-messages, werkwijze.<br>
 <strong>Vereist discipline:</strong> code reviewen, goede prompts schrijven, /clear gebruiken.</p></div>
 
-<div class="co ci"><span class="cl">SSOT-principe</span><p>Elke regel heeft een <strong>autoritieve bron</strong>. Globale werkwijze → <code>~/.claude/CLAUDE.md</code>. Projectregels → <code>./CLAUDE.md</code>. Valkuilen → <code>docs/refs/</code>. Andere lagen <strong>verwijzen</strong> naar de bron, kopieren niet. Bij conflict wint de bron. Zie <a href="deel-03.html" style="color:var(--yellow)">De 5 Lagen -- SSOT</a> voor details.</p></div>
+<div class="co ci"><span class="cl">SSOT-principe</span><p>Single Source of Truth: elke waarde, functie of constante heeft <strong>een canonieke plek</strong>. Configuratie in <code>.env</code>, niet hardcoded in 3 bestanden. Validatielogica in een utility, niet gekopieerd in elk formulier. Hetzelfde geldt voor je instructielagen: dupliceer niet tussen globale en project CLAUDE.md -- verwijs. Zie <a href="deel-03.html" style="color:var(--yellow)">De 5 Lagen -- SSOT</a>.</p></div>
 
 <h3>Stap 1: Installeer Claude Code</h3>
 <pre><code># macOS / Linux
@@ -155,7 +155,7 @@ de situatie zich voordoet:
 - Wees beknopt in uitleg, gedetailleerd in code</code></pre>
 
 <div class="co ca"><span class="cl">Hoe werken deze secties samen?</span>
-<p><strong>Project-inrichting check</strong> verwijst naar <code>~/.claude/docs/project-setup.md</code> voor de volledige setup-procedure (SSOT -- details staan op een plek). De minimale check zorgt dat bestaande projecten ook gecontroleerd worden.</p>
+<p><strong>Project-inrichting check</strong> verwijst naar <code>~/.claude/docs/project-setup.md</code> voor de volledige setup-procedure -- details staan op een plek, niet gekopieerd. De minimale check zorgt dat bestaande projecten ook gecontroleerd worden.</p>
 <p><strong>Signalen "wanneer ingrijpen"</strong> voorkomen de <a href="deel-18.html" style="color:var(--yellow)">veelgemaakte fouten</a>: eindeloos herhalen, vage prompts, code zonder tests.</p>
 <p><strong>Signalen "wanneer uitbreiden"</strong> implementeren de <a href="deel-03.html" style="color:var(--yellow)">5-lagen feedback loop</a>: elke fout wordt een regel, elke herhaling een skill, en je project groeit organisch mee.</p>
 <p>Combineer dit met een <a href="deel-06.html" style="color:var(--yellow)">SessionStart hook</a> (stap 4b) voor deterministische controle van de basis.</p></div>
@@ -395,8 +395,8 @@ STRIPE_SECRET_KEY=</code></pre>
 </ul></div>
 
 <h3 id="project-setup-checklist">De volledige project-setup checklist</h3>
-<p>Dit is de inhoud van <code>~/.claude/docs/project-setup.md</code> -- het document waar je globale CLAUDE.md naar verwijst (SSOT). Doorloop deze stappen bij een nieuw project of wanneer een project geen CLAUDE.md heeft.</p>
-<div class="co ci"><span class="cl">SSOT</span><p>Dit document is de <strong>autoritieve bron</strong> voor project-inrichting. De globale CLAUDE.md verwijst ernaar, kopieert het niet. Wijzigingen hoef je maar op een plek te doen.</p></div>
+<p>Dit is de inhoud van <code>~/.claude/docs/project-setup.md</code> -- het document waar je globale CLAUDE.md naar verwijst. Doorloop deze stappen bij een nieuw project of wanneer een project geen CLAUDE.md heeft.</p>
+<div class="co ci"><span class="cl">Eén bron, niet kopieren</span><p>Dit document is de <strong>autoritieve bron</strong> voor project-inrichting. De globale CLAUDE.md verwijst ernaar, kopieert het niet. Wijzigingen hoef je maar op een plek te doen.</p></div>
 
 <h4>Checklist stap 1: Project CLAUDE.md aanmaken</h4>
 <p>Stel <code>/init</code> voor als er geen CLAUDE.md in de projectroot staat. De CLAUDE.md moet bevatten (compact, max ~100-150 regels):</p>
@@ -486,7 +486,7 @@ chmod +x .git/hooks/pre-commit</code></pre>
 ├── hooks/
 │   └── project-check.sh         ← deterministische project-check
 └── docs/
-    └── project-setup.md          ← gedetailleerde setup-stappen (SSOT)
+    └── project-setup.md          ← gedetailleerde setup-stappen
 
 mijn-project/
 ├── CLAUDE.md                    ← project regels (stap 3)
