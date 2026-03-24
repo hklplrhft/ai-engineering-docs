@@ -60,16 +60,6 @@
 </div>
 <div class="co ci"><span class="cl">Vuistregel</span><p><strong>Geldt voor elk project?</strong> → globale CLAUDE.md. <strong>Specifiek voor dit project?</strong> → project CLAUDE.md. <strong>Gedetailleerde les uit een fout?</strong> → docs/refs/. <strong>Context die niet in code of git staat?</strong> → memory. Dupliceer niet tussen lagen -- verwijs.</p></div>
 
-<h3>Ontwerpprincipe: Single Source of Truth (SSOT)</h3>
-<p>Elke waarde, functie of constante heeft <strong>een canonieke plek</strong>. Andere plekken lezen daaruit -- ze kopieren niet. Dit voorkomt dat dezelfde informatie op meerdere plekken uit sync loopt.</p>
-<div class="dg">
-<div class="dr"><span class="nm">Configuratie op 1 plek</span><span class="ct">API-URL in <code>.env</code>, niet hardcoded in 3 bestanden. Wijzigen? Eén plek.</span><span class="ms"><code>SITE_URL=</code> in .env</span></div>
-<div class="dr"><span class="nm">Functies importeren, niet kopieren</span><span class="ct">Validatielogica in <code>utils/validate.js</code>, niet gekopieerd in elk formulier.</span><span class="ms"><code>import { validate }</code></span></div>
-<div class="dr"><span class="nm">Database als bron</span><span class="ct">De database is de waarheid. Lokale kopieën (cache, state) zijn tijdelijk.</span><span class="ms">Bij conflict wint de DB</span></div>
-<div class="dr"><span class="nm">Constanten centraal</span><span class="ct">Waarden die op 3+ plekken voorkomen horen in <code>src/config/</code>.</span><span class="ms">Niet overal hardcoden</span></div>
-</div>
-<div class="co cw"><span class="cl">Anti-patroon: stille drift</span><p>Dezelfde waarde op meerdere plekken hardcoden. Iemand wijzigt er een, vergeet de andere, en je hebt een bug die pas na uren opvalt. Hoe meer kopieën, hoe groter het risico. Eén bron, de rest importeert of verwijst.</p></div>
-
 <div class="lc lcp"><div class="lh"><span class="ln">LAAG 1</span><span class="lt">Globale regels</span><span class="lp">~/.claude/CLAUDE.md</span></div>
 <p>Persoonlijke voorkeuren voor <em>alle</em> projecten. "Schrijf comments in het Nederlands." · "Gebruik hyphens, nooit em-dashes." · "Vraag bevestiging voor verwijderen."</p>
 <p><strong>Vuistregel:</strong> Geldt voor elk project → hier. Projectspecifiek → niet.</p>
