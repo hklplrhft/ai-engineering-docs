@@ -394,6 +394,91 @@ STRIPE_SECRET_KEY=</code></pre>
 <li><strong>Feedback loop:</strong> Fout → regel in <code>docs/refs/</code>. Herhaalde taak → skill. Terugkerende controle → agent. Snoei je CLAUDE.md regelmatig en experimenteer met modellen en parallel werk.</li>
 </ul></div>
 
+<h3 id="project-setup-checklist">De volledige project-setup checklist</h3>
+<p>Dit is de inhoud van <code>~/.claude/docs/project-setup.md</code> -- het document waar je globale CLAUDE.md naar verwijst (SSOT). Doorloop deze stappen bij een nieuw project of wanneer een project geen CLAUDE.md heeft.</p>
+<div class="co ci"><span class="cl">SSOT</span><p>Dit document is de <strong>autoritieve bron</strong> voor project-inrichting. De globale CLAUDE.md verwijst ernaar, kopieert het niet. Wijzigingen hoef je maar op een plek te doen.</p></div>
+
+<h4>Checklist stap 1: Project CLAUDE.md aanmaken</h4>
+<p>Stel <code>/init</code> voor als er geen CLAUDE.md in de projectroot staat. De CLAUDE.md moet bevatten (compact, max ~100-150 regels):</p>
+<div class="dg">
+<div class="dr"><span class="nm">Project</span><span class="ct">Wat doet het project, voor wie</span><span class="ms">Verplicht</span></div>
+<div class="dr"><span class="nm">Tech stack</span><span class="ct">Framework, taal, database, hosting</span><span class="ms">Verplicht</span></div>
+<div class="dr"><span class="nm">Commando's</span><span class="ct">build, dev, test, lint -- exact zoals ze gedraaid worden</span><span class="ms">Verplicht</span></div>
+<div class="dr"><span class="nm">Architectuur</span><span class="ct">Mappenstructuur, belangrijke patronen, routing</span><span class="ms">Aanbevolen</span></div>
+<div class="dr"><span class="nm">Kritieke regels</span><span class="ct">Dingen die NOOIT mogen (bijv. "verwijder geen content", "geen secrets")</span><span class="ms">Verplicht</span></div>
+<div class="dr"><span class="nm">Referenties</span><span class="ct">Verwijzingen naar docs/refs/ bestanden voor details</span><span class="ms">Aanbevolen</span></div>
+</div>
+<p><strong>Wat er NIET in hoort:</strong> code style (dat doet de linter), code voorbeelden (verouderen), info die uit de code afgeleid kan worden.</p>
+
+<h4>Checklist stap 2: .gitignore controleren</h4>
+<p>Check of <code>.gitignore</code> aanwezig is met minimaal:</p>
+<pre><code>.env
+.env.*
+node_modules/          # of equivalent (venv/, vendor/)
+dist/                  # build output (.astro/, .next/, build/)
+.DS_Store
+.vscode/settings.json
+.idea/</code></pre>
+<p>Waarschuw als <code>.gitignore</code> ontbreekt of <code>.env</code> niet erin staat.</p>
+
+<h4>Checklist stap 3: Git initialiseren</h4>
+<p>Als er nog geen <code>.git/</code> is:</p>
+<pre><code>git init
+git checkout -b feature/&lt;beschrijvend&gt;
+# Werk NOOIT direct op main</code></pre>
+
+<h4>Checklist stap 4: docs/refs/ aanmaken</h4>
+<p>Maak <code>docs/refs/</code> directory aan (leeg is OK bij start). Dit is de plek voor "littekens" -- lessen uit fouten:</p>
+<table class="tc">
+<tr><th>Bestand</th><th>Wanneer aanmaken</th></tr>
+<tr><td><code>api-regels.md</code></td><td>API conventies en valkuilen</td></tr>
+<tr><td><code>deploy.md</code></td><td>Deployment procedures</td></tr>
+<tr><td><code>routing.md</code></td><td>Hoe routing werkt</td></tr>
+<tr><td><code>data-structuur.md</code></td><td>Data model uitleg</td></tr>
+</table>
+
+<h4>Checklist stap 5: Hooks instellen</h4>
+<p>Detecteer de tech stack en stel de juiste pre-commit hook voor:</p>
+<table class="tc">
+<tr><th>Stack</th><th>Pre-commit hook commando</th></tr>
+<tr><td>Astro</td><td><code>npx astro build</code></td></tr>
+<tr><td>Next.js / React</td><td><code>npm run lint && npx tsc --noEmit</code></td></tr>
+<tr><td>Python</td><td><code>ruff check . && mypy .</code></td></tr>
+<tr><td>Go</td><td><code>go vet ./... && staticcheck ./...</code></td></tr>
+<tr><td>Flutter</td><td><code>flutter analyze && dart format --set-exit-if-changed .</code></td></tr>
+<tr><td>Generiek</td><td><code>npm run build</code> of <code>npm test</code></td></tr>
+</table>
+<p>Installeer als git hook:</p>
+<pre><code>mkdir -p .git/hooks
+cat > .git/hooks/pre-commit << 'HOOK'
+#!/bin/sh
+echo "Running pre-commit checks..."
+# COMMANDO HIER (zie tabel hierboven)
+if [ $? -ne 0 ]; then
+  echo "Pre-commit check failed! Commit blocked."
+  exit 1
+fi
+HOOK
+chmod +x .git/hooks/pre-commit</code></pre>
+
+<h4>Checklist stap 6: Eerste commit</h4>
+<p>Na het inrichten: selectief stagen (specifieke bestanden, niet <code>git add .</code>), duidelijk commit bericht, verifieer dat de pre-commit hook werkt.</p>
+
+<h4>Automatische check: SessionStart hook</h4>
+<p>De globale settings (<code>~/.claude/settings.json</code>) bevat een SessionStart hook die bij elke sessie automatisch checkt of CLAUDE.md, docs/refs/, .gitignore en .git aanwezig zijn. Dit is deterministisch -- het draait altijd. Zie <a href="deel-06.html" style="color:var(--yellow)">Hooks -- SessionStart</a> voor de configuratie en het script.</p>
+
+<h4>Verificatie</h4>
+<p>Na het doorlopen van alle stappen, controleer:</p>
+<ul>
+<li>CLAUDE.md aanwezig en compact</li>
+<li>.gitignore met .env en secrets</li>
+<li>Git repo met feature branch (niet main)</li>
+<li>docs/refs/ directory aanwezig</li>
+<li>Pre-commit hook geinstalleerd en werkend</li>
+<li>SessionStart hook actief (check via <code>/hooks</code>)</li>
+<li>Eerste commit geslaagd</li>
+</ul>
+
 <h3>De complete mapstructuur</h3>
 <pre><code>~/.claude/
 ├── CLAUDE.md                    ← globale regels (stap 2)
