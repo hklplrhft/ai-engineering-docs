@@ -63,8 +63,40 @@
 <div class="co ci"><span class="cl">Vuistregel</span><p><strong>Geldt voor elk project?</strong> → globale CLAUDE.md. <strong>Specifiek voor dit project?</strong> → project CLAUDE.md. <strong>Gedetailleerde les uit een fout?</strong> → docs/refs/. <strong>Context die niet in code of git staat?</strong> → memory. Dupliceer niet tussen lagen -- verwijs.</p></div>
 
 <div class="lc lcp"><div class="lh"><span class="ln">LAAG 1</span><span class="lt">Globale regels</span><span class="lp">~/.claude/CLAUDE.md</span></div>
-<p>Persoonlijke voorkeuren voor <em>alle</em> projecten. "Schrijf comments in het Nederlands." · "Gebruik hyphens, nooit em-dashes." · "Vraag bevestiging voor verwijderen."</p>
+<p>Wordt <strong>altijd geladen</strong>, in elk project. Dit is meer dan stijlvoorkeuren -- het is het mechanisme waarmee je je hele werkwijze afdwingt: hoe Claude plant, commit, test, en wanneer het uitbreidingen voorstelt.</p>
+<p><strong>Erin:</strong> Werkwijze (plan/verifieer/commit), git-discipline, code kwaliteit, project-inrichting check, signalen (wanneer ingrijpen, wanneer uitbreiden), veiligheid, stijl.<br>
+<strong>Niet erin:</strong> Projectspecifieke regels (→ Laag 2), code voorbeelden, details die in <code>docs/refs/</code> horen (→ Laag 3).</p>
 <p><strong>Vuistregel:</strong> Geldt voor elk project → hier. Projectspecifiek → niet.</p>
+
+<h4>Bestandsstructuur</h4>
+<p>De globale CLAUDE.md werkt samen met 3 ondersteunende bestanden in <code>~/.claude/</code>:</p>
+<pre><code>~/.claude/
+├── CLAUDE.md                 ← jouw globale regels en werkwijze
+├── settings.json             ← SessionStart hook configuratie
+├── docs/
+│   └── project-setup.md      ← setup checklist die Claude volgt
+└── hooks/
+    └── project-check.sh      ← controleert of een project is ingericht</code></pre>
+
+<h4>Voorbeeld (verkort)</h4>
+<p>De kernsecties van een globale CLAUDE.md. De volledige versie met alle secties staat in de <a href="deel-22.html" style="color:var(--yellow)">Starter Kit</a> (stap 2).</p>
+<pre><code># ~/.claude/CLAUDE.md
+
+## Werkwijze -- plan, verifieer, commit
+- /plan bij taken die meer dan 1 bestand raken
+- Commit na elke voltooide wijziging
+- /clear bij taakwissel, /compact na 30+ minuten
+
+## Project-inrichting check
+Bij een nieuw project, doorloop ~/.claude/docs/project-setup.md
+Minimale check: CLAUDE.md, hooks, docs/refs/, .gitignore
+
+## Signalen -- wanneer uitbreiden
+- Bug gefixt zonder test? -> "Zal ik een test-framework opzetten?"
+- Zelfde fout 2x? -> "Zal ik een hook instellen?"
+- Valkuil ontdekt? -> "Zal ik dit in docs/refs/ vastleggen?"</code></pre>
+
+<div class="co ci"><span class="cl">Eenmalig instellen</span><p>Deze 4 bestanden maak je een keer aan. Daarna werken ze bij elk project automatisch: de SessionStart hook detecteert wat ontbreekt, en Claude volgt de <code>project-setup.md</code> checklist. Zie de <a href="deel-22.html" style="color:var(--yellow)">Starter Kit</a> voor de volledige inhoud en een <a href="https://hklplrhft.github.io/ai-engineering-docs/setup.sh" style="color:var(--yellow)">setup-script</a> dat alles in een keer regelt.</p></div>
 </div>
 
 <div class="lc lcb"><div class="lh"><span class="ln">LAAG 2</span><span class="lt">Projectregels</span><span class="lp">./CLAUDE.md</span></div>
