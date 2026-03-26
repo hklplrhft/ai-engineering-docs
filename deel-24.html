@@ -110,6 +110,33 @@
 </tbody>
 </table>
 
+<h3>Officiele skills</h3>
+<p>Naast plugins biedt Anthropic ook losse <strong>skills</strong> aan die je direct kunt installeren. Skills zijn lichtgewicht instructiesets die Claude's gedrag aansturen zonder extra servers of dependencies.</p>
+<table class="gt">
+<thead><tr><th>Skill</th><th>Wat het doet</th><th>Installatie</th></tr></thead>
+<tbody>
+<tr><td><strong>frontend-design</strong></td><td>Genereert production-grade UI met hoge designkwaliteit. Vermijdt generieke AI-esthetiek -- levert onderscheidende, gepolijste interfaces.</td><td><code>npx skills add anthropics/claude-code --skill frontend-design</code></td></tr>
+</tbody>
+</table>
+<p>De <code>frontend-design</code> skill activeert automatisch wanneer je vraagt om webcomponenten, pagina's of applicaties te bouwen. Je kunt hem ook combineren met screenshots of Figma-mockups als input.</p>
+
+<h3>Community design skills</h3>
+<p>Naast de officiele frontend-design skill zijn er community skills die specifieke design-domeinen afdekken.</p>
+<table class="gt">
+<thead><tr><th>Skill</th><th>Wat het doet</th><th>Installatie</th></tr></thead>
+<tbody>
+<tr><td><strong>mobile-app-design</strong></td><td>Uitgebreide mobile UI/UX guidance: iOS HIG, Material Design, accessibility (WCAG 2.1 AA), React Native best practices. Inclusief referentiedocs, codevoorbeelden en validatie-scripts.</td><td><code>npx skills add awesome-skills/mobile-app-design</code></td></tr>
+</tbody>
+</table>
+<p>De <code>mobile-app-design</code> skill activeert automatisch bij termen als "design mobile UI", "review app design", "check UI guidelines" of bij iOS/Android design patterns. Bevat:</p>
+<ul>
+<li><strong>References</strong> -- iOS guidelines, Android guidelines, platform-vergelijkingen, accessibility checklist, performance patterns</li>
+<li><strong>Voorbeelden</strong> -- Complete schermen (profile, form, list) met accessibility en performance best practices</li>
+<li><strong>Scripts</strong> -- Contrast checker, touch target validator, accessibility auditor</li>
+</ul>
+
+<div class="co ci"><span class="cl">Tip: CLAUDE.md</span><p>Voeg aan je CLAUDE.md toe dat Claude altijd de frontend-design skill moet gebruiken bij web-vormgeving en de mobile-app-design skill bij smartphone apps. Zo vergeet hij het nooit.</p></div>
+
 <h3>Community plugins & skills (aanbevolen)</h3>
 <p>De community bouwt actief mee. Dit zijn de meest nuttige open-source projecten:</p>
 

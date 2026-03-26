@@ -66,6 +66,75 @@
 "Maak deze Figma mockup @designs/homepage.png na in React"
 "Wat gaat er mis in deze foutmelding? [plak screenshot]"</code></pre>
 
+<h3>Vormgeving en design</h3>
+<p>Claude Code kan volledige UI's genereren -- van webpagina's tot smartphone apps. Met de juiste aanpak krijg je resultaten die er niet "AI-gegenereerd" uitzien.</p>
+
+<h4>Frontend-design skill</h4>
+<p>Installeer de officiele <code>frontend-design</code> skill voor de beste resultaten:</p>
+<pre><code>npx skills add anthropics/claude-code --skill frontend-design</code></pre>
+<p>Deze skill activeert automatisch bij UI-taken en genereert gepolijste, onderscheidende interfaces. Combineer met screenshots of Figma-mockups voor de beste resultaten:</p>
+<pre><code># Screenshot als input
+"Hier is de huidige pagina [Ctrl+V] -- verbeter het design"
+
+# Figma mockup nabouwen
+"Bouw deze mockup @designs/dashboard.png na in React + Tailwind"
+
+# Bestaande site verbeteren
+"Maak de landingspagina moderner -- focus op whitespace en typografie"</code></pre>
+
+<h4>Mobile-first en responsive design</h4>
+<p>Begin altijd mobiel. Desktop-first denken is de meest voorkomende designfout bij AI-gegenereerde UI's.</p>
+<table class="gt">
+<thead><tr><th>Principe</th><th>Richtlijn</th></tr></thead>
+<tbody>
+<tr><td>Touch targets</td><td>Minimaal 44x44px -- vingers zijn geen muiscursors</td></tr>
+<tr><td>Font-size</td><td>Minimaal 16px body tekst op mobiel (voorkomt ook auto-zoom op iOS)</td></tr>
+<tr><td>Viewport</td><td>Altijd <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></td></tr>
+<tr><td>Breakpoints</td><td>Ontwerp voor 320px, 768px, 1024px, 1440px</td></tr>
+<tr><td>Navigatie</td><td>Hamburger menu of bottom tabs op mobiel -- geen brede horizontale nav</td></tr>
+<tr><td>Afbeeldingen</td><td>Responsive images met <code>srcset</code> of <code>max-width: 100%</code></td></tr>
+</tbody>
+</table>
+<pre><code># Test je design op mobiele viewports met Playwright MCP
+"Open localhost:3000 op een viewport van 375x812 en maak een screenshot"
+"Check of alle knoppen minimaal 44px hoog zijn"
+"Test de navigatie op iPhone SE formaat"</code></pre>
+
+<h4>Smartphone apps (React Native / Flutter)</h4>
+<p>Installeer de <code>mobile-app-design</code> skill voor uitgebreide mobile guidance:</p>
+<pre><code>npx skills add awesome-skills/mobile-app-design</code></pre>
+<p>Deze skill bevat iOS HIG, Material Design, accessibility checklists, codevoorbeelden en validatie-scripts. Bij native apps gelden platformspecifieke designregels. Geef Claude mee welk platform je target.</p>
+<table class="gt">
+<thead><tr><th>Aspect</th><th>iOS (Human Interface)</th><th>Android (Material Design)</th></tr></thead>
+<tbody>
+<tr><td>Navigatie</td><td>Tab bar onderaan, back via swipe</td><td>Bottom navigation of navigation drawer</td></tr>
+<tr><td>Knoppen</td><td>Afgerond, subtiel, systemfont</td><td>FAB, filled/outlined buttons</td></tr>
+<tr><td>Typografie</td><td>SF Pro (systeem)</td><td>Roboto (systeem)</td></tr>
+<tr><td>Safe areas</td><td>Notch + home indicator</td><td>Status bar + navigation bar</td></tr>
+<tr><td>Feedback</td><td>Haptic feedback bij acties</td><td>Ripple effect bij touch</td></tr>
+</tbody>
+</table>
+<pre><code># Voorbeeldprompts voor smartphone apps
+"Maak een React Native login screen -- volg iOS Human Interface Guidelines"
+"Bouw een Flutter productlijst met Material Design 3 componenten"
+"Voeg haptic feedback toe aan de checkout knop (iOS)"
+"Zorg voor safe area insets op alle schermen"</code></pre>
+
+<h4>Veelgemaakte design-fouten</h4>
+<table class="gt">
+<thead><tr><th>Fout</th><th>Oplossing</th></tr></thead>
+<tbody>
+<tr><td>Desktop-first denken</td><td>Begin met mobiel, schaal op naar desktop</td></tr>
+<tr><td>Te kleine knoppen op mobiel</td><td>Minimaal 44x44px touch target</td></tr>
+<tr><td>Geen dark mode</td><td>Gebruik CSS <code>prefers-color-scheme</code> of platform theming</td></tr>
+<tr><td>Hardcoded kleuren</td><td>Gebruik CSS custom properties of design tokens</td></tr>
+<tr><td>Tekst niet leesbaar</td><td>Contrast ratio minimaal 4.5:1 (WCAG AA)</td></tr>
+<tr><td>Geen loading states</td><td>Skeleton screens of spinners bij async data</td></tr>
+<tr><td>Scroll niet soepel</td><td><code>-webkit-overflow-scrolling: touch</code> op iOS</td></tr>
+</tbody>
+</table>
+<div class="co ci"><span class="cl">Workflow</span><p><strong>1.</strong> Geef een screenshot of mockup mee als referentie.<br><strong>2.</strong> Beschrijf het gewenste gevoel ("minimalistisch", "speels", "zakelijk").<br><strong>3.</strong> Laat de frontend-design skill het genereren.<br><strong>4.</strong> Review op mobiel viewport (Playwright MCP of browser devtools).<br><strong>5.</strong> Itereer: "maak de spacing ruimer" of "donkerder kleurenpalet".</p></div>
+
 <h3>Voice input (spraak)</h3>
 <p>Claude Code ondersteunt <strong>push-to-talk</strong> spraakherkenning. Houd de <code>Spatiebalk</code> ingedrukt in de chat om te dicteren in plaats van te typen.</p>
 <div class="co ci"><span class="cl">Wanneer handig</span><p>Bij lange uitleg van wat je wilt, als je handen moe zijn, of als je sneller praat dan typt. Claude ontvangt de getranscribeerde tekst als gewone prompt.</p></div>
