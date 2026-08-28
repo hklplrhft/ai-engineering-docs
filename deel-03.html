@@ -222,6 +222,15 @@ Upload-form component is klaar en getest. Preview-stap nog niet begonnen.
 ## Open vragen
 - Moet de preview stap een eigen API call doen of hergebruiken we de form data?</code></pre></div>
 
+<h4>Backlog en changelog</h4>
+<p>Een HANDOFF.md die elke sessie overschreven wordt, heeft een zwakke plek: bij elke herschrijving beslist Claude opnieuw wat "nog relevant" is, en dat is precies het moment waarop een open punt stilletjes verdwijnt. Hetzelfde geldt voor TODO-lijsten in CLAUDE.md: dat bestand wordt elke sessie geladen, dus een lange lijst nodigt uit tot opruimen. Daarom drie bestanden met elk een eigen regel:</p>
+<div class="dg">
+<div class="dr"><span class="nm">BACKLOG.md</span><span class="ct">Alle open punten, geprioriteerd in secties. Alleen aanvullen of afvinken, nooit herschrijven. Een afgevinkt punt krijgt een regel in de changelog.</span></div>
+<div class="dr"><span class="nm">CHANGELOG.md</span><span class="ct">Per datum wat er veranderd is: features, fixes, besluiten, bevindingen. Alleen aanvullen, nieuwste bovenaan.</span></div>
+<div class="dr"><span class="nm">HANDOFF.md</span><span class="ct">Momentopname voor de volgende sessie: status, waar gebleven, eerstvolgende stap. Mag herschreven worden; open punten horen niet hier maar in de backlog.</span></div>
+</div>
+<div class="co ci"><span class="cl">Werkritme</span><p>Na elke afgeronde wijziging, vóór de commit: CHANGELOG.md aanvullen en het bijbehorende punt in BACKLOG.md afvinken. Duikt er een nieuwe vraag, valkuil of wens op? Direct in BACKLOG.md, niet in CLAUDE.md of HANDOFF.md. Zo kan iets alleen nog verdwijnen door het bewust af te vinken, en staat dan in de changelog wat er gebeurd is.</p></div>
+
 <div class="lc lck"><div class="lh"><span class="ln">LAAG 5</span><span class="lt">Uitvoerbare extensies</span><span class="lp">skills, agents, hooks</span></div>
 <p>Code die Claude niet alleen leest maar <em>uitvoert</em>. Van "de AI helpt mij" naar "het systeem werkt voor mij." Vier bouwstenen:</p>
 <div class="dg">

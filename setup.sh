@@ -57,7 +57,19 @@ else
 ### Context schoon houden
 - Stel /clear voor bij taakwissel (andere feature, ander onderwerp)
 - Stel /compact voor na 30+ minuten of wanneer context vol raakt
-- Bij sessie-overdracht: maak een HANDOFF.md (doel, status, wat geprobeerd, volgende stappen)
+- Bij sessie-overdracht: maak een HANDOFF.md (doel, status, wat geprobeerd, eerstvolgende stap)
+
+### Backlog, changelog, handoff (drie bestanden in de projectroot)
+- BACKLOG.md: alle open punten, geprioriteerd in secties. Alleen aanvullen of afvinken,
+  nooit herschrijven. Een afgevinkt punt krijgt een regel in CHANGELOG.md.
+- CHANGELOG.md: per datum wat er veranderd is (features, fixes, besluiten, bevindingen).
+  Alleen aanvullen, nieuwste bovenaan.
+- HANDOFF.md: momentopname voor de volgende sessie (status, waar gebleven, eerstvolgende
+  stap, hoe lokaal te testen). Mag herschreven worden; open punten horen NIET hier maar
+  in BACKLOG.md.
+- Geen TODO-lijsten in CLAUDE.md: dat bestand wordt elke sessie geladen en bij
+  herschrijven vallen punten stilletjes weg.
+- Werk BACKLOG.md en CHANGELOG.md bij na elke afgeronde wijziging, voor de commit.
 
 ### Git-discipline
 - Werk op branches, niet direct op main
@@ -115,6 +127,8 @@ de situatie zich voordoet:
 - Handeling 3x herhaald? -> "Zal ik hier een skill van maken?"
 - Parallelle controle nodig? -> "Zal ik een custom agent maken?"
 - Sessie-einde met onafgemaakt werk? -> "Zal ik een HANDOFF.md maken?"
+- Wijziging afgerond? -> CHANGELOG.md aanvullen en het punt in BACKLOG.md afvinken
+- Nieuw open punt of bevinding? -> in BACKLOG.md zetten, niet in CLAUDE.md of HANDOFF.md
 
 ## Veiligheid
 - Review shell commando's kritisch, vooral: rm -rf, git push --force, drop table
@@ -190,6 +204,36 @@ Typische bestanden die hier later in komen:
 - `docs/refs/routing.md` -- hoe routing werkt
 - `docs/refs/data-structuur.md` -- data model uitleg
 
+## Stap 4b: BACKLOG.md en CHANGELOG.md aanmaken
+
+Drie bestanden in de projectroot, elk met een eigen rol. Zo kan een open punt alleen nog
+verdwijnen door het bewust af te vinken, en staat dan in de changelog wat er gebeurd is.
+
+| Bestand | Inhoud | Regel |
+|---|---|---|
+| BACKLOG.md | Alle open punten, geprioriteerd in secties | Alleen aanvullen of afvinken, nooit herschrijven |
+| CHANGELOG.md | Per datum wat er veranderd is (features, fixes, besluiten, bevindingen) | Alleen aanvullen, nieuwste bovenaan |
+| HANDOFF.md | Momentopname: status, waar gebleven, eerstvolgende stap, hoe lokaal te testen | Mag herschreven worden; geen open punten hierin |
+
+Geen TODO-lijsten in CLAUDE.md (wordt elke sessie geladen; bij herschrijven vallen punten weg).
+
+Template BACKLOG.md:
+    # Backlog
+    Open punten, geprioriteerd. Afgeronde punten verhuizen naar CHANGELOG.md.
+    ## 1. <hoogste prioriteit, bijv. naar productie>
+    - [ ] ...
+    ## Later / nice to have
+    - [ ] ...
+
+Template CHANGELOG.md:
+    # Changelog
+    Alleen aanvullen, nooit herschrijven. Nieuwste bovenaan. Open punten staan in BACKLOG.md.
+    ## YYYY-MM-DD -- <korte titel>
+    - ...
+
+Werkritme: na elke afgeronde wijziging, voor de commit: CHANGELOG.md aanvullen en het
+bijbehorende punt in BACKLOG.md afvinken. Nieuwe vragen of bevindingen direct in BACKLOG.md.
+
 ## Stap 5: Hooks instellen
 
 Detecteer de tech stack en stel de juiste hook voor:
@@ -217,6 +261,7 @@ Na het doorlopen van alle stappen, controleer:
 - [ ] .gitignore met .env en secrets
 - [ ] Git repo met feature branch (niet main)
 - [ ] docs/refs/ directory aanwezig
+- [ ] BACKLOG.md en CHANGELOG.md aanwezig; geen TODO-lijst in CLAUDE.md
 - [ ] Pre-commit hook geinstalleerd en werkend
 - [ ] Eerste commit geslaagd
 SETUPMD
