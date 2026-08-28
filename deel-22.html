@@ -66,10 +66,11 @@
 <h2>Eenmalige setup</h2>
 
 <div class="co ca"><span class="cl">Snelle setup -- een commando</span>
-<p>Dit script doet stap 1-4 in een keer. Het maakt de 4 bestanden aan in <code>~/.claude/</code> en overschrijft niks dat al bestaat:</p>
+<p>Dit script doet stap 1-4 in een keer. Het installeert de werkwijze in <code>~/.claude/</code>:</p>
 <pre><code>curl -fsSL https://hklplrhft.github.io/ai-engineering-docs/setup.sh | bash</code></pre>
-<p>Dit downloadt het setup-script en voert het uit. Het maakt de 4 bestanden aan in <code>~/.claude/</code> (CLAUDE.md, project-setup.md, project-check.sh en settings.json). Bestanden die al bestaan worden <strong>niet overschreven</strong>.</p>
-<p>Na het script: pas <code>~/.claude/CLAUDE.md</code> aan naar je eigen taal en voorkeuren. De rest werkt meteen.</p>
+<p>Het script haalt de bestanden uit de map <code>claude/</code> van de repo (CLAUDE.md, docs/project-setup.md en drie hooks) en voegt de hook-configuratie samen in <code>settings.json</code> zonder je andere instellingen aan te raken. Bestaande bestanden worden eerst gebackupt naar <code>~/.claude/backups/</code> en dan vervangen: er is één bron, en die staat in git.</p>
+<p><strong>Liever symlinks?</strong> Clone de repo en draai <code>bash setup.sh</code> vanuit de clone. Dan verwijst <code>~/.claude/</code> naar de repo en is <code>git pull</code> genoeg om alle machines bij te werken. Eigen aanpassingen doe je in de repo (of in een fork), nooit in <code>~/.claude/</code> zelf.</p>
+<p>De drie hooks: <code>project-check.sh</code> (SessionStart: meldt wat in het project ontbreekt), <code>stop-git-check.sh</code> (Stop: Claude eindigt geen beurt met ongecommit werk) en <code>pretool-guard.sh</code> (PreToolUse: blokkeert <code>git push</code>, deploys en destructieve commando's; die draai je zelf met <code>! &lt;commando&gt;</code>).</p>
 <p>Liever handmatig? Volg stap 1-4 hieronder.</p>
 </div>
 
