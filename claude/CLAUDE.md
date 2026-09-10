@@ -6,11 +6,17 @@ Bron: https://github.com/hklplrhft/ai-engineering-docs (map `claude/`). Dit best
 - Communiceer in het Nederlands
 - Code, commits en comments in het Engels
 
+## Modellen
+- Alle projecten (behalve zoom-nl): **Claude op xhigh** als leidend model (standaard Fable 5; Opus of een ander Claude-model verandert hier niets aan), **Codex `gpt-5.6-sol` op xhigh** als second opinion (de Codex-toets hieronder).
+- **De leidende Claude-sessie beslist, welk Claude-model dat ook draait.** Elke Codex-bevinding is een hypothese tot die in de code is geverifieerd, en wordt daarna overgenomen of beargumenteerd verworpen (met de reden in CHANGELOG.md). Codex vindt bijna altijd iets als je opnieuw vraagt -- dat is zijn rol -- dus het aantal rondes en het stoppunt bepaalt Claude, niet Codex. Vuistregel: overnemen als het verandert wat een gebruiker ziet of krijgt, of als er zonder de fix iets onwaars getoond wordt; kleiner dan dat gaat als los punt naar BACKLOG.md.
+- zoom-nl is de uitzondering en volgt zijn eigen afspraken.
+
 ## Werkwijze -- plan, verifieer, commit
 
 ### Altijd plannen voor doen
 - `/plan` bij taken die meer dan 1 bestand raken of langer dan 5 minuten duren
 - Geef verificatiecriteria mee: welke tests moeten slagen, welke output wordt verwacht
+- Toets elk plan vóór de goedkeuring met een Codex-second-opinion: `scripts/codex_second_opinion.sh plan docs/plans/<naam>.md` -- kopieer het script uit `claude/scripts/` in ai-engineering-docs (of uit een project dat het al heeft) als het project het nog mist, en zet `logs/codex/` in .gitignore. Verwerk P1/P2-bevindingen in het plan of noteer waarom je ze verwerpt; elke Codex-bevinding is een hypothese tot je hem zelf in de code hebt geverifieerd
 - Wacht op goedkeuring voordat je begint met implementeren
 - Na goedkeuring: kopieer het plan naar `docs/plans/YYYY-MM-DD-<naam>.md` in de repo en commit het. Plannen in `~/.claude/plans/` staan buiten git en gaan verloren.
 
