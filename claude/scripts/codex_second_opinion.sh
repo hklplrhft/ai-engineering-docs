@@ -63,11 +63,12 @@ case "$MODE" in
     # Selector flags pass straight through to `codex review`.
     [ $# -gt 0 ] || set -- --base origin/main
     (cd "$REPO_ROOT" && codex review "${REVIEW_CFG[@]}" "$@" 2>&1 | tee "$STREAM" >/dev/null) || true
-    # `codex review` has no output flag: take the text after the last "codex"
-    # marker line. The CLI prints the final message twice there (streamed,
-    # then again as the result), so collapse an exact doubled half.
-    awk '/^codex$/{buf=""; p=1; next} p{buf=buf $0 "\n"} END{printf "%s", buf}' "$STREAM" \
-      | python3 -c 'import sys; L=sys.stdin.read().rstrip("\n").split("\n"); r=[i for i,l in enumerate(L) if i and l==L[0]]; print("\n".join(L[:r[0]] if r else L).rstrip("\n"))' > "$OUT"
+    # `codex review` has no output flag: cut the text after the last "codex"
+    # marker line out of the stream. That used to be an awk one-liner here;
+    # it now lives in a tested script because the CLI started COLOURING that
+    # marker on 2026-09-10 and twelve reports in a row were written empty
+    # while the wrapper still said "saved".
+    python3 "$REPO_ROOT/scripts/codex_extract_report.py" "$STREAM" > "$OUT" || true
     ;;
   plan)
     PLAN="${1:-}"
@@ -99,7 +100,9 @@ case "$MODE" in
 esac
 
 ELAPSED=$(( $(date +%s) - START ))
-if [ ! -s "$OUT" ]; then
+# Blank counts as failed: an empty report used to pass this check on a single
+# newline, which is how the broken extraction stayed invisible for a day.
+if ! grep -q '[^[:space:]]' "$OUT" 2>/dev/null; then
   rm -f "$OUT"
   echo "FAILED after ${ELAPSED}s: no answer written. See ${STREAM#"$REPO_ROOT/"}" >&2
   exit 1
