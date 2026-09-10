@@ -4,10 +4,17 @@
 Regression: on 2026-09-10 the Codex CLI started colouring the marker line, the
 shell one-liner that cut the report stopped matching, and twelve review reports
 were written empty while the wrapper still said "saved".
+
+Run: python3 scripts/test_codex_extract_report.py
+  or: python3 -m unittest scripts.test_codex_extract_report
 """
+import os
+import sys
 import unittest
 
-from scripts.codex_extract_report import extract, strip_ansi
+sys.path.insert(0, os.path.dirname(__file__))
+
+from codex_extract_report import extract, strip_ansi  # noqa: E402
 
 # The exact shape the CLI writes since 2026-09-10 (magenta + italic + two
 # resets), copied from logs/codex/20260910-191646-57220-review.stream.log.
