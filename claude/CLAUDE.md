@@ -28,13 +28,20 @@ Bron: https://github.com/hklplrhft/ai-engineering-docs (map `claude/`). Dit best
 ### Vastleggen -- vijf bestanden, elk met een eigen regel
 Zo kan een afspraak, besluit of open punt alleen verdwijnen door het bewust af te vinken, nooit door herschrijven.
 
+**Wat moet blijven, staat nooit ALLEEN op een tijdelijke plek.** Tijdelijk zijn: de sessie zelf (weg bij
+`/compact` of `/clear`), memory (een cache, geen archief), `HANDOFF.md` (wordt herschreven), en losse teksten
+als een PR-beschrijving, een commitbericht of een chatbericht. Een keuze, afspraak, regel, bevinding of taak
+die daar blijft steken, is er over een week zonder dat iemand het merkt -- en niemand mist wat hij niet weet.
+Dus: op het moment dat zoiets ONTSTAAT gaat het naar het bestand hieronder dat ervoor bestaat, niet aan het
+eind van de sessie en niet 'straks even'. Daarna mag het overal genoemd worden; alleen daar staan mag niet.
+
 | Bestand | Inhoud | Regel |
 |---|---|---|
 | `BACKLOG.md` | Alle open punten, vragen en bevindingen, geprioriteerd in secties | Alleen aanvullen of afvinken, nooit herschrijven. Afgevinkt punt krijgt een regel in CHANGELOG.md |
 | `CHANGELOG.md` | Per datum wat er veranderd is: features, fixes, besluiten, bevindingen, wijzigingen in externe systemen | Alleen aanvullen, nieuwste bovenaan |
 | `docs/decisions.md` | Besluitenlog: datum, besluit, waarom, verworpen alternatieven, wie | Alleen aanvullen. Elke ontwerpvraag die de gebruiker beantwoordt (AskUserQuestion, plan-keuze) krijgt een regel |
 | `docs/plans/` | Goedgekeurde plannen | Nieuw bestand per plan, niet wijzigen na goedkeuring (afwijkingen in CHANGELOG.md) |
-| `HANDOFF.md` | Momentopname voor de volgende sessie: status, waar gebleven, eerstvolgende stap, hoe lokaal te testen | Mag herschreven worden; open punten horen NIET hier maar in BACKLOG.md |
+| `HANDOFF.md` | Momentopname voor de volgende sessie: waar sta je nu, wat is de eerstvolgende stap, hoe test je het lokaal | Mag herschreven worden, en WORDT dat ook. Daarom hoort hier niets in dat moet blijven: geen open punten (BACKLOG.md), geen afspraken of werkwijze-regels (dit bestand), geen besluiten (docs/decisions.md), geen lessen of valkuilen (docs/refs/). Zet je zoiets hier toch neer, dan verdwijnt het bij de eerstvolgende herschrijving zonder dat iemand het merkt |
 
 - Geen TODO-lijsten in CLAUDE.md: dat bestand wordt elke sessie geladen en bij herschrijven vallen punten stilletjes weg.
 - Feiten in CLAUDE.md en docs/refs/ (IDs, URLs, accounts, veldnamen) altijd met "gecontroleerd op <datum> via <bron>". Twijfel je aan een feit: vraag in BACKLOG.md, niet stilzwijgend aanpassen.
