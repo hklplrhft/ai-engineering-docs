@@ -10,9 +10,10 @@
 #   scripts/codex_second_opinion.sh review [--base <ref> | --uncommitted | --commit <sha>]
 #                                          (default: --base origin/main)
 #   scripts/codex_second_opinion.sh ask    "<question: state what you believe and what you rejected>"
+#   scripts/codex_second_opinion.sh solve  "<problem, no solution>" | <path/to/problem.md>
 #   scripts/codex_second_opinion.sh audit  <path/to/prompt.md>   (prompt file verbatim, e.g. docs/refs/codex-review-prompt.md)
 #
-# Env:  CODEX_MODEL  (default gpt-5.6-sol)
+# Env:  CODEX_MODEL  (default gpt-6-astra)
 #       CODEX_EFFORT (default xhigh; low|medium|high|xhigh|max|ultra)
 # Out:  logs/codex/<YYYYMMDD-HHMMSS>-<pid>-<mode>.md  (final answer)
 #       logs/codex/<YYYYMMDD-HHMMSS>-<pid>-<mode>.stream.log  (raw stream)
@@ -37,7 +38,7 @@ STAMP=$(date +%Y%m%d-%H%M%S)
 OUT="$LOG_DIR/$STAMP-$$-$MODE.md"
 STREAM="${OUT%.md}.stream.log"
 
-MODEL="${CODEX_MODEL:-gpt-5.6-sol}"
+MODEL="${CODEX_MODEL:-gpt-6-astra}"
 EFFORT="${CODEX_EFFORT:-xhigh}"
 # `codex exec` takes -C/-m/-s; `codex review` only takes -c overrides, so the
 # review branch sets the same things through config keys and a cd.
@@ -53,6 +54,8 @@ refuse_secrets() {
 }
 
 FORMAT='For every finding give file path, line number, a short quote, a concrete failure scenario and a severity (P1 blocks, P2 should fix, P3 nit), ranked by severity. Findings only, no rewrites. If it holds up, say "no findings above P3" instead of inventing issues.'
+
+SOLVE_FORMAT='Give ONE recommended approach, not a menu: what you would build and why, grounded in this repository (file path and line for every claim about existing code). Then, in this order: the two strongest alternatives you rejected and what would have to be true for each to win; what your approach costs (new dependencies, data sources, maintenance, failure modes); what would break it; and the cheapest way to test its riskiest assumption before anyone commits to it. If this repository already solves this somewhere, say so and point at it instead of designing something new.'
 
 echo "codex $MODE  model=$MODEL effort=$EFFORT" >&2
 echo "stream: ${STREAM#"$REPO_ROOT/"}" >&2
@@ -86,6 +89,19 @@ case "$MODE" in
     PROMPT="Second opinion requested on a decision in this repository. Give your independent judgement first, then what you would verify in the code, with file and line. Do not just confirm; say where the reasoning is weak. Question: $QUESTION"
     codex exec "${COMMON[@]}" -o "$OUT" "$PROMPT" </dev/null 2>&1 | tee "$STREAM" >/dev/null || true
     ;;
+  solve)
+    # Open mode: the problem WITHOUT our position, so the answer is independent.
+    # Use it before a plan exists, for decisions with real design freedom; the
+    # value is the difference with our own approach, not the answer itself.
+    # Note: after this, Codex has authored an approach, so a later `plan` run on
+    # a plan built from it is a weaker check than one on a plan it has not seen.
+    ARG="${1:-}"
+    [ -n "$ARG" ] || { echo "solve needs a problem statement or a file path" >&2; exit 2; }
+    if [ -f "$REPO_ROOT/$ARG" ]; then PROBLEM="$(cat "$REPO_ROOT/$ARG")"; else PROBLEM="$ARG"; fi
+    refuse_secrets "$PROBLEM"
+    PROMPT="An open design decision in this repository. No approach has been chosen yet, and what we think is deliberately withheld so that your answer is independent. Read the code this touches and answer as if the choice were yours. Problem: $PROBLEM $SOLVE_FORMAT"
+    codex exec "${COMMON[@]}" -o "$OUT" "$PROMPT" </dev/null 2>&1 | tee "$STREAM" >/dev/null || true
+    ;;
   audit)
     # Full-app audit: the prompt file IS the prompt (no second-opinion
     # framing); the file carries its own output format. Run at max effort.
@@ -96,7 +112,7 @@ case "$MODE" in
     codex exec "${COMMON[@]}" -o "$OUT" "$PROMPT" </dev/null 2>&1 | tee "$STREAM" >/dev/null || true
     ;;
   *)
-    echo "unknown mode '$MODE' (plan|review|ask|audit)" >&2; exit 2 ;;
+    echo "unknown mode '$MODE' (plan|review|ask|solve|audit)" >&2; exit 2 ;;
 esac
 
 ELAPSED=$(( $(date +%s) - START ))
