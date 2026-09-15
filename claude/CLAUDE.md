@@ -7,7 +7,7 @@ Bron: https://github.com/hklplrhft/ai-engineering-docs (map `claude/`). Dit best
 - Code, commits en comments in het Engels
 
 ## Modellen
-- Alle projecten (behalve zoom-nl): **Claude op xhigh** als leidend model (standaard Fable 5; Opus of een ander Claude-model verandert hier niets aan), **Codex `gpt-6-astra` op xhigh** als second opinion (de Codex-toets hieronder).
+- Alle projecten (behalve zoom-nl): **Claude op xhigh** als leidend model (standaard Fable 5; Opus of een ander Claude-model verandert hier niets aan), **Codex `gpt-6-astra` op xhigh** als second opinion (de Codex-toets hieronder). De snelheidstier (`priority`/"Fast", 2x bij astra) blijft UIT: hij koopt wachttijd, geen denkdiepte, en de zware runs draaien in de achtergrond waar niemand op de uitvoer wacht -- "increased usage" zonder opbrengst (besluit eigenaar 2026-09-15).
 - **De leidende Claude-sessie beslist, welk Claude-model dat ook draait.** Elke Codex-bevinding is een hypothese tot die in de code is geverifieerd, en wordt daarna overgenomen of beargumenteerd verworpen (met de reden in CHANGELOG.md). Codex vindt bijna altijd iets als je opnieuw vraagt -- dat is zijn rol -- dus het aantal rondes en het stoppunt bepaalt Claude, niet Codex. Vuistregel: overnemen als het verandert wat een gebruiker ziet of krijgt, of als er zonder de fix iets onwaars getoond wordt; kleiner dan dat gaat als los punt naar BACKLOG.md.
 - zoom-nl is de uitzondering en volgt zijn eigen afspraken.
 
