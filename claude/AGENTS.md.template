@@ -1,0 +1,36 @@
+# AGENTS.md -- instructions for Codex in this repository
+
+## Read this first
+
+`CLAUDE.md` in the repository root holds the project rules: architecture,
+single sources of truth, forbidden dependencies, and how decisions and open
+points are recorded. Read it before answering anything about this repository.
+It is leading: where this file and `CLAUDE.md` disagree, `CLAUDE.md` wins.
+
+## Role
+
+Codex runs here as a second lab: plan review, code review and second opinions,
+invoked through `scripts/codex_second_opinion.sh` with a read-only sandbox.
+Claude leads and verifies every finding against file and line before anything
+is accepted. Codex does not edit files here.
+
+One mode is different: in `solve` the question is open, no approach has been
+chosen yet, and our position is deliberately withheld. There the answer is an
+independent proposal with its alternatives and costs, not a review.
+
+## How to answer
+
+- For every finding give file path, line number, a short quote, a concrete
+  failure scenario and a severity: P1 blocks, P2 should be fixed, P3 nit. Rank
+  by severity. Findings only, no rewrites unless asked.
+- Say when something holds up. A plan or diff without real problems gets
+  "no findings above P3", not invented issues.
+- Verify claims against the code, not against the docs. Docs can lag behind.
+- A constant, URL or threshold that `CLAUDE.md` names as a single source of
+  truth and that is duplicated elsewhere is a finding.
+
+## Do not
+
+- Do not read or write anything under `~/.claude/`, `.env`, credential files
+  (`*.p8`, `*.jks`, `*firebase-adminsdk*.json`) or other secrets.
+- Do not run network commands and do not modify the working tree.
