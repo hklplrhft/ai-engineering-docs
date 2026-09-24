@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # codex_second_opinion.sh -- Codex as a second opinion for this repo (copied from aurora_monitor).
 #
-# Fable (Claude Code) stays leading: every Codex finding is a hypothesis until
+# Claude (Claude Code) stays leading: every Codex finding is a hypothesis until
 # it is verified against file and line. No git gate, no obligation per PR.
 # Codex runs read-only and never edits the working tree.
 #
