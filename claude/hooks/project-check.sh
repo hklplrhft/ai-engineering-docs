@@ -8,8 +8,10 @@ missing=""
 [ -f "CLAUDE.md" ] || missing="${missing}CLAUDE.md ontbreekt -- voer /init uit. "
 [ -f ".gitignore" ] || missing="${missing}.gitignore ontbreekt -- maak aan met .env en secrets. "
 [ -d "docs/refs" ] || missing="${missing}docs/refs/ ontbreekt (littekens). "
-[ -f "BACKLOG.md" ] || missing="${missing}BACKLOG.md ontbreekt (open punten). "
-[ -f "CHANGELOG.md" ] || missing="${missing}CHANGELOG.md ontbreekt. "
+# BACKLOG.md en CHANGELOG.md mogen in de root of in docs/ staan (sommige
+# projecten, zoals aurora_monitor, houden ze sinds jaar en dag in docs/).
+[ -f "BACKLOG.md" ] || [ -f "docs/BACKLOG.md" ] || missing="${missing}BACKLOG.md ontbreekt (open punten). "
+[ -f "CHANGELOG.md" ] || [ -f "docs/CHANGELOG.md" ] || missing="${missing}CHANGELOG.md ontbreekt. "
 [ -f "docs/decisions.md" ] || missing="${missing}docs/decisions.md ontbreekt (besluitenlog). "
 if [ -f ".env" ] && [ ! -f ".env.example" ]; then
   missing="${missing}.env.example ontbreekt (welke keys zijn nodig?). "
