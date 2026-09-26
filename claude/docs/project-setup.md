@@ -167,6 +167,6 @@ Na het doorlopen van alle stappen, controleer:
 - [ ] .gitignore met .env en secrets; .env.example aanwezig
 - [ ] Git repo met feature branch (niet main)
 - [ ] docs/refs/ directory aanwezig
-- [ ] BACKLOG.md, CHANGELOG.md, docs/decisions.md aanwezig
+- [ ] BACKLOG.md, CHANGELOG.md (in de root of in `docs/`), docs/decisions.md aanwezig
 - [ ] Pre-commit hook geinstalleerd en werkend
 - [ ] Eerste commit geslaagd
