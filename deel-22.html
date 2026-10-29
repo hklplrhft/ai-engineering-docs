@@ -86,9 +86,14 @@ npm install -g @anthropic-ai/claude-code
 cd mijn-project && claude</code></pre>
 
 <h3>Stap 2: Maak de globale CLAUDE.md</h3>
-<p>Maak <code>~/.claude/CLAUDE.md</code> aan. Dit geldt voor <strong>al je projecten</strong>. De inhoud staat op één plek: in de map <code>claude/</code> van de repo, dezelfde bron die <code>setup.sh</code> gebruikt. Download hem in plaats van hem over te typen, dan heb je altijd de actuele versie:</p>
+<p>Maak <code>~/.claude/CLAUDE.md</code> aan. Dit geldt voor <strong>al je projecten</strong>. De inhoud staat op één plek: in de map <code>claude/</code> van de repo, dezelfde bron die <code>setup.sh</code> gebruikt. Download hem in plaats van hem over te typen, dan heb je altijd de actuele versie. Bewaar eerst wat er al staat:</p>
 <pre><code>mkdir -p ~/.claude
+# bestaande regels eerst veiligstellen (volgt ook een symlink)
+[ -e ~/.claude/CLAUDE.md ] &amp;&amp; cp -L ~/.claude/CLAUDE.md ~/.claude/CLAUDE.md.backup-$(date +%Y%m%d)
+# een symlink weghalen, zodat curl niet het bestand overschrijft waar hij naar wijst
+[ -L ~/.claude/CLAUDE.md ] &amp;&amp; rm ~/.claude/CLAUDE.md
 curl -fsSL https://raw.githubusercontent.com/hklplrhft/ai-engineering-docs/main/claude/CLAUDE.md -o ~/.claude/CLAUDE.md</code></pre>
+<div class="co cw"><span class="cl">Deze regels gaan uit van drie hooks</span><p>De globale CLAUDE.md verwijst naar drie hooks: de guard die push, deploy en destructieve commando's tegenhoudt, de Stop-hook die ongecommit werk meldt, en de SessionStart-hook uit stap 4. De handmatige stappen hieronder installeren alleen die laatste. Gebruik daarom liever <code>setup.sh</code> (zie hierboven): dat zet de regels en alle drie de hooks in één keer neer, met een back-up van wat er al stond. Kies je toch voor handmatig, kopieer dan ook <code>pretool-guard.sh</code> en <code>stop-git-check.sh</code> uit <code>claude/hooks/</code> en neem hun configuratie over uit <code>claude/hooks.json</code>.</p></div>
 <p>Lees het bestand daarna door en pas aan wat niet bij jou past, zoals taal, modellen en eigen tools. Liever klein beginnen? Gebruik dan de korte versie in <a href="deel-03.html" style="color:var(--yellow)">De 5 Lagen</a> als basis en breid uit.</p>
 
 <div class="co ca"><span class="cl">Hoe werken deze secties samen?</span>
