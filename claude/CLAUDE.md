@@ -47,14 +47,20 @@ eind van de sessie en niet 'straks even'. Daarna mag het overal genoemd worden; 
 - Geen TODO-lijsten in CLAUDE.md: dat bestand wordt elke sessie geladen en bij herschrijven vallen punten stilletjes weg.
 - Feiten in CLAUDE.md en docs/refs/ (IDs, URLs, accounts, veldnamen) altijd met "gecontroleerd op <datum> via <bron>". Twijfel je aan een feit: vraag in BACKLOG.md, niet stilzwijgend aanpassen.
 - Wijzigingen in externe systemen (Copernica, Cloudflare, App Store, DNS, databases): altijd een regel in CHANGELOG.md en bij voorkeur een herhaalbaar script in `scripts/`. Wat niet in git staat, bestaat niet.
-- Memory (`~/.claude/projects/...`) is een cache, geen archief: alles wat telt staat ook in docs/refs/, BACKLOG.md of docs/decisions.md.
-- Feedback van de gebruiker over de manier van werken (toon, lengte, volgorde, taal): direct vastleggen in dit bestand (sectie Stijl) of in memory, niet alleen toepassen.
+- Memory (`~/.claude/projects/...`) is een cache, geen archief: alles wat telt staat in docs/refs/, BACKLOG.md of docs/decisions.md; in memory hooguit een verwijzing daarheen.
+- Feedback van de gebruiker over de manier van werken (toon, lengte, volgorde, taal): direct vastleggen in dit bestand (sectie Stijl), niet alleen toepassen.
+- Terloopse afspraken zijn afspraken: een deadline, uitzondering of voorkeur die de gebruiker in een bijzin noemt, gaat meteen naar het bestand waar hij geldt.
+- Toezeggingen voor na de sessie ("ik kom erop terug", "ik meld me als ...") gaan direct naar BACKLOG.md.
+- Situatieregels op de plek van handelen: een regel die bij een handeling hoort (versturen, publiceren, deployen, migreren) staat in de skill, het script of de checklist van die handeling; docs/refs/ legt uit waarom.
+- Teruglezen voor je kiest: vóór een ontwerpkeuze of voorstel docs/decisions.md, BACKLOG.md en de relevante docs/refs/ doorzoeken op het onderwerp.
 - Werk BACKLOG.md, CHANGELOG.md en docs/decisions.md bij na elke afgeronde wijziging, vóór de commit.
 
 ### Git-discipline
 - Werk op branches, niet direct op main
 - Commit na elke voltooide wijziging -- herinner als er nog niet gecommit is
 - Selectief committen: specifieke bestanden, niet `git add .`
+- Vlak voor het schrijven opnieuw lezen en vergelijken met wat je eerder las: een andere sessie, de gebruiker of een sync-map kan het bestand intussen hebben gewijzigd. Nooit een heel bestand uitschrijven vanuit een eerdere lezing.
+- Parallelle sessies: elk in een eigen worktree (eigen map); een eigen branch in dezelfde map isoleert niets.
 - Nooit pushen, deployen of berichten sturen zonder expliciete bevestiging. Een globale hook blokkeert `git push`, deploy-commando's en destructieve git/shell-commando's; vraag de gebruiker die zelf te draaien met `! <commando>`
 - Aan het eind van elke sessie: geen ongecommit werk laten staan (een Stop-hook controleert dit) en niet-gemergde branches benoemen in HANDOFF.md
 - Secrets nooit in git; wel een `.env.example` met alle benodigde keys (zonder waarden) en in docs/refs/ waar de echte waarden staan
@@ -105,6 +111,8 @@ Minimale check bij bestaande projecten (de SessionStart-hook meldt wat ontbreekt
 ## Signalen -- wanneer ingrijpen
 - Na 2 mislukte pogingen voor dezelfde taak: stel voor om te stoppen, `/clear`, en een betere prompt te formuleren
 - Bij herhaling van eerder gemaakte fouten: stel voor om een regel/hook toe te voegen
+- Spreken de globale en de project-CLAUDE.md elkaar tegen: niet zelf kiezen, maar melden; de gebruiker beslist een keer en het besluit gaat in de project-CLAUDE.md
+- Subagents en andere modellen kennen het gesprek niet: geef de afspraken die ertoe doen expliciet mee in de opdracht
 - Bij vage opdrachten: vraag om specifieke bestanden, error output, of verwacht gedrag
 - Bij grote wijzigingen zonder tests: weiger door te gaan totdat er verificatiecriteria zijn
 

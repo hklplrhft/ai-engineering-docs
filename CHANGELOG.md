@@ -1,0 +1,7 @@
+# CHANGELOG
+
+Wat er veranderde in deze repo. Nieuwste bovenaan; alleen aanvullen.
+
+| Datum | Wijziging |
+|---|---|
+| 2026-10-29 | **Nieuw hoofdstuk deel 19 "Waar Claude vergeet"** (plan `docs/plans/2026-10-29-waar-claude-vergeet.md`, akkoord Hans). Negen zwakke plekken met maatregelen, de rangorde van maatregelen, tijdelijke plekken en een checklist; algemeen geformuleerd. Deel 3 rechtgezet: memory is een cache, geen archief. `claude/CLAUDE.md`: regels voor situatieregels, opnieuw lezen voor schrijven, terloopse afspraken, toezeggingen, tegenstrijdige regels, subagents en een terugleesstap; "of in memory" weg. Deel 22: de ingesloten kopie van de globale regels vervangen door een verwijzing naar `claude/CLAUDE.md`. Nav en pager in alle gidspagina's (nu 18). Twee bestaande kapotte links hersteld (`index.html` naar het readiness-plan, anker in deel 3). Repo-inrichting toegevoegd: `CLAUDE.md`, `AGENTS.md`, `CHANGELOG.md`, `BACKLOG.md`, `docs/decisions.md`, `.gitignore`. Codex-plantoets r1: negen punten, alle overgenomen (zie het plan). Nieuw in BACKLOG.md: de guard-hook laat `git -C <map> push` door; deel 22 stap 3 bevat nog een verouderde kopie van `project-setup.md`; de starter-kit-zip loopt achter. |

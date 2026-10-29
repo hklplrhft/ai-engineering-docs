@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waar Claude vergeet -- AI Engineering Gids</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Ga naar inhoud</a>
+
+<button class="hamburger" id="menuToggle" aria-label="Menu openen" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+
+<nav class="nav" id="sideNav" aria-label="Inhoudsopgave">
+<div class="nav-logo"><h2>AI Engineering Gids</h2><p>Tutorial &amp; naslagwerk &middot; v2</p></div>
+<div class="ng">Fundament</div>
+<a href="index.html">Samenvatting</a>
+<a href="deel-02.html">De Gereedschapskist</a>
+<div class="ng">Instructiesysteem</div>
+<a href="deel-03.html">De 5 Lagen</a>
+<a href="deel-04.html">Skills</a>
+<a href="deel-05.html">Agents</a>
+<a href="deel-06.html">Hooks</a>
+<a href="deel-07.html">Tests</a>
+<div class="ng">Werkwijze</div>
+<a href="deel-08.html">Plan Mode</a>
+<a href="deel-11.html">Git-discipline</a>
+<a href="deel-14.html">Parallel Werken</a>
+<a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html" class="active">Waar Claude vergeet</a>
+<div class="ng">Aan de slag</div>
+<a href="deel-22.html">Starter Kit</a>
+<a href="deel-24.html">Plugins &amp; Extensies</a>
+<a href="deel-25.html">Tips &amp; Tricks</a>
+<a href="deel-27.html">Bronnen &amp; Links</a>
+<a href="plannen/zoom-nl-code-readiness.html">Zoom.nl Readiness Plan</a>
+<div class="ng">Referentie</div>
+<a href="referentie-commandos.html">Commandoreferentie</a>
+<a href="referentie-begrippen.html">Begrippenlijst</a>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main class="main" id="content">
+
+<section id="vergeten">
+<h2><span class="dn">DEEL 19</span>Waar Claude vergeet</h2>
+<p>Claude onthoudt tussen sessies niets, behalve wat in bestanden staat. En ook binnen een sessie is iets weten niet hetzelfde als het op het juiste moment toepassen. Afspraken, keuzes en werkwijzen raken daardoor kwijt op voorspelbare plekken. Dit hoofdstuk beschrijft die plekken en wat ertegen helpt.</p>
+
+<div class="co ci"><span class="cl">De kern</span><p>Wat moet blijven, staat nooit alleen in het gesprek of in het geheugen van Claude. Het staat in een bestand in git, op de plek waar het gebruikt wordt. Wat echt niet mag misgaan, wordt afgedwongen door een hook, een test of een controle in de tool zelf. Instructies zijn <em>probabilistisch</em>, hooks en tests <em>deterministisch</em> (zie <a href="deel-03.html" style="color:var(--yellow)">De 5 Lagen</a> en <a href="deel-06.html" style="color:var(--yellow)">Hooks</a>).</p></div>
+
+<h3>Negen zwakke plekken</h3>
+
+<div class="mc"><div class="ml">1. Het gesprek is tijdelijk</div><p><code>/clear</code> wist de context helemaal. <code>/compact</code> vat hem samen, maar welke details daarbij wegvallen, ligt niet vast. Vaak verdwijnen juist het waarom en de voorwaarden: "mag, mits ...", "behalve bij ...". En in een nieuwe sessie is alles weg wat alleen in het gesprek stond.</p><div class="fl">WAT HELPT</div><p>Leg een afspraak, keuze of bevinding vast op het moment dat hij ontstaat, niet aan het eind van de sessie. Ga je compacteren, geef dan mee wat moet blijven: <code>/compact behoud de afspraken over de planning</code>.</p></div>
+
+<div class="mc"><div class="ml">2. Weten is niet toepassen</div><p>Een regel die bij één handeling hoort (versturen, publiceren, deployen, een migratie draaien) staat in een algemeen document. Claude kent de regel, maar denkt er op het moment van de handeling niet aan. Hoe langer de instructies, hoe groter die kans.</p><div class="fl">WAT HELPT</div><p>Zet zo'n regel op de plek van de handeling: in de skill, het script of de checklist die Claude op dat moment gebruikt. Het algemene document legt uit waarom. Is de schade groot, maak er dan een hook of een controle in de tool van.</p></div>
+
+<div class="mc"><div class="ml">3. Verouderde kennis</div><p>Claude werkt met wat hij eerder in de sessie las. Intussen kan het bestand veranderd zijn: door een andere sessie, door jou, of door een sync-map die een nieuwere versie binnenhaalt. Wie dan een heel bestand opnieuw uitschrijft, zet stilletjes andermans wijzigingen terug. Het werkt ook andersom: een bestand dat lokaal net is bijgewerkt, staat in de cloud misschien nog op de oude versie.</p><div class="fl">WAT HELPT</div><p>Lees vlak voor het schrijven opnieuw en vergelijk met wat je eerder las. Liever gerichte wijzigingen dan een heel bestand overschrijven. Leest een tool uit de cloud, controleer dan eerst of de sync klaar is, en daarna of het resultaat de nieuwe versie bevat.</p></div>
+
+<div class="mc"><div class="ml">4. Parallelle sessies weten niets van elkaar</div><p>Een afspraak in sessie A bestaat niet in sessie B. Twee sessies in dezelfde map delen bovendien de bestanden, de index en de actieve branch: sessie B wisselt van branch en sessie A commit ongemerkt op de verkeerde. Een eigen branch alleen isoleert dus niets.</p><div class="fl">WAT HELPT</div><p>Afspraken alleen via bestanden. Per sessie een eigen worktree: een eigen map met een eigen branch (zie <a href="deel-14.html" style="color:var(--yellow)">Parallel Werken</a>). Commit selectief, zodat je nooit andermans werk meeneemt.</p></div>
+
+<div class="mc"><div class="ml">5. Een keuze komt terug</div><p>Staat er alleen wat er gekozen is, of wordt het besluitenlog niet teruggelezen, dan stelt Claude later gewoon de verworpen optie opnieuw voor. Vastleggen alleen is niet genoeg.</p><div class="fl">WAT HELPT</div><p>Een besluitenlog met per besluit het waarom en de verworpen alternatieven. En een vaste terugleesstap: vóór een ontwerpkeuze of voorstel het besluitenlog, de backlog en de relevante <code>docs/refs/</code> doorzoeken op het onderwerp.</p></div>
+
+<div class="mc"><div class="ml">6. Terloopse afspraken</div><p>Een deadline, een uitzondering of een voorkeur valt in een bijzin: "het mag tot vrijdag", "die naam liever niet noemen". Claude past hem in dat gesprek toe, maar legt hem niet vast, want het voelde niet als een besluit.</p><div class="fl">WAT HELPT</div><p>Een regel in de globale CLAUDE.md: elke deadline, uitzondering of voorkeur van de gebruiker is een afspraak en gaat meteen naar het bestand waar hij geldt.</p></div>
+
+<div class="mc"><div class="ml">7. Standaardgedrag sluipt terug</div><p>In lange sessies glijdt Claude terug naar zijn standaarden: een andere taal in commitberichten, een pull request waar jij direct merget, langere antwoorden. Dat gebeurt vooral waar regels elkaar tegenspreken, bijvoorbeeld de globale CLAUDE.md tegenover die van het project.</p><div class="fl">WAT HELPT</div><p>Laat tegenstrijdigheden één keer beslissen en zet het besluit in de project-CLAUDE.md. Houd CLAUDE.md kort (zie <a href="deel-18.html" style="color:var(--yellow)">Veelgemaakte Fouten</a>). Wat echt vast moet staan, wordt een hook.</p></div>
+
+<div class="mc"><div class="ml">8. Hulpagenten kennen het gesprek niet</div><p>Een subagent of een tweede model krijgt alleen wat in zijn opdracht staat. Een second-opinion-model leest bovendien vaak een ander instructiebestand, zoals <code>AGENTS.md</code> in plaats van <code>CLAUDE.md</code>.</p><div class="fl">WAT HELPT</div><p>Geef de afspraken die ertoe doen expliciet mee in de opdracht. Laat <code>AGENTS.md</code> naar <code>CLAUDE.md</code> verwijzen.</p></div>
+
+<div class="mc"><div class="ml">9. Toezeggingen verdwijnen</div><p>"Ik kom erop terug", "ik meld me als de deploy klaar is", "dat kijk ik later na": het werkt alleen zolang de sessie loopt.</p><div class="fl">WAT HELPT</div><p>Wat Claude toezegt voor na de sessie, gaat direct naar de backlog.</p></div>
+
+<h3>De rangorde van maatregelen</h3>
+<p>Van sterk naar zwak. Hoe groter de schade als het misgaat, hoe hoger in deze lijst de maatregel hoort.</p>
+<div class="dg">
+<div class="dr"><span class="nm">1. Hook of test</span><span class="ct">Wordt afgedwongen, ook als Claude het vergeet.</span><span class="ms">deterministisch</span></div>
+<div class="dr"><span class="nm">2. Controle in de tool zelf</span><span class="ct">De tool weigert of waarschuwt, bijvoorbeeld als een bron ouder is dan de laatste wijziging.</span><span class="ms">deterministisch</span></div>
+<div class="dr"><span class="nm">3. Regel op de plek van de handeling</span><span class="ct">In de skill, het script of de checklist die Claude op dat moment gebruikt.</span><span class="ms">staat in beeld</span></div>
+<div class="dr"><span class="nm">4. CLAUDE.md, docs/refs en besluitenlog</span><span class="ct">Goed voor kennis, maar alleen effectief als Claude het op tijd terugvindt.</span><span class="ms">probabilistisch</span></div>
+<div class="dr"><span class="nm">5. Memory</span><span class="ct">Alleen op één machine, niet in git en onzichtbaar voor anderen. Gebruik het hooguit als verwijzing.</span><span class="ms">cache</span></div>
+</div>
+
+<div class="co cw"><span class="cl">Een hook bewaakt alleen wat hij herkent</span><p>Een hook kijkt naar één tool en naar de schrijfwijze van een commando. Blokkeert hij <code>git push</code>, dan glipt <code>git -C map push</code> er misschien langs. En een test telt alleen als hij verplicht draait, in een pre-commit hook of in CI. Test je hooks daarom met de varianten die je wilt tegenhouden.</p></div>
+
+<h3>Tijdelijke plekken</h3>
+<p>Deze plekken voelen als opslag, maar zijn het niet:</p>
+<table class="gt">
+<thead><tr><th>Plek</th><th>Wat er vaak in komt</th><th>Waarom tijdelijk</th></tr></thead>
+<tbody>
+<tr><td>Gesprek</td><td>afspraken, uitleg, keuzes</td><td>weg na <code>/clear</code>, ingekort bij <code>/compact</code>, weg in een nieuwe sessie</td></tr>
+<tr><td>Memory</td><td>lessen, voorkeuren (<code>~/.claude/projects/</code>)</td><td>alleen op deze machine, niet in git</td></tr>
+<tr><td>HANDOFF.md</td><td>de stand van zaken</td><td>wordt bij elke overdracht herschreven</td></tr>
+<tr><td>Plannen</td><td>plannen uit plan mode (<code>~/.claude/plans/</code>)</td><td>staat buiten de repo</td></tr>
+<tr><td>Scratchpad</td><td>scripts, tussenresultaten en oude versies in de tijdelijke map van een sessie</td><td>wordt opgeruimd</td></tr>
+<tr><td>Worktrees</td><td>proefwijzigingen in een tijdelijke worktree</td><td>wordt weggegooid</td></tr>
+<tr><td>~/.claude/</td><td>losse instellingen (<code>settings.json</code>), eigen skills en scripts</td><td>niet in git, alleen op deze machine</td></tr>
+<tr><td>Losse teksten</td><td>redenen en besluiten in een commitbericht, PR-beschrijving of chatbericht</td><td>niemand zoekt er later in</td></tr>
+</tbody>
+</table>
+<p><strong>Vuistregel:</strong> wat moet blijven, staat nooit alleen op zo'n plek. Zet het in het bestand dat ervoor bestaat (backlog, changelog, besluitenlog, <code>docs/refs/</code>, CLAUDE.md); daarna mag het overal genoemd worden.</p>
+
+<h3>Checklist voor je eigen inrichting</h3>
+<ol>
+<li>Staat elke afspraak die moet blijven in een bestand in git, en niet alleen in het gesprek of in memory?</li>
+<li>Heeft elk project een backlog, een changelog en een besluitenlog met het waarom en de verworpen alternatieven?</li>
+<li>Staat elke regel voor een specifieke handeling in de skill of het script van die handeling?</li>
+<li>Zijn de regels die echt niet mogen falen een hook of een test, en heb je die getest met varianten?</li>
+<li>Leest Claude het besluitenlog terug voordat hij een keuze voorstelt?</li>
+<li>Werkt elke parallelle sessie in een eigen worktree?</li>
+<li>Zijn tegenstrijdigheden tussen je globale en je project-CLAUDE.md opgelost?</li>
+<li>Krijgen subagents en andere modellen de afspraken mee, en verwijst <code>AGENTS.md</code> naar <code>CLAUDE.md</code>?</li>
+<li>Staan je <code>~/.claude/settings.json</code>, eigen skills en scripts in git, zonder geheimen?</li>
+<li>Gaan toezeggingen voor later direct naar de backlog?</li>
+</ol>
+
+<div class="co ca"><span class="cl">Al in de starter kit</span><p>De globale CLAUDE.md die <code>setup.sh</code> installeert (zie <a href="deel-22.html" style="color:var(--yellow)">Starter Kit</a>), bevat de regels uit dit hoofdstuk: situatieregels op de plek van handelen, opnieuw lezen voor het schrijven, terloopse afspraken en toezeggingen vastleggen, tegenstrijdige regels melden, afspraken meegeven aan subagents en het besluitenlog teruglezen.</p></div>
+</section>
+
+</main>
+
+<nav class="page-nav" aria-label="Paginanavigatie">
+<a href="deel-18.html" class="nav-btn nav-prev">&larr; Vorige</a>
+<span class="nav-counter">12 / 18</span>
+<a href="deel-22.html" class="nav-btn nav-next">Volgende &rarr;</a>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Terug naar boven">&uarr;</button>
+
+<script>
+// Back to top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Hamburger menu
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('sideNav');
+const overlay = document.getElementById('navOverlay');
+function closeMenu() {
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+toggle.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('open');
+  overlay.classList.toggle('open');
+  toggle.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', isOpen);
+});
+overlay.addEventListener('click', closeMenu);
+// Close menu on nav link click (mobile)
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+// Scroll nav to active item
+const active = document.querySelector('.nav a.active');
+if (active) active.scrollIntoView({block:'center', behavior:'instant'});
+</script>
+</body>
+</html>

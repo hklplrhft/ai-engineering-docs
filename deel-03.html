@@ -31,6 +31,7 @@
 <a href="deel-11.html">Git-discipline</a>
 <a href="deel-14.html">Parallel Werken</a>
 <a href="deel-18.html">Veelgemaakte Fouten</a>
+<a href="deel-19.html">Waar Claude vergeet</a>
 <div class="ng">Aan de slag</div>
 <a href="deel-22.html">Starter Kit</a>
 <a href="deel-24.html">Plugins &amp; Extensies</a>
@@ -57,10 +58,10 @@
 <div class="dr"><span class="nm"><strong>Laag 1</strong> · <code>~/.claude/CLAUDE.md</code></span><span class="ct">Persoonlijke regels voor <strong>al je projecten</strong>. Werkwijze, stijl, veiligheid.</span><span class="ms">"Werk altijd op een branch" · "Comments in het Nederlands"</span></div>
 <div class="dr"><span class="nm"><strong>Laag 2</strong> · <code>./CLAUDE.md</code> + <code>AGENTS.md</code></span><span class="ct">Projectspecifieke briefing. Tech stack, commando's, kritieke regels. <code>AGENTS.md</code> voegt per-map regels toe in monorepo's.</span><span class="ms">"Gebruik Prisma migrate, nooit raw SQL" · "Zie docs/refs/"</span></div>
 <div class="dr"><span class="nm"><strong>Laag 3</strong> · <code>docs/refs/</code></span><span class="ct">Gedetailleerde "littekens" -- lessen uit fouten. Worden on-demand geladen.</span><span class="ms">"Kolom is is_answer_ready, NIET answer_ready" · API-valkuilen</span></div>
-<div class="dr"><span class="nm"><strong>Laag 4</strong> · <code>MEMORY.md</code> + auto memory</span><span class="ct">Persistent geheugen per project, overleeft sessies. Staat in <code>~/.claude/projects/</code>, niet in je repo.</span><span class="ms">"Bug tracker staat in Linear" · "Gebruiker prefereert kort"</span></div>
+<div class="dr"><span class="nm"><strong>Laag 4</strong> · <code>MEMORY.md</code> + auto memory</span><span class="ct">Een cache per project, op één machine. Staat in <code>~/.claude/projects/</code>, niet in je repo. Hooguit verwijzingen naar waar iets staat.</span><span class="ms">"Besluiten: zie docs/decisions.md" · "Stijlvoorkeuren: zie CLAUDE.md"</span></div>
 <div class="dr"><span class="nm"><strong>Laag 5</strong> · skills, agents, hooks, tests</span><span class="ct">Code die Claude <em>uitvoert</em>. Skills en agents zijn probabilistisch, hooks en tests zijn deterministisch.</span><span class="ms">Herbruikbare workflows · parallel werk · harde garanties</span></div>
 </div>
-<div class="co ci"><span class="cl">Vuistregel</span><p><strong>Geldt voor elk project?</strong> → globale CLAUDE.md. <strong>Specifiek voor dit project?</strong> → project CLAUDE.md. <strong>Gedetailleerde les uit een fout?</strong> → docs/refs/. <strong>Context die niet in code of git staat?</strong> → memory. Dupliceer niet tussen lagen -- verwijs.</p></div>
+<div class="co ci"><span class="cl">Vuistregel</span><p><strong>Geldt voor elk project?</strong> → globale CLAUDE.md. <strong>Specifiek voor dit project?</strong> → project CLAUDE.md. <strong>Gedetailleerde les uit een fout?</strong> → docs/refs/. <strong>Besluit, afspraak of open punt?</strong> → besluitenlog of backlog. <strong>Memory?</strong> Hooguit een verwijzing naar een van deze bestanden (zie <a href="deel-19.html">Waar Claude vergeet</a>). Dupliceer niet tussen lagen -- verwijs.</p></div>
 
 <div class="lc lcp"><div class="lh"><span class="ln">LAAG 1</span><span class="lt">Globale regels</span><span class="lp">~/.claude/CLAUDE.md</span></div>
 <p>Wordt <strong>altijd geladen</strong>, in elk project. Dit is meer dan stijlvoorkeuren -- het is het mechanisme waarmee je je hele werkwijze afdwingt: hoe Claude plant, commit, test, en wanneer het uitbreidingen voorstelt.</p>
@@ -185,13 +186,13 @@ Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
 <div class="co ca"><span class="cl">Hoe het werkt</span><p>CLAUDE.md zegt: "Zie docs/refs/db-schema.md voor database valkuilen." Claude leest dat bestand alleen wanneer hij met de database werkt. Zo blijft je hoofdbestand klein en je context schoon.</p></div>
 </div>
 
-<div class="lc lcy"><div class="lh"><span class="ln">LAAG 4</span><span class="lt">Persistent geheugen</span><span class="lp">MEMORY.md + auto memory</span></div>
-<p>Overleeft sessies. Bekende bugs, beslissingen, project IDs, procedures. Zonder dit begint elke sessie opnieuw. Memory is <strong>per project</strong> -- opgeslagen in <code>~/.claude/projects/</code>, niet in je repo.</p>
+<div class="lc lcy"><div class="lh"><span class="ln">LAAG 4</span><span class="lt">Geheugen (cache)</span><span class="lp">MEMORY.md + auto memory</span></div>
+<p>Overleeft sessies, maar alleen op deze machine: memory staat in <code>~/.claude/projects/</code>, niet in je repo, en is onzichtbaar voor collega's, andere machines en andere modellen. Behandel het als een <strong>cache, niet als archief</strong>. Beslissingen, procedures en lessen horen in git: in het besluitenlog, de backlog, <code>docs/refs/</code> of CLAUDE.md. In memory hooguit een verwijzing daarheen.</p>
 <h4>Handmatig geheugen</h4>
-<p><code>/memory</code> om de project-specifieke memory bestanden te bewerken. Schrijf regels, beslissingen en context op die je wilt behouden.</p>
+<p><code>/memory</code> om de memory-bestanden te bekijken en te bewerken. Gebruik het om te controleren wat Claude heeft opgeslagen, en verplaats wat telt naar een bestand in git.</p>
 <h4>Auto memory</h4>
 <p>Claude leert <em>automatisch</em> tijdens het werken. Build-commando's, debugging-inzichten, project-patronen -- worden opgeslagen zonder dat je iets hoeft te schrijven. Schakel in/uit via <code>/memory</code>.</p>
-<div class="co ci"><span class="cl">Twee vormen, samen sterker</span><p><strong>Auto memory</strong> vangt operationele kennis op (hoe te builden, welke tests draaien). <strong>Handmatig geheugen</strong> voor architectuurbeslissingen en regels die Claude moet volgen. Gebruik beide.</p></div>
+<div class="co ci"><span class="cl">Geheugen is een cache</span><p><strong>Auto memory</strong> vangt handige operationele kennis op (hoe te builden, welke tests draaien). Maar het staat alleen op één machine. Architectuurbeslissingen en regels die Claude moet volgen, horen in CLAUDE.md, <code>docs/refs/</code> of het besluitenlog: daar ziet iedereen ze en bewaart git ze. Zie <a href="deel-19.html">Waar Claude vergeet</a>.</p></div>
 <h4>Handoff files</h4>
 <p>Beëindig je een sessie? Vraag Claude om <code>HANDOFF.md</code> te schrijven in de root van je project. Dit is geen log -- het is een <strong>briefing voor de volgende sessie</strong>.</p>
 <div class="co ci"><span class="cl">Inhoud van een HANDOFF.md</span>
@@ -200,7 +201,7 @@ Webshop gebouwd met Next.js 14, Prisma ORM, PostgreSQL.
 <strong>Geprobeerd:</strong> Welke aanpak heb je gevolgd? Wat faalde en waarom?<br>
 <strong>Volgende stappen:</strong> Wat moet er nog gebeuren? In welke volgorde?<br>
 <strong>Open vragen:</strong> Waar liep je vast? Wat moet iemand anders beslissen?</p></div>
-<p><strong>Vervangen, niet stapelen.</strong> Er is altijd maar één <code>HANDOFF.md</code>. Elke sessie overschrijft het vorige bestand met de actuele stand van zaken. Het is geen changelog -- het is de huidige status. Oude context zit in git history en in memory.</p>
+<p><strong>Vervangen, niet stapelen.</strong> Er is altijd maar één <code>HANDOFF.md</code>. Elke sessie overschrijft het vorige bestand met de actuele stand van zaken. Het is geen changelog -- het is de huidige status. Oude context zit in git history en in de backlog, de changelog en het besluitenlog.</p>
 <p><strong>Wanneer schrijven?</strong> Aan het einde van een sessie waarin je iets complex hebt gedaan dat niet af is. Niet nodig na een simpele bugfix die al gecommit is. Wel nodig als een collega (of jijzelf morgen) anders niet weet waar je gebleven bent.</p>
 <pre><code># HANDOFF.md
 ## Doel
@@ -244,7 +245,7 @@ Upload-form component is klaar en getest. Preview-stap nog niet begonnen.
 <h3>Hoe de lagen samenwerken</h3>
 <p>Nu je alle 5 lagen kent, hier het grotere plaatje: hoe ze samen een zelfversterkend systeem vormen.</p>
 
-<h4>De Feedback Loop</h4>
+<h4 id="feedback-loop">De Feedback Loop</h4>
 <p>Het kernmechanisme dat alle lagen verbindt: elke fout wordt een regel, elke regel maakt het systeem slimmer.</p>
 <div class="lv2">
 <div class="ls">Fout gevonden</div><div class="la">→</div>
@@ -317,7 +318,7 @@ Minimale check bij bestaande projecten:
 
 <nav class="page-nav" aria-label="Paginanavigatie">
 <a href="deel-02.html" class="nav-btn nav-prev">&larr; Vorige</a>
-<span class="nav-counter">3 / 17</span>
+<span class="nav-counter">3 / 18</span>
 <a href="deel-04.html" class="nav-btn nav-next">Volgende &rarr;</a>
 </nav>
 
