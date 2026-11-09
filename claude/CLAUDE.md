@@ -24,9 +24,10 @@ Bron: https://github.com/hklplrhft/ai-engineering-docs (map `claude/`). Dit best
 - Na goedkeuring: kopieer het plan naar `docs/plans/YYYY-MM-DD-<naam>.md` in de repo en commit het. Plannen in `~/.claude/plans/` staan buiten git en gaan verloren.
 
 ### Context schoon houden
-- Stel `/clear` voor bij taakwissel (andere feature, ander onderwerp)
+- Eén onderwerp per terminal, en de terminal heet naar dat onderwerp; komt er een ander onderwerp op, stel dan een nieuwe terminal of `/clear` voor
 - Stel `/compact` voor na 30+ minuten of wanneer context vol raakt
-- Bij sessie-overdracht: maak een HANDOFF.md (doel, status, wat geprobeerd, eerstvolgende stap)
+- Stand per onderwerp: lees bij de start de stand van je onderwerp (zie "Waar staat de backlog") en werk aan het eind van elk werkmoment STAND en VOLGENDE STAP bij, met een gerichte bewerking, nooit door het hele bestand te overschrijven
+- Bij sessie-overdracht zonder onderwerpbestand of -blok: maak een HANDOFF.md (doel, status, wat geprobeerd, eerstvolgende stap)
 
 ### Vastleggen -- vijf bestanden, elk met een eigen regel
 Zo kan een afspraak, besluit of open punt alleen verdwijnen door het bewust af te vinken, nooit door herschrijven.
@@ -44,8 +45,11 @@ eind van de sessie en niet 'straks even'. Daarna mag het overal genoemd worden; 
 | `CHANGELOG.md` | Per datum wat er veranderd is: features, fixes, besluiten, bevindingen, wijzigingen in externe systemen | Alleen aanvullen, nieuwste bovenaan |
 | `docs/decisions.md` | Besluitenlog: datum, besluit, waarom, verworpen alternatieven, wie | Alleen aanvullen. Elke ontwerpvraag die de gebruiker beantwoordt (AskUserQuestion, plan-keuze) krijgt een regel |
 | `docs/plans/` | Goedgekeurde plannen | Nieuw bestand per plan, niet wijzigen na goedkeuring (afwijkingen in CHANGELOG.md) |
-| `HANDOFF.md` | Momentopname voor de volgende sessie: waar sta je nu, wat is de eerstvolgende stap, hoe test je het lokaal | Mag herschreven worden, en WORDT dat ook. Daarom hoort hier niets in dat moet blijven: geen open punten (BACKLOG.md), geen afspraken of werkwijze-regels (dit bestand), geen besluiten (docs/decisions.md), geen lessen of valkuilen (docs/refs/). Zet je zoiets hier toch neer, dan verdwijnt het bij de eerstvolgende herschrijving zonder dat iemand het merkt |
+| `HANDOFF.md` | Momentopname voor de volgende sessie: waar sta je nu, wat is de eerstvolgende stap, hoe test je het lokaal. Werken meerdere sessies in één project, dan staat de stand per onderwerp in het onderwerpbestand of -blok (zie "Waar staat de backlog") en verwijst HANDOFF.md daarheen | Mag herschreven worden, en WORDT dat ook. Daarom hoort hier niets in dat moet blijven: geen open punten (BACKLOG.md), geen afspraken of werkwijze-regels (dit bestand), geen besluiten (docs/decisions.md), geen lessen of valkuilen (docs/refs/). Zet je zoiets hier toch neer, dan verdwijnt het bij de eerstvolgende herschrijving zonder dat iemand het merkt |
 
+- Waar staat de backlog (Hans, 9 nov 2026; plan `docs/plans/2026-11-09-backlogs-per-project.md` in ai-engineering-docs): eigen project -> `BACKLOG.md` in de repo, met per lang lopend onderwerp een blok (WAAR, STAND, VOLGENDE STAP, OPEN PUNTEN) en onderaan `## Inbox (Hans)`; teamrepo -> per onderwerp `~/Development/_backlogs/_backlog_<repo>-<onderwerp>.txt` met dezelfde opbouw (privé, buiten de teamrepo); zoom-nl -> eigen afspraken (`BACKLOG-HANS.md`).
+- In `~/Development/_backlogs/` schrijft een sessie alleen in het bestand van haar eigen onderwerp, commit er niet zelf (een uurtaak doet dat en pusht naar een privé-repo) en zet er nooit sleutels of wachtwoorden in; `_backlog_<project>.txt` daar is het kladblok van Hans: alleen lezen, hooguit een regel toevoegen.
+- "Verwerk de inbox": ideeën uit de Inbox uitwerken in de backlog en achter elk idee "-> verwerkt (datum)" zetten; niets wegstrepen, dat doet Hans zelf.
 - Geen TODO-lijsten in CLAUDE.md: dat bestand wordt elke sessie geladen en bij herschrijven vallen punten stilletjes weg.
 - Feiten in CLAUDE.md en docs/refs/ (IDs, URLs, accounts, veldnamen) altijd met "gecontroleerd op <datum> via <bron>". Twijfel je aan een feit: vraag in BACKLOG.md, niet stilzwijgend aanpassen.
 - Wijzigingen in externe systemen (Copernica, Cloudflare, App Store, DNS, databases): altijd een regel in CHANGELOG.md en bij voorkeur een herhaalbaar script in `scripts/`. Wat niet in git staat, bestaat niet.
@@ -64,7 +68,7 @@ eind van de sessie en niet 'straks even'. Daarna mag het overal genoemd worden; 
 - Vlak voor het schrijven opnieuw lezen en vergelijken met wat je eerder las: een andere sessie, de gebruiker of een sync-map kan het bestand intussen hebben gewijzigd. Nooit een heel bestand uitschrijven vanuit een eerdere lezing.
 - Parallelle sessies: elk in een eigen worktree (eigen map); een eigen branch in dezelfde map isoleert niets.
 - Nooit pushen, deployen of berichten sturen zonder expliciete bevestiging. Een globale hook blokkeert `git push`, deploy-commando's en destructieve git/shell-commando's; vraag de gebruiker die zelf te draaien met `! <commando>`
-- Aan het eind van elke sessie: geen ongecommit werk laten staan (een Stop-hook controleert dit) en niet-gemergde branches benoemen in HANDOFF.md
+- Aan het eind van elke sessie: geen ongecommit werk laten staan (een Stop-hook controleert dit) en niet-gemergde branches benoemen in de stand van je onderwerp (WAAR), of anders in HANDOFF.md
 - Secrets nooit in git; wel een `.env.example` met alle benodigde keys (zonder waarden) en in docs/refs/ waar de echte waarden staan
 
 ### Verificatie
@@ -170,4 +174,4 @@ Referentie: https://hklplrhft.github.io/ai-engineering-docs/deel-03.html
 - Geen em-dashes of en-dashes in code of tekst, gebruik --
 - Wees beknopt in uitleg, gedetailleerd in code
 - Samenvattingen kort: eerst de conclusie in 3-5 regels, details alleen op verzoek of eronder
-- In de Notch-backlogs (`~/Development/_backlog_*.txt`): een witregel tussen punten, voor de leesbaarheid; witregels die Hans zelf zet nooit weghalen (Hans, 9 nov 2026)
+- In de Notch-backlogs (`~/Development/_backlogs/_backlog_*.txt`): een witregel tussen punten, voor de leesbaarheid; witregels die Hans zelf zet nooit weghalen (Hans, 9 nov 2026)
