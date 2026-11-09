@@ -69,6 +69,8 @@ eind van de sessie en niet 'straks even'. Daarna mag het overal genoemd worden; 
 - Selectief committen: specifieke bestanden, niet `git add .`
 - Vlak voor het schrijven opnieuw lezen en vergelijken met wat je eerder las: een andere sessie, de gebruiker of een sync-map kan het bestand intussen hebben gewijzigd. Nooit een heel bestand uitschrijven vanuit een eerdere lezing.
 - Parallelle sessies: elk in een eigen worktree (eigen map); een eigen branch in dezelfde map isoleert niets.
+- De hoofdmap van een repo blijft op main. Gaat een sessie code of scripts schrijven, dan maakt ze bij de start zelf een worktree met een eigen branch (`git worktree add ../<repo>-<onderwerp> -b hans/<onderwerp>`); uitzoekwerk zonder code mag in de hoofdmap op main (de stand staat in `~/Development/_backlogs/`). Les 9 nov 2026: AIvoorRED stond sinds eind september op één werkbranch, liep 376 commits voor en 278 achter op main.
+- Vaak en klein mergen: heeft een branch aan het eind van een werkmoment commits die nog niet in main staan, draai dan de controles, stel de merge voor en geef Hans één push-commando; laat het verschil niet oplopen tot meer dan een paar commits.
 - Nooit pushen, deployen of berichten sturen zonder expliciete bevestiging. Een globale hook blokkeert `git push`, deploy-commando's en destructieve git/shell-commando's; vraag de gebruiker die zelf te draaien met `! <commando>`
 - Aan het eind van elke sessie: geen ongecommit werk laten staan (een Stop-hook controleert dit) en niet-gemergde branches benoemen in de stand van je onderwerp (WAAR), of anders in HANDOFF.md
 - Secrets nooit in git; wel een `.env.example` met alle benodigde keys (zonder waarden) en in docs/refs/ waar de echte waarden staan
