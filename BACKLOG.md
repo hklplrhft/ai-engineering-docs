@@ -4,6 +4,7 @@ Open punten. Alleen aanvullen of afvinken; een afgevinkt punt krijgt een regel i
 
 ## Actiebaar
 
+- [ ] **Persoonlijke regels uit de openbare `claude/CLAUDE.md` halen voor het pushen** (9-11-2026, besluit Hans: voorlopig niet pushen). Main staat lokaal 11+ commits voor op GitHub met de regels van 9 nov (backlogs per project, kladblokken, Notch, `~/Development/_backlogs`, projectnamen, de privé-repo `han-s-kl/backlogs`, en in `docs/decisions.md` dat `~/Development/_prive` geheimen bevat). De repo is openbaar. Voorstel: algemene regels openbaar houden, het persoonlijke deel naar een privébestand dat `claude/CLAUDE.md` inlaadt; de lokale commits herschrijven voordat ze online gaan. Tot dan: niet pushen.
 - [ ] **`claude/hooks/pretool-guard.sh` blokkeert `git -C <map> push` niet** (29-10-2026, Codex-plantoets r1 bij het
   plan `docs/plans/2026-10-29-waar-claude-vergeet.md`, getest met alleen de commandotekst). `git push` wordt wel
   geblokkeerd. Fix met een test per variant (`git -C`, `git --git-dir`, push via een alias of script).
