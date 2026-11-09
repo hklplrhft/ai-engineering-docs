@@ -4,6 +4,7 @@ Wat er veranderde in deze repo. Nieuwste bovenaan; alleen aanvullen.
 
 | Datum | Wijziging |
 |---|---|
+| 2026-11-09 | **Teamrepo in Notch: één kort overzicht, details in een submap** (wens Hans: de lange onderwerpbestanden lezen niet als backlog). AIvoorRED: `~/Development/_backlogs/_backlog_aivoorred.txt` (projectomschrijving en per onderwerp één regel) en `~/Development/_backlogs/aivoorred/<onderwerp>.md` (details voor Claude, niet in Notch). Regel in `claude/CLAUDE.md` aangepast; verwijzingen in AIvoorRED (TODO.md, CLAUDE.md, HANDOFF.md, herinneringsscript 25 nov) bijgewerkt. Afwijking van het plan backlogs per project (stap 3: onderwerpbestanden in Notch). |
 | 2026-11-09 | **Branch `hans/regel-backlog-witregels` lokaal in main gemerged** (56946e4, op verzoek van Hans); niet gepusht, omdat de repo openbaar is (besluit in `docs/decisions.md`, vervolgpunt in BACKLOG.md). |
 | 2026-11-09 | **Kladblokken voor nog vijf projecten** (wens Hans: "zodat ik die projecten niet vergeet"): `_backlog_reshift-kiosk.txt`, `_backlog_zoomcms.txt`, `_backlog_learnworlds.txt`, `_backlog_fotocoach.txt` en `_backlog_notch.txt` in `~/Development/_backlogs/` (zichtbaar in Notch); koppeling in `claude/CLAUDE.md` bijgewerkt. |
 | 2026-11-09 | **Kladblok per project op één plek** (`claude/CLAUDE.md`): de koppeling project -> kladblok staat in de globale regels in plaats van in de CLAUDE.md van elk project (in aurora_monitor en schoterpoort staan featurebranches uit met lopend werk; een regel daar zou in hun pull request meelopen). |
