@@ -4,6 +4,7 @@ Wat er veranderde in deze repo. Nieuwste bovenaan; alleen aanvullen.
 
 | Datum | Wijziging |
 |---|---|
+| 2026-11-09 | **Kladblok voor gamehaarlem** (`~/Development/_backlogs/_backlog_gamehaarlem.txt`, wens Hans); koppeling in `claude/CLAUDE.md` aangevuld. |
 | 2026-11-09 | **Teamrepo in Notch: per onderwerp een eigen korte rij** (wens Hans: "kunnen die wel elk een eigen item blijven?"). `_backlog_<repo> <onderwerp>.txt` met 1 tot 3 regels (volgende stap, wat op Hans wacht, verwijzing); details in `<repo>/<onderwerp>.md`; `_backlog_<repo>.txt` alleen de projectomschrijving. Namen met een spatie, bewust anders dan de oude `_backlog_aivoorred-<onderwerp>.txt`. Vervangt het ene overzicht van eerder vandaag. |
 | 2026-11-09 | **Teamrepo in Notch: één kort overzicht, details in een submap** (wens Hans: de lange onderwerpbestanden lezen niet als backlog). AIvoorRED: `~/Development/_backlogs/_backlog_aivoorred.txt` (projectomschrijving en per onderwerp één regel) en `~/Development/_backlogs/aivoorred/<onderwerp>.md` (details voor Claude, niet in Notch). Regel in `claude/CLAUDE.md` aangepast; verwijzingen in AIvoorRED (TODO.md, CLAUDE.md, HANDOFF.md, herinneringsscript 25 nov) bijgewerkt. Afwijking van het plan backlogs per project (stap 3: onderwerpbestanden in Notch). |
 | 2026-11-09 | **Branch `hans/regel-backlog-witregels` lokaal in main gemerged** (56946e4, op verzoek van Hans); niet gepusht, omdat de repo openbaar is (besluit in `docs/decisions.md`, vervolgpunt in BACKLOG.md). |
