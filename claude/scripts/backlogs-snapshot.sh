@@ -17,6 +17,18 @@ notify() { /usr/bin/osascript -e "display notification \"$1\" with title \"Backl
 
 cd "$DIR" || { log "STOP: map $DIR bestaat niet"; exit 1; }
 
+# Files elsewhere that have no other backup (e.g. a private backlog excluded from its repo) are listed in
+# backup-bronnen.txt, one path per line relative to ~/Development, and copied to backup/ (with / as __) first.
+# Notch only reads files directly in this folder, so backup/ does not show up there.
+if [ -f backup-bronnen.txt ]; then
+  mkdir -p backup
+  while IFS= read -r rel || [ -n "$rel" ]; do
+    case "$rel" in ''|'#'*) continue ;; esac
+    src="$HOME/Development/$rel"
+    if [ -f "$src" ]; then cp -p "$src" "backup/$(printf '%s' "$rel" | sed 's#/#__#g')"; else log "back-upbron ontbreekt: $rel"; fi
+  done < backup-bronnen.txt
+fi
+
 if [ -n "$($GIT status --porcelain)" ]; then
   $GIT add -A
   if ! "$GITLEAKS" git --pre-commit --staged --no-banner --redact . >/dev/null 2>&1; then
