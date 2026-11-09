@@ -170,3 +170,4 @@ Referentie: https://hklplrhft.github.io/ai-engineering-docs/deel-03.html
 - Geen em-dashes of en-dashes in code of tekst, gebruik --
 - Wees beknopt in uitleg, gedetailleerd in code
 - Samenvattingen kort: eerst de conclusie in 3-5 regels, details alleen op verzoek of eronder
+- In de Notch-backlogs (`~/Development/_backlog_*.txt`): een witregel tussen punten, voor de leesbaarheid; witregels die Hans zelf zet nooit weghalen (Hans, 9 nov 2026)
