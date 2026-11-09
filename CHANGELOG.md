@@ -4,6 +4,7 @@ Wat er veranderde in deze repo. Nieuwste bovenaan; alleen aanvullen.
 
 | Datum | Wijziging |
 |---|---|
+| 2026-11-09 | **Korte rij per onderwerp wordt alleen samenvatting en verwijzing** (Hans: "doe maar gewoon samenvatting van project en verwijzing"). Geen Volgende stap of Wacht op Hans meer in de rij; sessies houden de rij niet bij (de regel van 181773b vervalt daarmee). De stand blijft in het detailbestand. |
 | 2026-11-09 | **Korte rij: wat Hans erbij zet blijft staan** (`claude/CLAUDE.md`): een sessie werkt in haar korte rij alleen Volgende stap, Wacht op Hans en Details bij (vraag Hans: "worden die bijgehouden, ook als ik er wat in aanpas?"). |
 | 2026-11-09 | **Kladblok voor gamehaarlem** (`~/Development/_backlogs/_backlog_gamehaarlem.txt`, wens Hans); koppeling in `claude/CLAUDE.md` aangevuld. |
 | 2026-11-09 | **Teamrepo in Notch: per onderwerp een eigen korte rij** (wens Hans: "kunnen die wel elk een eigen item blijven?"). `_backlog_<repo> <onderwerp>.txt` met 1 tot 3 regels (volgende stap, wat op Hans wacht, verwijzing); details in `<repo>/<onderwerp>.md`; `_backlog_<repo>.txt` alleen de projectomschrijving. Namen met een spatie, bewust anders dan de oude `_backlog_aivoorred-<onderwerp>.txt`. Vervangt het ene overzicht van eerder vandaag. |
