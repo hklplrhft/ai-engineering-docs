@@ -4,6 +4,7 @@ Wat er veranderde in deze repo. Nieuwste bovenaan; alleen aanvullen.
 
 | Datum | Wijziging |
 |---|---|
+| 2026-11-11 | **Dezelfde branch in elke repo van een onderwerp** (`claude/CLAUDE.md`, Hans): bij een onderwerp over meerdere repo's heet de branch overal `hans/<onderwerp>`, net als de worktree. Aanleiding: bij de Wintergids heetten de branches in AIvoorRED en acties-zoom-nl verschillend, naast twee oude branches. |
 | 2026-11-10 | **Regel voor onderwerpen in meerdere repo's** (`claude/CLAUDE.md`, Hans): per repo een worktree met dezelfde naam, het onderwerpbestand en de sessie in één ervan, de andere erbij met `claude --add-dir`; niet starten in `~/Development`. Aanleiding: de Wintergids (AIvoorRED-wg26dash en acties-zoom-nl-wg26dash). |
 | 2026-11-10 | **`[LOS]-` alleen voor werk zonder eigen map** (correctie Hans): tien items teruggezet naar hun gewone naam (eigen projecten en zoom-academy-gateway), `[LOS]-` blijft voor sleutels en zoom single sign on. Bovenaan elk item in `_backlogs/notities/` staat nu de regel om de lopende sessie te hervatten (`cd <map> && claude --resume <id>`) of een nieuwe te starten. `claude/CLAUDE.md` aangepast. |
 | 2026-11-10 | **Losse projecten in Notch heten `[LOS]-<project>`** (Hans): twaalf items hernoemd in `_backlogs/notities/` (volgorde in config.json meegenomen, Notch herstart); `claude/CLAUDE.md` noemt de naamgeving en "verwerk mijn aantekeningen" wijst naar `notities/[LOS]-<project>.txt`. Eerder vandaag hernoemd: "aivoorred sleutels" naar "sleutels", "aivoorred checkout-app" naar "zoom-academy-gateway". |
