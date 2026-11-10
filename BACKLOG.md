@@ -4,6 +4,7 @@ Open punten. Alleen aanvullen of afvinken; een afgevinkt punt krijgt een regel i
 
 ## Actiebaar
 
+- [ ] **Verwijsregels in `~/Development/_backlogs/aivoorred/` weghalen** (10-11-2026, plan notch `2026-11-10-notities-en-onderwerpen`, fase 3) zodra alle AIvoorRED-terminals opnieuw gestart zijn (dan lezen ze de nieuwe regels en de starthook). Ook `checkout-app.md` daar, na de push van `hans/backlog` naar master van zoom-academy-gateway. De volledige teksten staan in de git van `_backlogs` (snapshot `eb0cb74`).
 - [ ] **Hoofdmap `~/Development/AIvoorRED` terug op main** (uit `_backlogs/aivoorred/backlog-ordening.md`, 9 nov; fase 3 van plan notch `2026-11-10-notities-en-onderwerpen`). Staat op `hans/terugwinactie-za`, die inmiddels helemaal in main zit. Pas als Hans de terminals daar heeft gesloten: `git switch main`, `git merge --ff-only origin/main`, daarna de branch lokaal weg met akkoord.
 - [ ] **Stop-hook laat `_backlogs` overslaan** (uit `backlog-ordening.md`, 9 nov): sessies committen daar niet zelf. Voorstel: repo's met een `.autocommit`-bestand overslaan in `claude/hooks/stop-git-check.sh`, plus een leeg `.autocommit` in `_backlogs`. Claude mocht de eigen hook niet aanpassen (9 nov); Hans doet het zelf of geeft toestemming.
 - [ ] **Eigen projecten: afgevinkte punten van BACKLOG.md naar CHANGELOG.md** (uit `backlog-ordening.md`, regel 10 nov), per project door een sessie in dat project, op verzoek van Hans; grootste: Zoom Alerts (`aurora_monitor/docs/BACKLOG.md`: 322 afgevinkt, 78 open, 2.888 regels).
