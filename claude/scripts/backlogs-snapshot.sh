@@ -5,15 +5,21 @@
 # macOS shows a notification.
 #
 # Installed as ~/scripts/achtergrondtaken/Backlogs-snapshot (readable name in macOS login items), started by launchd
-# job nl.hanskluppel.backlogs-snapshot every hour. Plan: docs/plans/2026-11-09-backlogs-per-project.md.
+# job nl.hanskluppel.backlogs-snapshot every hour, and by Notch right after Hans changes a note (plan notch
+# docs/plans/2026-11-10-notities-en-onderwerpen.md). Plan: docs/plans/2026-11-09-backlogs-per-project.md.
+# Test: bash claude/scripts/test_backlogs_snapshot.sh
 set -u
 
 DIR="${BACKLOGS_DIR:-$HOME/Development/_backlogs}"
-GIT=/usr/bin/git
-GITLEAKS=/opt/homebrew/bin/gitleaks
+# Overridable for the test only.
+GIT="${SNAPSHOT_GIT:-/usr/bin/git}"
+GITLEAKS="${SNAPSHOT_GITLEAKS:-/opt/homebrew/bin/gitleaks}"
 
 log() { printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*"; }
-notify() { /usr/bin/osascript -e "display notification \"$1\" with title \"Backlogs-snapshot\"" >/dev/null 2>&1; }
+notify() {
+  [ -n "${SNAPSHOT_QUIET:-}" ] && return 0
+  /usr/bin/osascript -e "display notification \"$1\" with title \"Backlogs-snapshot\"" >/dev/null 2>&1
+}
 
 cd "$DIR" || { log "STOP: map $DIR bestaat niet"; exit 1; }
 
@@ -29,22 +35,34 @@ if [ -f backup-bronnen.txt ]; then
   done < backup-bronnen.txt
 fi
 
-if [ -n "$($GIT status --porcelain)" ]; then
-  $GIT add -A
-  if ! "$GITLEAKS" git --pre-commit --staged --no-banner --redact . >/dev/null 2>&1; then
-    $GIT reset -q
-    log "STOP: gitleaks vond een mogelijk geheim; niets gecommit of gepusht"
-    notify "Mogelijk een sleutel in een backlog. Niets opgeslagen naar GitHub. Draai gitleaks in $DIR."
-    exit 1
+# A change made while this runs (Notch saves a note during the push) would otherwise wait for the next hour, because
+# launchctl kickstart does not queue a second run. So look again after the push: at most three rounds.
+round=1
+while :; do
+  if [ -n "$($GIT status --porcelain)" ]; then
+    $GIT add -A
+    if ! "$GITLEAKS" git --pre-commit --staged --no-banner --redact . >/dev/null 2>&1; then
+      $GIT reset -q
+      log "STOP: gitleaks vond een mogelijk geheim; niets gecommit of gepusht"
+      notify "Mogelijk een sleutel in een backlog. Niets opgeslagen naar GitHub. Draai gitleaks in $DIR."
+      exit 1
+    fi
+    $GIT commit -q -m "snapshot $(date '+%Y-%m-%d %H:%M')" && log "commit gemaakt"
   fi
-  $GIT commit -q -m "snapshot $(date '+%Y-%m-%d %H:%M')" && log "commit gemaakt"
-fi
 
-# Push whatever is not on the remote yet (also earlier commits whose push failed).
-if $GIT remote get-url origin >/dev/null 2>&1; then
-  if [ -n "$($GIT log --oneline '@{upstream}..HEAD' 2>/dev/null)" ] || ! $GIT rev-parse '@{upstream}' >/dev/null 2>&1; then
-    if $GIT push -q -u origin HEAD 2>&1; then log "gepusht"; else log "push mislukt"; notify "Push naar GitHub mislukt; zie ~/Library/Logs/backlogs-snapshot.log"; fi
+  # Push whatever is not on the remote yet (also earlier commits whose push failed).
+  pushed=1
+  if $GIT remote get-url origin >/dev/null 2>&1; then
+    if [ -n "$($GIT log --oneline '@{upstream}..HEAD' 2>/dev/null)" ] || ! $GIT rev-parse '@{upstream}' >/dev/null 2>&1; then
+      if $GIT push -q -u origin HEAD 2>&1; then log "gepusht"; else log "push mislukt"; pushed=0; notify "Push naar GitHub mislukt; zie ~/Library/Logs/backlogs-snapshot.log"; fi
+    fi
+  else
+    log "geen remote ingesteld; alleen lokaal gecommit"
   fi
-else
-  log "geen remote ingesteld; alleen lokaal gecommit"
-fi
+
+  [ -z "$($GIT status --porcelain)" ] && break
+  [ "$pushed" = 1 ] || break
+  if [ "$round" -ge 3 ]; then log "na 3 rondes nog wijzigingen; de volgende run neemt ze mee"; break; fi
+  round=$((round + 1))
+  log "nieuwe wijzigingen tijdens deze run; nog een ronde"
+done
