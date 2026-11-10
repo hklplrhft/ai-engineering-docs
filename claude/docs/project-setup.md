@@ -64,11 +64,11 @@ Typische bestanden die hier later in komen:
 ## Stap 4b: BACKLOG.md, CHANGELOG.md, docs/decisions.md, docs/plans/
 
 Vijf plekken, elk met een eigen regel. Zo kan een afspraak, besluit of open punt alleen
-verdwijnen door het bewust af te vinken, nooit door herschrijven.
+verdwijnen doordat het bewust is afgerond en in CHANGELOG.md staat, nooit door herschrijven.
 
 | Bestand | Inhoud | Regel |
 |---|---|---|
-| `BACKLOG.md` | Alle open punten, vragen en bevindingen, geprioriteerd in secties | Alleen aanvullen of afvinken, nooit herschrijven |
+| `BACKLOG.md` | Alle open punten, vragen en bevindingen, geprioriteerd in secties | Alleen aanvullen, nooit herschrijven. Een afgerond punt verhuist naar CHANGELOG.md (onder de datum: wat er gedaan is en het bewijs) en gaat dan uit BACKLOG.md |
 | `CHANGELOG.md` | Per datum wat er veranderd is (features, fixes, besluiten, externe wijzigingen) | Alleen aanvullen, nieuwste bovenaan |
 | `docs/decisions.md` | Besluitenlog: datum, besluit, waarom, verworpen alternatieven, wie | Alleen aanvullen; elke beantwoorde ontwerpvraag krijgt een regel |
 | `docs/plans/` | Goedgekeurde plannen (`YYYY-MM-DD-<naam>.md`) | Niet wijzigen na goedkeuring; afwijkingen in CHANGELOG.md |
@@ -114,8 +114,8 @@ Alleen aanvullen. Nieuwste bovenaan. Een besluit terugdraaien = nieuw besluit me
 - **Wie**: <naam> via <gesprek/plan>
 ```
 
-Werkritme: na elke afgeronde wijziging, vóór de commit: CHANGELOG.md aanvullen, het punt in
-BACKLOG.md afvinken, besluiten in docs/decisions.md zetten. Nieuwe vragen of bevindingen direct
+Werkritme: na elke afgeronde wijziging, vóór de commit: het afgeronde punt van BACKLOG.md naar
+CHANGELOG.md verhuizen (wat er gedaan is, bewijs), besluiten in docs/decisions.md zetten. Nieuwe vragen of bevindingen direct
 in BACKLOG.md. Wijzigingen in externe systemen (CRM, cloud, stores): CHANGELOG.md + script in `scripts/`.
 
 ## Stap 5: Hooks instellen

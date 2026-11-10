@@ -1,2 +1,3 @@
 logs/codex/
 .DS_Store
+__pycache__/

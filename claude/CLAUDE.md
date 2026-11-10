@@ -30,7 +30,7 @@ Bron: https://github.com/hklplrhft/ai-engineering-docs (map `claude/`). Dit best
 - Bij sessie-overdracht zonder onderwerpbestand of -blok: maak een HANDOFF.md (doel, status, wat geprobeerd, eerstvolgende stap)
 
 ### Vastleggen -- vijf bestanden, elk met een eigen regel
-Zo kan een afspraak, besluit of open punt alleen verdwijnen door het bewust af te vinken, nooit door herschrijven.
+Zo kan een afspraak, besluit of open punt alleen verdwijnen doordat het bewust is afgerond en in CHANGELOG.md staat, nooit door herschrijven.
 
 **Wat moet blijven, staat nooit ALLEEN op een tijdelijke plek.** Tijdelijk zijn: de sessie zelf (weg bij
 `/compact` of `/clear`), memory (een cache, geen archief), `HANDOFF.md` (wordt herschreven), en losse teksten
@@ -41,7 +41,7 @@ eind van de sessie en niet 'straks even'. Daarna mag het overal genoemd worden; 
 
 | Bestand | Inhoud | Regel |
 |---|---|---|
-| `BACKLOG.md` | Alle open punten, vragen en bevindingen, geprioriteerd in secties | Alleen aanvullen of afvinken, nooit herschrijven. Afgevinkt punt krijgt een regel in CHANGELOG.md |
+| `BACKLOG.md` | Alle open punten, vragen en bevindingen, geprioriteerd in secties | Alleen aanvullen, nooit herschrijven. Een afgerond punt verhuist naar CHANGELOG.md (onder de datum: wat er gedaan is en het bewijs) en gaat dan uit BACKLOG.md (Hans, 10 nov 2026) |
 | `CHANGELOG.md` | Per datum wat er veranderd is: features, fixes, besluiten, bevindingen, wijzigingen in externe systemen | Alleen aanvullen, nieuwste bovenaan |
 | `docs/decisions.md` | Besluitenlog: datum, besluit, waarom, verworpen alternatieven, wie | Alleen aanvullen. Elke ontwerpvraag die de gebruiker beantwoordt (AskUserQuestion, plan-keuze) krijgt een regel |
 | `docs/plans/` | Goedgekeurde plannen | Nieuw bestand per plan, niet wijzigen na goedkeuring (afwijkingen in CHANGELOG.md) |
@@ -50,6 +50,7 @@ eind van de sessie en niet 'straks even'. Daarna mag het overal genoemd worden; 
 - Waar staat de backlog (Hans, 9 nov 2026; plan `docs/plans/2026-11-09-backlogs-per-project.md` in ai-engineering-docs): eigen project -> `BACKLOG.md` in de repo (de volledige lijst van Claude, met per lang lopend onderwerp een blok WAAR, STAND, VOLGENDE STAP, OPEN PUNTEN), en eventueel daarnaast het kladblok van Hans `~/Development/_backlogs/_backlog_<project>.txt` (kort, zijn eigen ideeën; bewust gescheiden, 9 nov); teamrepo -> per onderwerp een korte rij `~/Development/_backlogs/_backlog_<repo> <onderwerp>.txt` (in Notch: een samenvatting van het onderwerp en een verwijzing; aangemaakt bij een nieuw onderwerp, daarna niet bijgehouden) en de details in `~/Development/_backlogs/<repo>/<onderwerp>.md` met dezelfde opbouw (privé, buiten de teamrepo, niet in Notch); `_backlog_<repo>.txt` is alleen de projectomschrijving; zoom-nl -> eigen afspraken (`BACKLOG-HANS.md`).
 - Een eigen onderwerp (detailbestand plus korte rij in Notch) alleen als Hans er per geval ja op zegt; de sessie vraagt het met een schatting van de omvang ("ca. een uur, in één sessie af" of "loopt meerdere dagen"). Klein werk dat in één sessie af is, krijgt geen rij en geen bestand: wat er gedaan is staat in CHANGELOG.md, wat open blijft wordt een punt in een bestaand onderwerp (bij AIvoorRED: `aivoorred/aivoorred-app.md`). Is een onderwerp klaar, dan stelt de sessie voor de rij en het bestand weg te halen (open restjes naar een bestaand onderwerp). (Hans, 10 nov 2026)
 - In `~/Development/_backlogs/` schrijft een sessie alleen in het detailbestand van haar eigen onderwerp; de korte rij laat ze staan, commit er niet zelf (een uurtaak doet dat en pusht naar een privé-repo) en zet er nooit sleutels of wachtwoorden in; `_backlog_<project>.txt` daar is het kladblok van Hans: alleen lezen, hooguit een regel toevoegen of de markering van "verwerk mijn kladblok".
+- Een afgerond punt in een onderwerpbestand van een teamrepo krijgt eerst een duidelijke regel in de CHANGELOG van de teamrepo (wat, wanneer, bewijs; geen klantgegevens) en gaat daarna uit het onderwerpbestand, alleen met `claude/scripts/backlog_opschonen.py` uit ai-engineering-docs (raakt alleen bestanden die al zo in de git van `_backlogs` staan; de volledige tekst blijft daar). Zo doen Theske en Maarten het in TODO.md (Hans, 10 nov 2026).
 - Uitzoekwerk zonder code: geen branch; een eigen onderwerpbestand alleen als het meer dan één sessie duurt en Hans ja zegt (zie hierboven), anders in de STAND van een bestaand onderwerp; wat er gevonden is (conclusie, belangrijkste getallen) staat in STAND, niet alleen in het gesprek; persoonsgegevens (exports met namen of e-mailadressen) nooit in `~/Development/_backlogs/` (gaat elk uur naar GitHub), alleen het pad naar een map daarbuiten.
 - Kladblokken van Hans per project (in `~/Development/_backlogs/`): `_backlog_<projectmap>.txt` voor schoterpoort, reshift-kiosk, zoomcms, learnworlds, fotocoach, notch en gamehaarlem; afwijkende namen: aurora_monitor (Zoom Alerts) -> `_backlog_zoom alert.txt`, digitaal-lezen -> `_backlog_digitaal lezen.txt`, zoom-nl -> `_backlog_zoomnl.txt`. Andere projecten hebben (nog) geen kladblok.
 - "Verwerk mijn kladblok": een idee uit het kladblok uitwerken in de `BACKLOG.md` van het project en in het kladblok achter dat idee "-> in BACKLOG.md (datum)" zetten; niets wegstrepen, dat doet Hans zelf. "Waar kunnen we aan werken?": kijk in de prio van `BACKLOG.md` én in het kladblok.
@@ -160,7 +161,7 @@ Referentie: https://hklplrhft.github.io/ai-engineering-docs/deel-03.html
 - "Stel voor: zal ik hier een custom agent voor maken?"
 
 ### BACKLOG.md / CHANGELOG.md / docs/decisions.md (Laag 4) -- werk bij wanneer:
-- Een wijziging is afgerond -> regel in CHANGELOG.md, punt afvinken in BACKLOG.md
+- Een wijziging is afgerond -> het punt verhuist van BACKLOG.md naar CHANGELOG.md (wat er gedaan is, bewijs)
 - De gebruiker een ontwerpkeuze maakt -> regel in docs/decisions.md
 - Een nieuw open punt, vraag of bevinding opduikt -> toevoegen aan BACKLOG.md (niet aan CLAUDE.md of HANDOFF.md)
 - Iets buiten git verandert (extern systeem) -> CHANGELOG.md + script in scripts/
