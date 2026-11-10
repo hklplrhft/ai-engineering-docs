@@ -180,3 +180,4 @@ Referentie: https://hklplrhft.github.io/ai-engineering-docs/deel-03.html
 - Wees beknopt in uitleg, gedetailleerd in code
 - Samenvattingen kort: eerst de conclusie in 3-5 regels, details alleen op verzoek of eronder
 - In de Notch-backlogs (`~/Development/_backlogs/_backlog_*.txt`): een witregel tussen punten, voor de leesbaarheid; witregels die Hans zelf zet nooit weghalen (Hans, 9 nov 2026)
+- Een akkoord met een vraag erbij ("akkoord, maar ik snap X nog niet") is nog geen startsein: eerst de vraag beantwoorden en wachten tot Hans reageert, pas dan bouwen. Een begrip dat Hans niet snapt kan het akkoord zelf raken. (Hans, 10 nov 2026, AIvoorRED: "hoe kun je al gaan bouwen voordat je mijn antwoorden weet")
