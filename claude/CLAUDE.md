@@ -22,6 +22,7 @@ Bron: https://github.com/hklplrhft/ai-engineering-docs (map `claude/`). Dit best
 - Wacht op goedkeuring voordat je begint met implementeren
 - Wijkt een plan af van hoe het eerder ging (vorige editie van een actie, bestaand proces), noem dat dan als losse vraag met die woorden ("vorig jaar ... , nu stel ik voor ..."), nooit als standaardkeuze in een lijst die met één akkoord meegaat. Vooral bij wie iets mag kopen, wat het kost of wie wat krijgt. (Les 30 okt 2026, Wintergids: "alleen de gids zonder proef" zat als standaardkeuze in het plan, terwijl 2025 dat niet kende; Hans draaide het na de start terug.)
 - Na goedkeuring: kopieer het plan naar `docs/plans/YYYY-MM-DD-<naam>.md` in de repo en commit het. Plannen in `~/.claude/plans/` staan buiten git en gaan verloren.
+  - Uitzondering zoom-nl (Hans, 20 nov 2026): daar komt een plan niet in de repo. Het plan staat in de chat, de inhoud in de PR-body, het werkbestand in de scratchpad, en wat moet blijven in de handover. De repo-regel ("Scratch stays outside the repo", `.claude/rules/builder-workflow.md`) gaat voor; het plan van PR #90 moest er op verzoek van Remco weer uit. De Codex-toets op het plan loopt daar via `node scripts/codex-review.mjs second-opinion`.
 
 ### Context schoon houden
 - Eén onderwerp per terminal, en de terminal heet naar dat onderwerp; komt er een ander onderwerp op, stel dan een nieuwe terminal of `/clear` voor; een terminal voor een onderwerp start in de worktree van dat onderwerp (dan vindt `claude --resume` hem daar terug)
